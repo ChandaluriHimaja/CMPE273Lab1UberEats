@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import auth from "../services/authService";
 import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 
 class Home extends React.Component {
   render() {
-    const user = auth.getCurrentUser();
+    const jwt = this.props.jwt;
+    const user = this.props.auth;
     console.log("Got user data again in HOME: ", user);
 
-    if (!user) {
+    if (!jwt) {
       return (
         <React.Fragment>
           <a href="/customerSignup">Customer SignUp</a>
@@ -36,4 +38,11 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+const mapStoreToProps = (state) => {
+  return {
+    auth: state.auth.auth,
+    jwt: state.auth.jwt,
+  };
+};
+
+export default connect(mapStoreToProps)(Home);

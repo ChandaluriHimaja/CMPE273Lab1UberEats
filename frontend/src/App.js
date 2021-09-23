@@ -17,62 +17,78 @@ import CustomerOrders from "./components/customerOrders";
 import CustomerProfile from "./components/customerProfile";
 import CustomerFavourites from "./components/customerFavourites";
 import CustomerCheckout from "./components/customerCheckout";
+import SideBar from "./components/sidebar";
+import NavBar from "./components/navbar";
+
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 class App extends Component {
   state = {};
 
   render() {
     return (
-      <>
+      <Provider store={store}>
         <div className="container-fluid">
           <div className="row">
-            <main role="main" className="col-md-8 ml-sm-auto col-lg-10">
-              <Switch>
-                <CustomerRoute
-                  path="/myDashboard"
-                  component={CustomerDashboard}
-                ></CustomerRoute>
-                <RestaurantRoute
-                  path="/restaurantDashboard"
-                  component={RestaurantDashboard}
-                ></RestaurantRoute>
-                <RestaurantRoute
-                  path="/orders"
-                  component={RestaurantOrders}
-                ></RestaurantRoute>
-                <CustomerRoute
-                  path="/myOrders"
-                  component={CustomerOrders}
-                ></CustomerRoute>
-                <CustomerRoute
-                  path="/myProfile"
-                  component={CustomerProfile}
-                ></CustomerRoute>
-                <CustomerRoute
-                  path="/myFavourites"
-                  component={CustomerFavourites}
-                ></CustomerRoute>
-                <CustomerRoute
-                  path="/checkout"
-                  component={CustomerCheckout}
-                ></CustomerRoute>
-                <BaseRoute
-                  path="/customerSignUp"
-                  component={CustomerSignUp}
-                ></BaseRoute>
-                <BaseRoute
-                  path="/restaurantSignUp"
-                  component={RestaurantSignUp}
-                ></BaseRoute>
-                <BaseRoute path="/home" component={Home}></BaseRoute>
-                <BaseRoute path="/login" component={Login}></BaseRoute>
-                <BaseRoute path="/logout" component={Logout}></BaseRoute>
-                <Redirect from="/" exact to="/home"></Redirect>
-              </Switch>
-            </main>
+            <NavBar></NavBar>
+          </div>
+          <div className="row">
+            <div className="col-md-2">
+              <SideBar></SideBar>
+            </div>
+            <div
+              className="col-md-10"
+              style={{ paddingLeft: "30px", paddingRight: "30px" }}
+            >
+              <main role="main">
+                <Switch>
+                  <CustomerRoute
+                    path="/myDashboard"
+                    component={CustomerDashboard}
+                  ></CustomerRoute>
+                  <RestaurantRoute
+                    path="/restaurantDashboard"
+                    component={RestaurantDashboard}
+                  ></RestaurantRoute>
+                  <RestaurantRoute
+                    path="/orders"
+                    component={RestaurantOrders}
+                  ></RestaurantRoute>
+                  <CustomerRoute
+                    path="/myOrders"
+                    component={CustomerOrders}
+                  ></CustomerRoute>
+                  <CustomerRoute
+                    path="/myProfile"
+                    component={CustomerProfile}
+                  ></CustomerRoute>
+                  <CustomerRoute
+                    path="/myFavourites"
+                    component={CustomerFavourites}
+                  ></CustomerRoute>
+                  <CustomerRoute
+                    path="/checkout"
+                    component={CustomerCheckout}
+                  ></CustomerRoute>
+                  <BaseRoute
+                    path="/customerSignUp"
+                    component={CustomerSignUp}
+                  ></BaseRoute>
+                  <BaseRoute
+                    path="/restaurantSignUp"
+                    component={RestaurantSignUp}
+                  ></BaseRoute>
+                  <BaseRoute path="/home" component={Home}></BaseRoute>
+                  <BaseRoute path="/login" component={Login}></BaseRoute>
+                  <BaseRoute path="/logout" component={Logout}></BaseRoute>
+                  <Redirect from="/" exact to="/home"></Redirect>
+                </Switch>
+              </main>
+            </div>
           </div>
         </div>
-      </>
+      </Provider>
     );
   }
 }

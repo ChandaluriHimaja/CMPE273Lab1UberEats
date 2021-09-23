@@ -1,14 +1,12 @@
 const Joi = require("joi");
-const bcrypt = require("bcrypt");
 const con = require("../db");
 
-class User {
-  static addUserDetails = async ({ email, password, isRestaurant = false }) => {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+const tableName = "customer";
 
+class Customer {
+  static addNewCustomer = async ({ authID, name, phoneNumber }) => {
     return new Promise((resolve, reject) => {
-      const sql = `INSERT INTO user_details (user_email, user_password, isRestaurant) VALUES ("${email}", "${hashedPassword}", "${isRestaurant}")`;
+      const sql = `INSERT INTO ${tableName} (_authId, nickname, name, phoneNumber) VALUES ("${authID}", "${name}", "${name}", "${phoneNumber}")`;
       console.log("SQL: ", sql);
       con.query(sql, (error, results) => {
         if (error) {
@@ -22,14 +20,17 @@ class User {
   };
 
   static validate = (user) => {
+    console.log("VALIDATE USER: ", user);
     const schema = Joi.object({
+      name: Joi.string().required(),
       email: Joi.string().required().email(),
       password: Joi.string().required(),
-      isRestaurant: Joi.boolean(),
+      phoneNumber: Joi.number().required(),
+      isRestaurant: Joi.number(),
     });
 
     return schema.validate(user);
   };
 }
 
-module.exports.User = User;
+module.exports.Customer = Customer;

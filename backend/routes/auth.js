@@ -22,14 +22,18 @@ router.post("/", async (req, res) => {
     const { email, password } = req.body;
 
     let [user] = await Auth.checkIfUserExists({ email });
-    console.log("USER.user_email", user);
+    console.log("USER.email", user);
     if (!user) return res.status(400).send("Invalid username");
 
-    const validPassword = await bcrypt.compare(password, user.user_password);
+    const validPassword = await bcrypt.compare(password, user.password);
 
     if (!validPassword) {
       return res.status(400).send("Invalid password");
     }
+
+    // if (password != user.password) {
+    //   return res.status(400).send("Invalid password");
+    // }
 
     const token = Auth.generateAuthToken({
       _id: user._id,

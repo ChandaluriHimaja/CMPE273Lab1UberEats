@@ -1,27 +1,34 @@
-import React, { Component } from "react";
-import auth from "../services/authService";
+import React from "react";
 import { Redirect } from "react-router-dom";
-import { login } from "../services/authService";
+// import { login } from "../services/authService";
 import Joi from "joi-browser";
 import Form from "./common/form";
+import { login } from "../redux";
+import { connect } from "react-redux";
 
 class Login extends Form {
   state = {
-    data: { username: "", password: "" },
+    data: { email: "", password: "" },
     errors: {},
     showWarningBanner: false,
   };
 
   schema = {
-    username: Joi.string().required(),
-    password: Joi.string().required(),
+    email: Joi.string().required().label("Email"),
+    password: Joi.string().min(6).required().label("Password"),
   };
 
   doSubmit = async () => {
-    const { username, password } = this.state.data;
-    const response = await login(username, password);
-    if (response) {
-      window.location = "/";
+    const { email, password } = this.state.data;
+    await this.props.login(email, password);
+    if (this.props.jwt) {
+      return (
+        <Redirect
+          to={{
+            pathname: "/",
+          }}
+        ></Redirect>
+      );
     } else {
       this.setState({ showWarningBanner: true });
     }
@@ -40,7 +47,7 @@ class Login extends Form {
             >
               &times;
             </button>
-            Invalid Username or Password
+            {this.props.error}
           </div>
         )}
 
@@ -49,13 +56,27 @@ class Login extends Form {
         </div>
 
         <form onSubmit={this.handleSubmit}>
-          {this.renderInput("username", "Username", "text")}
+          {this.renderInput("email", "Email", "text")}
           {this.renderInput("password", "Password", "password")}
-          {this.renderButton("Login")}
+          <div style={{ paddingTop: "10px" }}>{this.renderButton("Login")}</div>
         </form>
       </div>
     );
   }
 }
 
-export default Login;
+const mapStoreToProps = (state) => {
+  return {
+    auth: state.auth.auth,
+    jwt: state.auth.jwt,
+    error: state.auth.error,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: (email, password) => dispatch(login(email, password)),
+  };
+};
+
+export default connect(mapStoreToProps, mapDispatchToProps)(Login);

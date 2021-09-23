@@ -1,6 +1,7 @@
 const config = require("config");
 const auth = require("./routes/auth");
-const user = require("./routes/user");
+const customer = require("./routes/customer");
+const restaurant = require("./routes/restaurant");
 const mysql = require("mysql");
 var cors = require("cors");
 
@@ -48,7 +49,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", auth);
-app.use("/api/user", user);
+app.use("/api/customer", customer);
+app.use("/api/restaurant", restaurant);
 
 const port = process.env.PORT || config.get("port");
 app.listen(port, () => console.log(`Listning to port ${port}.... `));

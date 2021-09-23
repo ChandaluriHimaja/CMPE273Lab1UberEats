@@ -2,7 +2,7 @@ import "../../App.css";
 
 const Select = (props) => {
   return (
-    <div className="form-group">
+    <div className="form-group" style={{ paddingTop: "10px" }}>
       <label htmlFor={props.name}>{props.label}</label>
       <select
         className="form-control form-element"

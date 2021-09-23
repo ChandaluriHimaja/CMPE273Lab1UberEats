@@ -1,16 +1,18 @@
-import React, { Component } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 import { Route, Redirect } from "react-router-dom";
-import auth from "../../services/authService";
 
 const BaseRoute = ({ path, component: Component, render, ...rest }) => {
-  const user = auth.getCurrentUser();
+  const jwt = useSelector((state) => state.auth.jwt);
+  const user = useSelector((state) => state.auth.auth);
+  // const user = auth.getCurrentUser();
   console.log("Got user data again in BASE ROUTE: ", user);
   return (
     <Route
       path={path}
       {...rest}
       render={(props) => {
-        if (user) {
+        if (jwt) {
           if (user.isRestaurant) {
             return (
               <Redirect

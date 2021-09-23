@@ -3,7 +3,7 @@ import "../../App.css";
 
 const Input = (props) => {
   return (
-    <div className="form-group">
+    <div className="form-group" style={{ paddingTop: "10px" }}>
       <label htmlFor={props.name}> {props.label}</label>
       <input
         value={props.value}
