@@ -43,6 +43,8 @@ router.post("/", async (req, res) => {
       country,
       zipCode,
       phoneNumber,
+      pickupMode: 1,
+      deliveryMode: 1,
     });
     res.status(200).send("Account created successfully");
   } catch (err) {

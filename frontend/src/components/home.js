@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import auth from "../services/authService";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 class Home extends React.Component {
@@ -12,8 +12,18 @@ class Home extends React.Component {
     if (!jwt) {
       return (
         <React.Fragment>
-          <a href="/customerSignup">Customer SignUp</a>
-          <a href="/restaurantSignup">Restaurant SignUp</a>
+          <div style={{ marginTop: "500px" }}>
+            <Link className="btn btn-dark" to={"/customerSignup"}>
+              Customer SignUp
+            </Link>
+            <Link
+              className="btn btn-dark"
+              style={{ marginLeft: "50px" }}
+              to={"/restaurantSignup"}
+            >
+              Restaurant SignUp
+            </Link>
+          </div>
         </React.Fragment>
       );
     } else {

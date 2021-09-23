@@ -13,9 +13,11 @@ class Restaurant {
     country,
     zipCode,
     phoneNumber,
+    pickupMode,
+    deliveryMode,
   }) => {
     return new Promise((resolve, reject) => {
-      const sql = `INSERT INTO ${tableName} (_authId, name, street, city, state, country, zipCode, phoneNumber) VALUES ("${authID}", "${restaurantName}", "${street}", "${city}", "${state}", "${country}", "${zipCode}", "${phoneNumber}")`;
+      const sql = `INSERT INTO ${tableName} (_authId, name, street, city, state, country, zipCode, phoneNumber, pickupMode, deliveryMode) VALUES ("${authID}", "${restaurantName}", "${street}", "${city}", "${state}", "${country}", "${zipCode}", "${phoneNumber}", "${pickupMode}", , "${deliveryMode}")`;
       console.log("SQL: ", sql);
       con.query(sql, (error, results) => {
         if (error) {

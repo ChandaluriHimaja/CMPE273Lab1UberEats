@@ -5,6 +5,7 @@ const Select = (props) => {
     <div className="form-group" style={{ paddingTop: "10px" }}>
       <label htmlFor={props.name}>{props.label}</label>
       <select
+        disabled={props.isDisabled ? "disabled" : ""}
         className="form-control form-element"
         name={props.name}
         id={props.name}

@@ -36,7 +36,7 @@ class Login extends Form {
 
   render() {
     return (
-      <div className="container">
+      <div className="container" style={{ paddingRight: "350px" }}>
         {this.state.showWarningBanner && (
           <div className="alert alert-warning alert-dismissible">
             <button

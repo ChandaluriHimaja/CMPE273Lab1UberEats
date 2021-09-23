@@ -6,6 +6,7 @@ const Input = (props) => {
     <div className="form-group" style={{ paddingTop: "10px" }}>
       <label htmlFor={props.name}> {props.label}</label>
       <input
+        disabled={props.isDisabled ? "disabled" : ""}
         value={props.value}
         onChange={props.onChange}
         name={props.name}

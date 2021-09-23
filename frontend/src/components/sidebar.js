@@ -8,28 +8,21 @@ const SideBar = () => {
   return (
     <div>
       {jwt && (
-        <nav className="col-md-2 d-none d-md-block bg-light sidebar">
-          <div
-            style={{
-              fontSize: "30px",
-              marginLeft: "20px",
-              paddingBottom: "35px",
-            }}
-          >
-            <span style={{ color: "#162328" }}>Uber</span>
-            <span style={{ color: "#3FC060" }}>Eats</span>
-          </div>
+        <nav
+          className="col-md-2 d-none d-md-block bg-light sidebar"
+          style={{ marginTop: "50px", paddingTop: "25px" }}
+        >
           <div className="sidebar-sticky">
             <ul className="nav flex-column">
               {user.isRestaurant && (
                 <React.Fragment>
                   <ListItemSideBar
-                    iconClass="fa fa-credit-card"
+                    iconClass="fa fa-dashboard"
                     label="Dashboard"
                     path="/restaurantDashboard"
                   ></ListItemSideBar>
                   <ListItemSideBar
-                    iconClass="fa fa-credit-card"
+                    iconClass="fa fa-bookmark"
                     label="Orders"
                     path="/orders"
                   ></ListItemSideBar>

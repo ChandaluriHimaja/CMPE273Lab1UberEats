@@ -1,26 +1,29 @@
 import React, { Component } from "react";
 import auth from "../services/authService";
 import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { logout } from "../redux";
 
 class Logout extends Component {
   componentDidMount() {
-    const user = auth.getCurrentUser();
-    console.log("Got user data again in LOGOUT: ", user);
-    if (user) {
-      auth.logout();
-      window.location = "/";
-    } else {
-      <Redirect
-        to={{
-          pathname: "/home",
-        }}
-      ></Redirect>;
-    }
+    this.props.logout();
   }
 
   render() {
-    return null;
+    return (
+      <Redirect
+        to={{
+          pathname: "/",
+        }}
+      ></Redirect>
+    );
   }
 }
 
-export default Logout;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logout: () => dispatch(logout()),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Logout);

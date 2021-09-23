@@ -18,7 +18,7 @@ import CustomerProfile from "./components/customerProfile";
 import CustomerFavourites from "./components/customerFavourites";
 import CustomerCheckout from "./components/customerCheckout";
 import SideBar from "./components/sidebar";
-import NavBar from "./components/navbar";
+import NavBarMy from "./components/navbar";
 
 import { Provider } from "react-redux";
 import store from "./redux/store";
@@ -31,7 +31,7 @@ class App extends Component {
       <Provider store={store}>
         <div className="container-fluid">
           <div className="row">
-            <NavBar></NavBar>
+            <NavBarMy></NavBarMy>
           </div>
           <div className="row">
             <div className="col-md-2">
@@ -81,7 +81,7 @@ class App extends Component {
                   ></BaseRoute>
                   <BaseRoute path="/home" component={Home}></BaseRoute>
                   <BaseRoute path="/login" component={Login}></BaseRoute>
-                  <BaseRoute path="/logout" component={Logout}></BaseRoute>
+                  <Route path="/logout" component={Logout}></Route>
                   <Redirect from="/" exact to="/home"></Redirect>
                 </Switch>
               </main>

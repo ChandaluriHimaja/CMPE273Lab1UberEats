@@ -73,9 +73,11 @@ class Form extends Component {
     this.setState({ data, errors });
   };
 
-  renderInput = (name, label, type) => {
+  renderInput = (name, label, type, isDisabled = false) => {
+    console.log("ISDISABLED: ", isDisabled);
     return (
       <Input
+        isDisabled={isDisabled ? "disabled" : ""}
         name={name}
         label={label}
         value={this.state.data[name]}
@@ -119,9 +121,10 @@ class Form extends Component {
     );
   };
 
-  renderSelect = (name, label, options) => {
+  renderSelect = (name, label, options, isDisabled = false) => {
     return (
       <Select
+        isDisabled={isDisabled ? "disabled" : ""}
         name={name}
         label={label}
         options={options}
