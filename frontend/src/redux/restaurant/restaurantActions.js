@@ -36,9 +36,12 @@ export const restaurantUpdateProfileFailure = (
   };
 };
 
-export const restaurantGetProfileSuccess = () => {
+export const restaurantGetProfileSuccess = (restaurantData) => {
   return {
     type: actions.RESTAURANT_GET_DATA_SUCCESS,
+    payload: {
+      restaurantData,
+    },
   };
 };
 
@@ -84,11 +87,12 @@ export const restaurantUpdateProfile = (data) => {
 };
 
 export const getRestaurantData = (id) => {
+  console.log("IDDDD: ", id);
   return async (dispatch) => {
     try {
       const response = await http.get(apiEndpoint + "/" + id);
       if (response && response.status === 200) {
-        dispatch(restaurantGetProfileSuccess());
+        dispatch(restaurantGetProfileSuccess(response.data));
       }
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {

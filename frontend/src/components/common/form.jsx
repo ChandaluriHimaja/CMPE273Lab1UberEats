@@ -73,6 +73,13 @@ class Form extends Component {
     this.setState({ data, errors });
   };
 
+  handleChangeForCheckbox = (e) => {
+    console.log("e.currentTarget.name: ", e.currentTarget.name);
+    const data = { ...this.state.data };
+    data[e.currentTarget.name] = !data[e.currentTarget.name];
+    this.setState({ data });
+  };
+
   renderInput = (name, label, type, isDisabled = false) => {
     console.log("ISDISABLED: ", isDisabled);
     return (
@@ -150,6 +157,25 @@ class Form extends Component {
             disabled={isDisabled}
             checked={selected && label === selected}
           ></input>
+          {label}
+        </label>
+      </div>
+    );
+  };
+
+  renderCheckBox = (name, label, isSelected, isDisabled) => {
+    return (
+      <div className="form-check">
+        <input
+          disabled={isDisabled ? "disabled" : ""}
+          className="form-check-input bg-dark"
+          type="checkbox"
+          value={isSelected}
+          checked={isSelected}
+          name={name}
+          onChange={this.handleChangeForCheckbox}
+        />
+        <label className="form-check-label" htmfor="checkingAccount">
           {label}
         </label>
       </div>

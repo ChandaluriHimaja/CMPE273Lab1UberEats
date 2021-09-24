@@ -47,14 +47,41 @@ class RestaurantDashboard extends Form {
     deliveryMode: Joi.boolean().label("Delivery Mode"),
   };
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     this.setState({ countries });
-    this.props.getRestaurantData(this.props.auth._id);
+    await this.props.getRestaurantData(this.props.auth._id);
+    const restaurantData = this.props.restaurantData;
+    console.log("RESTAURANTDATA:::: ", restaurantData);
+    const auth = this.props.auth;
+    const pickupMode = restaurantData.pickupMode ? true : false;
+    const deliveryMode = restaurantData.deliveryMode ? true : false;
+    const data = {
+      restaurantName: restaurantData.name,
+      email: auth.email,
+      street: restaurantData.street,
+      city: restaurantData.city,
+      state: restaurantData.state,
+      country: restaurantData.country,
+      zipCode: restaurantData.zipCode,
+      phoneNumber: restaurantData.phoneNumber,
+      description: restaurantData.description,
+      restaurantImg: restaurantData.restaurantImg,
+      openingTime: restaurantData.openingTime,
+      closingTime: restaurantData.closingTime,
+      pickupMode: pickupMode,
+      deliveryMode: deliveryMode,
+    };
+    this.setState({
+      data,
+    });
   };
 
   doSubmit = async () => {
     const { data } = this.state;
-    await this.props.restaurantUpdateProfile(data);
+    await this.props.restaurantUpdateProfile({
+      ...data,
+      _id: this.props.restaurantData._id,
+    });
     if (this.props.restaurantProfileUpdateError) {
       this.setState({ showWarningBanner: true });
     } else {
@@ -62,10 +89,24 @@ class RestaurantDashboard extends Form {
     }
   };
 
+  handleEditButtonClick = () => {
+    const disableEdting = !this.state.disableEdting;
+    this.setState({
+      disableEdting,
+    });
+  };
+
   render() {
     const { disableEdting } = this.state;
     return (
-      <div className="container" style={{ paddingRight: "350px" }}>
+      <div
+        className="container"
+        style={{
+          paddingLeft: "100px",
+          paddingRight: "100px",
+          paddingBottom: "20px",
+        }}
+      >
         {this.state.showWarningBanner && (
           <div className="alert alert-warning alert-dismissible">
             <button
@@ -95,7 +136,22 @@ class RestaurantDashboard extends Form {
         )}
 
         <div className="row justify-content-center">
-          <h1 className="mt-4 mb-4">Dashboard</h1>
+          <div className="row">
+            <div className="col-md-11">
+              <h1 className="mt-4 mb-4">Dashboard</h1>
+            </div>
+            <div className="col-md-1">
+              {this.state.disableEdting && (
+                <button
+                  className="btn btn-custom"
+                  style={{ marginTop: "30px" }}
+                  onClick={this.handleEditButtonClick}
+                >
+                  Edit
+                </button>
+              )}
+            </div>
+          </div>
         </div>
 
         <form onSubmit={this.handleSubmit}>
@@ -140,15 +196,27 @@ class RestaurantDashboard extends Form {
             "string",
             disableEdting
           )}
-          {this.renderInput(
-            "pickupMode",
-            "Phone Number",
-            "number",
-            disableEdting
-          )}
           <div style={{ paddingTop: "10px" }}>
-            {this.renderButton("Sign Up")}
+            {this.renderCheckBox(
+              "pickupMode",
+              "Pickup Mode Supported",
+              this.state.data.pickupMode,
+              disableEdting
+            )}
           </div>
+          <div style={{ paddingTop: "10px" }}>
+            {this.renderCheckBox(
+              "deliveryMode",
+              "Delivery Mode Supported",
+              this.state.data.deliveryMode,
+              disableEdting
+            )}
+          </div>
+          {!this.state.disableEdting && (
+            <div style={{ paddingTop: "10px" }}>
+              {this.renderButton("Update")}
+            </div>
+          )}
         </form>
       </div>
     );
@@ -158,6 +226,7 @@ class RestaurantDashboard extends Form {
 const mapStoreToProps = (state) => {
   return {
     auth: state.auth.auth,
+    restaurantData: state.restaurant.restaurantData,
     restaurantProfileUpdateError: state.restaurant.restaurantProfileUpdateError,
   };
 };

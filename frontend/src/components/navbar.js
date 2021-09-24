@@ -9,7 +9,7 @@ const NavBar = () => {
   const jwt = useSelector((state) => state.auth.jwt);
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="light" expand="lg" fixed="top">
       <Row style={{ width: "100%" }}>
         <Col>
           <span class="navbar-brand mb-0 h1" style={{ paddingRight: "10px" }}>

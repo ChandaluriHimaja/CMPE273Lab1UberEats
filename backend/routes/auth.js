@@ -37,7 +37,7 @@ router.post("/", async (req, res) => {
 
     const token = Auth.generateAuthToken({
       _id: user._id,
-      email: user.user_email,
+      email: user.email,
       isRestaurant: user.isRestaurant,
     });
 

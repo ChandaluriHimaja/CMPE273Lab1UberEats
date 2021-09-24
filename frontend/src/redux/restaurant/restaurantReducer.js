@@ -4,6 +4,7 @@ const initialState = {
   signUpError: "",
   restaurantProfileUpdateError: "",
   restaurantGetProfileError: "",
+  restaurantData: "",
 };
 
 const reducer = (state = initialState, action) => {
@@ -33,11 +34,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         restaurantGetProfileError: "",
+        restaurantData: action.payload.restaurantData,
       };
     case actions.RESTAURANT_GET_DATA_FAILURE:
       return {
         ...state,
         restaurantGetProfileError: action.payload.restaurantGetProfileError,
+        restaurantData: "",
       };
     default:
       return state;
