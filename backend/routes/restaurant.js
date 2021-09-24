@@ -77,7 +77,11 @@ router.post("/update", async (req, res) => {
 
     const data = req.body;
 
+    data.pickupMode = data.pickupMode ? 1 : 0;
+    data.deliveryMode = data.deliveryMode ? 1 : 0;
+
     await Restaurant.updateRestaurantDetails(data);
+    res.send("Successfully updated restaurant data");
   } catch (err) {
     console.log("Error: restaurant add new ", err);
   }

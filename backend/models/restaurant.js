@@ -67,7 +67,7 @@ class Restaurant {
     deliveryMode,
   }) => {
     return new Promise((resolve, reject) => {
-      const sql = `update ${tableName} set name = '${restaurantName}', street = '${street}', city = '${city}', state = '${state}', country = '${country}', zipCode = '${zipCode}', phoneNumber = '${phoneNumber}', description = '${description}', restaurantImg = '${restaurantImg}', openingTime = '${openingTime}', closingTime = '${closingTime}', pickupMode = '${pickupMode}', deliveryMode = '${deliveryMode}' where _id = ${_id}`;
+      const sql = `update ${tableName} set name = '${restaurantName}', street = '${street}', city = '${city}', state = '${state}', country = '${country}', zipCode = '${zipCode}', phoneNumber = '${phoneNumber}', description = '${description}', restaurantImage = '${restaurantImg}', openingTime = '${openingTime}', closingTime = '${closingTime}', pickupMode = '${pickupMode}', deliveryMode = '${deliveryMode}' where _id = ${_id}`;
       console.log("SQL: ", sql);
       con.query(sql, (error, results) => {
         if (error) {

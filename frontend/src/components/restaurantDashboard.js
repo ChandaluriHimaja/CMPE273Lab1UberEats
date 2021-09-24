@@ -83,9 +83,11 @@ class RestaurantDashboard extends Form {
       _id: this.props.restaurantData._id,
     });
     if (this.props.restaurantProfileUpdateError) {
+      console.log("Error present restaurant dashboard");
       this.setState({ showWarningBanner: true });
     } else {
-      this.setState({ showSuccessBanner: true });
+      console.log("No Error present restaurant dashboard");
+      this.setState({ showSuccessBanner: true, disableEdting: true });
     }
   };
 
@@ -127,7 +129,7 @@ class RestaurantDashboard extends Form {
               type="button"
               className="close"
               data-dismiss="alert"
-              onClick={() => this.setState({ showWarningBanner: false })}
+              onClick={() => this.setState({ showSuccessBanner: false })}
             >
               &times;
             </button>
