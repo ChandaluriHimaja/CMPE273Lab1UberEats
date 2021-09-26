@@ -3,6 +3,16 @@ const router = express.Router();
 const { Restaurant } = require("../models/restaurant");
 const { Auth } = require("../models/auth");
 
+router.get("/", async (req, res) => {
+  try {
+    const restaurant = await Restaurant.getAllRestaurants();
+    console.log("RESTAURANT ALL : ", restaurant);
+    res.send(restaurant);
+  } catch (err) {
+    console.log("GET ALL RESTAURANTS: ", err);
+  }
+});
+
 router.post("/", async (req, res) => {
   try {
     const result = Restaurant.validate(req.body);

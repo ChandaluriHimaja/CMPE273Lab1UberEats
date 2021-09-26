@@ -21,7 +21,7 @@ class Restaurant {
     deliveryMode,
   }) => {
     return new Promise((resolve, reject) => {
-      const sql = `INSERT INTO ${tableName} (_authId, name, street, city, state, country, zipCode, phoneNumber, description, restaurantImg, openingTime, closingTime, pickupMode, deliveryMode) VALUES ("${authID}", "${restaurantName}", "${street}", "${city}", "${state}", "${country}", "${zipCode}", "${phoneNumber}", "${description}", "${restaurantImg}", "${openingTime}", "${closingTime}", "${pickupMode}", "${deliveryMode}")`;
+      const sql = `INSERT INTO ${tableName} (_authId, name, street, city, state, country, zipCode, phoneNumber, description, restaurantImage, openingTime, closingTime, pickupMode, deliveryMode) VALUES ("${authID}", "${restaurantName}", "${street}", "${city}", "${state}", "${country}", "${zipCode}", "${phoneNumber}", "${description}", "${restaurantImg}", "${openingTime}", "${closingTime}", "${pickupMode}", "${deliveryMode}")`;
       console.log("SQL: ", sql);
       con.query(sql, (error, results) => {
         if (error) {
@@ -44,6 +44,21 @@ class Restaurant {
           return reject(error);
         }
         console.log("FIND BY ID RESTAURANT RESULTS: ", results);
+        return resolve(results);
+      });
+    });
+  };
+
+  static getAllRestaurants = () => {
+    return new Promise((resolve, reject) => {
+      const sql = `select * from ${tableName}`;
+      console.log("SQL: ", sql);
+      con.query(sql, (error, results) => {
+        if (error) {
+          console.log(error);
+          return reject(error);
+        }
+        console.log("GET RESTAURANTS RESULTS: ", results);
         return resolve(results);
       });
     });

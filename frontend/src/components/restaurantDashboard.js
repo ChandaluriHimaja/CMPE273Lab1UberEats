@@ -87,7 +87,11 @@ class RestaurantDashboard extends Form {
       this.setState({ showWarningBanner: true });
     } else {
       console.log("No Error present restaurant dashboard");
-      this.setState({ showSuccessBanner: true, disableEdting: true });
+      this.setState({
+        showSuccessBanner: true,
+        disableEdting: true,
+        showWarningBanner: false,
+      });
     }
   };
 
@@ -163,7 +167,7 @@ class RestaurantDashboard extends Form {
             "text",
             disableEdting
           )}
-          {this.renderInput("email", "Email", "text", disableEdting)}
+          {this.renderInput("email", "Email", "text", true)}
           {this.renderInput("street", "Street", "text", disableEdting)}
           {this.renderInput("city", "City", "text", disableEdting)}
           {this.renderInput("state", "State", "text", disableEdting)}

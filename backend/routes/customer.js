@@ -24,10 +24,45 @@ router.post("/", async (req, res) => {
     let [auth] = await Auth.checkIfUserExists({ email });
     console.log("AUTH: ", auth);
 
-    await Customer.addNewCustomer({ authID: auth._id, name, phoneNumber });
+    await Customer.addNewCustomer({
+      authID: auth._id,
+      name,
+      phoneNumber,
+      about: "",
+      dateOfBirth: "",
+      profilePic:
+        "https://st3.depositphotos.com/6672868/13701/v/600/depositphotos_137014128-stock-illustration-user-profile-icon.jpg",
+    });
     res.status(200).send("Account created successfully");
   } catch (err) {
     console.log("Error: user add new ", err);
+  }
+});
+
+router.get("/:id", async (req, res) => {
+  const [customer] = await Customer.findById(req.params.id);
+  if (!customer) {
+    return res
+      .status(404)
+      .send("Customer data with auth credentials was not found");
+  }
+
+  res.send(customer);
+});
+
+router.post("/update", async (req, res) => {
+  try {
+    const result = Customer.validateProfileUpdate(req.body);
+    if (result.error) {
+      return res.status(400).send(result.error.details[0].message);
+    }
+
+    const data = req.body;
+
+    await Customer.updateCustomerDetails(data);
+    res.send("Successfully updated customer data");
+  } catch (err) {
+    console.log("Error: Customer Update: ", err);
   }
 });
 

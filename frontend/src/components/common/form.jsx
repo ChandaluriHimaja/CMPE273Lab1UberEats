@@ -114,9 +114,10 @@ class Form extends Component {
     );
   };
 
-  renderDateOfBirthInput = (name, label, type) => {
+  renderDateOfBirthInput = (name, label, type, isDisabled) => {
     return (
       <Input
+        isDisabled={isDisabled ? "disabled" : ""}
         name={name}
         label={label}
         value={this.state.data[name]}
