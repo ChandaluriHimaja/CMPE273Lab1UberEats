@@ -2,12 +2,24 @@ const express = require("express");
 const router = express.Router();
 const { Restaurant } = require("../models/restaurant");
 const { Auth } = require("../models/auth");
+const { Dishes } = require("../models/dishes");
 
 router.get("/", async (req, res) => {
   try {
-    const restaurant = await Restaurant.getAllRestaurants();
-    console.log("RESTAURANT ALL : ", restaurant);
-    res.send(restaurant);
+    const restaurants = await Restaurant.getAllRestaurants();
+
+    const restaurantsAndDishesList = [];
+    await restaurants.forEach(async (restaurant) => {
+      // console.log("RES: ", { ...restaurant });
+      const id = restaurant._id;
+      const dishes = await Dishes.findById(id);
+      // restaurant.dishes = dishes;
+      const newRestConst = { ...restaurant, dishes };
+      console.log("NEWRESCONST: ", newRestConst);
+      restaurantsAndDishesList.push(newRestConst);
+    });
+    console.log("RESTAURANT ALL : ", restaurantsAndDishesList);
+    res.send(restaurantsAndDishesList);
   } catch (err) {
     console.log("GET ALL RESTAURANTS: ", err);
   }
@@ -55,7 +67,7 @@ router.post("/", async (req, res) => {
       phoneNumber,
       description: "",
       restaurantImg:
-        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fcwdaust.com.au%2Fcommercial%2Flot-5883-manganese-st-wedgefield%2Fplaceholder-restaurant%2F&psig=AOvVaw2ibQT5OoBuyVyi5Fam0u6m&ust=1632549929985000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCLCMi8f4lvMCFQAAAAAdAAAAABAD",
+        "https://hudsonvalley.org/wp-content/sabai/File/files/l_5f0ce99009f58cdc3f9d8be242a962d7.png",
       openingTime: "08:00:00",
       closingTime: "20:00:00",
       pickupMode: 1,

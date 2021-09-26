@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.21.4",
     "bootstrap": "^5.1.1",
+    "bootstrap-switch-button-react": "^1.2.0",
     "countries-list": "^2.6.1",
     "date-fns": "^2.23.0",
     "font-awesome": "^4.7.0",

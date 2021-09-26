@@ -17,6 +17,7 @@ import CustomerOrders from "./components/customerOrders";
 import CustomerProfile from "./components/customerProfile";
 import CustomerFavourites from "./components/customerFavourites";
 import CustomerCheckout from "./components/customerCheckout";
+import Dishes from "./components/dishes";
 import SideBar from "./components/sidebar";
 import NavBarMy from "./components/navbar";
 
@@ -51,6 +52,10 @@ class App extends Component {
                     path="/restaurantDashboard"
                     component={RestaurantDashboard}
                   ></RestaurantRoute>
+                  <RestaurantOrders
+                    path="/dishes"
+                    component={Dishes}
+                  ></RestaurantOrders>
                   <RestaurantRoute
                     path="/orders"
                     component={RestaurantOrders}

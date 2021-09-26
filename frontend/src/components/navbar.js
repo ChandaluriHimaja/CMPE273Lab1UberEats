@@ -25,6 +25,7 @@ const NavBar = () => {
               path="/login"
             ></ListItemNavBar>
           )}
+
           {jwt && (
             <React.Fragment>
               <ListItemNavBar

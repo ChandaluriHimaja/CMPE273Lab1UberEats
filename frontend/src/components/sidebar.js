@@ -26,6 +26,11 @@ const SideBar = () => {
                     label="Orders"
                     path="/orders"
                   ></ListItemSideBar>
+                  <ListItemSideBar
+                    iconClass="fa fa-bookmark"
+                    label="Dishes"
+                    path="/dishes"
+                  ></ListItemSideBar>
                 </React.Fragment>
               )}
               {!user.isRestaurant && (
