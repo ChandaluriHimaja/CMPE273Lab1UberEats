@@ -27,13 +27,7 @@ class CustomerSignUp extends Form {
       this.setState({ showWarningBanner: true });
     } else {
       console.log("This.signUpError absent");
-      return (
-        <Redirect
-          to={{
-            pathname: "/login",
-          }}
-        ></Redirect>
-      );
+      this.props.history.push("/login");
     }
   };
 

@@ -5,6 +5,7 @@ import ListItemSideBar from "./common/ListItemSideBar";
 const SideBar = () => {
   const jwt = useSelector((state) => state.auth.jwt);
   const user = useSelector((state) => state.auth.auth);
+  console.log("In sidebar ----------------------- ", user);
   return (
     <div>
       {jwt && (
@@ -14,7 +15,7 @@ const SideBar = () => {
         >
           <div className="sidebar-sticky">
             <ul className="nav flex-column">
-              {user.isRestaurant && (
+              {user.isRestaurant ? (
                 <React.Fragment>
                   <ListItemSideBar
                     iconClass="fa fa-dashboard"
@@ -29,11 +30,10 @@ const SideBar = () => {
                   <ListItemSideBar
                     iconClass="fa fa-bookmark"
                     label="Dishes"
-                    path="/dishes"
+                    path="/restaurantDishes"
                   ></ListItemSideBar>
                 </React.Fragment>
-              )}
-              {!user.isRestaurant && (
+              ) : (
                 <React.Fragment>
                   <ListItemSideBar
                     iconClass="fa fa-credit-card"

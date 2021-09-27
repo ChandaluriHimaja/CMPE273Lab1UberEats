@@ -12,12 +12,13 @@ import CustomerSignUp from "./components/customerSignUp";
 import RestaurantSignUp from "./components/restaurantSignUp";
 import CustomerDashboard from "./components/customerDashboard";
 import RestaurantDashboard from "./components/restaurantDashboard";
+import RestaurantAddNewDish from "./components/restaurantAddNewDish";
 import RestaurantOrders from "./components/restaurantOrders";
+import RestaurantDishes from "./components/restaurantDishes";
 import CustomerOrders from "./components/customerOrders";
 import CustomerProfile from "./components/customerProfile";
 import CustomerFavourites from "./components/customerFavourites";
 import CustomerCheckout from "./components/customerCheckout";
-import Dishes from "./components/dishes";
 import SideBar from "./components/sidebar";
 import NavBarMy from "./components/navbar";
 
@@ -52,10 +53,14 @@ class App extends Component {
                     path="/restaurantDashboard"
                     component={RestaurantDashboard}
                   ></RestaurantRoute>
-                  <RestaurantOrders
-                    path="/dishes"
-                    component={Dishes}
-                  ></RestaurantOrders>
+                  <RestaurantRoute
+                    path="/restaurantDishes"
+                    component={RestaurantDishes}
+                  ></RestaurantRoute>
+                  <RestaurantRoute
+                    path="/restaurantAddDish/:id"
+                    component={RestaurantAddNewDish}
+                  ></RestaurantRoute>
                   <RestaurantRoute
                     path="/orders"
                     component={RestaurantOrders}

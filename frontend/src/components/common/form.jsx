@@ -81,7 +81,6 @@ class Form extends Component {
   };
 
   renderInput = (name, label, type, isDisabled = false) => {
-    console.log("ISDISABLED: ", isDisabled);
     return (
       <Input
         isDisabled={isDisabled ? "disabled" : ""}

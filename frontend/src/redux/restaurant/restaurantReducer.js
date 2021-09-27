@@ -5,6 +5,9 @@ const initialState = {
   restaurantProfileUpdateError: "",
   restaurantGetProfileError: "",
   restaurantData: "",
+  restaurantDishesData: [],
+  restaurantGetDishesError: "",
+  restaurantAddDishError: "",
 };
 
 const reducer = (state = initialState, action) => {
@@ -41,6 +44,28 @@ const reducer = (state = initialState, action) => {
         ...state,
         restaurantGetProfileError: action.payload.restaurantGetProfileError,
         restaurantData: "",
+      };
+    case actions.GET_RESTAURANT_DISHES_SUCCESS:
+      return {
+        ...state,
+        restaurantDishesData: action.payload.restaurantDishesData,
+        restaurantGetDishesError: "",
+      };
+    case actions.GET_RESTAURANT_DISHES_FAILURE:
+      return {
+        ...state,
+        restaurantDishesData: [],
+        restaurantGetDishesError: action.payload.restaurantGetDishesError,
+      };
+    case actions.ADD_RESTAURANT_DISH_SUCCESS:
+      return {
+        ...state,
+        restaurantAddDishError: "",
+      };
+    case actions.ADD_RESTAURANT_DISH_FAILURE:
+      return {
+        ...state,
+        restaurantAddDishError: action.payload.restaurantAddDishError,
       };
     default:
       return state;

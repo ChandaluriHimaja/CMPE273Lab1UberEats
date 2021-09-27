@@ -18,7 +18,7 @@ class RestaurantCard extends React.Component {
     return (
       <div
         className="card"
-        style={{ margin: "10px", width: "270px" }}
+        style={{ margin: "10px", width: "250px" }}
         key={_id}
       >
         <img
@@ -43,7 +43,7 @@ class RestaurantCard extends React.Component {
             className="card-text overflow-auto rounded text-muted"
             style={{ height: "50px", padding: "10px" }}
           >
-            {description}
+            <small className="text-muted">{description}</small>
           </p>
           <p className="card-text">
             <small className="text-muted">

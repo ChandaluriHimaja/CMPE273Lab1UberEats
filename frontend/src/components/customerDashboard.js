@@ -9,6 +9,7 @@ class CustomerDashboard extends Component {
   state = {
     searchQuery: "",
     location: "",
+    typeFilter: "",
   };
 
   componentDidMount = async () => {
@@ -23,11 +24,23 @@ class CustomerDashboard extends Component {
     this.setState({ location });
   };
 
+  handleFilterCheckboxChange = (e) => {
+    const name = e.currentTarget.name;
+    const typeFilter = this.state.typeFilter;
+    if (name in typeFilter) {
+    }
+  };
+
   render() {
     const { searchQuery, location } = this.state;
 
     return (
-      <div>
+      <div
+        className="container"
+        style={{
+          paddingBottom: "20px",
+        }}
+      >
         <div style={{ display: "flex" }}>
           <div style={{ paddingLeft: "50px", paddingTop: "15px" }}>
             <BootstrapSwitchButton
@@ -52,23 +65,23 @@ class CustomerDashboard extends Component {
             style={{ marginLeft: "10px", marginRight: "50px" }}
           ></SearchBox>
         </div>
-        <div style={{ display: "flex", marginTop: "40px" }}>
-          <div style={{ width: "300px", marginRight: "30px" }}>
-            <h3 style={{ textAlign: "center" }}>Filters</h3>
-          </div>
-          <div className="d-flex flex-wrap" style={{ display: "d-flex" }}>
-            {this.props.allRestaurantData.map((restaurant) => {
-              return <RestaurantCard {...restaurant}></RestaurantCard>;
-            })}
-            {this.props.allRestaurantData.map((restaurant) => {
-              return <RestaurantCard {...restaurant}></RestaurantCard>;
-            })}
-            {this.props.allRestaurantData.map((restaurant) => {
-              return <RestaurantCard {...restaurant}></RestaurantCard>;
-            })}
-            {this.props.allRestaurantData.map((restaurant) => {
-              return <RestaurantCard {...restaurant}></RestaurantCard>;
-            })}
+        <div style={{ marginTop: "20px", display: "flex" }}>
+          <h3 style={{ textAlign: "center" }}>Filters</h3>
+          <div></div>
+        </div>
+        <div style={{ marginTop: "40px" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              padding: "0 100px",
+            }}
+          >
+            <div className="d-flex flex-wrap" style={{ display: "d-flex" }}>
+              {this.props.allRestaurantData.map((restaurant) => {
+                return <RestaurantCard {...restaurant}></RestaurantCard>;
+              })}
+            </div>
           </div>
         </div>
       </div>
