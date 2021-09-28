@@ -19,6 +19,7 @@ import CustomerOrders from "./components/customerOrders";
 import CustomerProfile from "./components/customerProfile";
 import CustomerFavourites from "./components/customerFavourites";
 import CustomerCheckout from "./components/customerCheckout";
+import CustomerRestaurantPage from "./components/customerRestaurantPage";
 import SideBar from "./components/sidebar";
 import NavBarMy from "./components/navbar";
 
@@ -80,6 +81,10 @@ class App extends Component {
                   <CustomerRoute
                     path="/checkout"
                     component={CustomerCheckout}
+                  ></CustomerRoute>
+                  <CustomerRoute
+                    path="/restaurant/:id"
+                    component={CustomerRestaurantPage}
                   ></CustomerRoute>
                   <BaseRoute
                     path="/customerSignUp"

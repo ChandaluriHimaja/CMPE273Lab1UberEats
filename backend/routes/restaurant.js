@@ -38,7 +38,7 @@ router.get("/", async (req, res) => {
     await Promise.all(
       restaurants.map(async (restaurant) => {
         const id = restaurant._id;
-        const dishes = await Dishes.findById(id);
+        const dishes = await Dishes.findByRestaurantId(id);
         // restaurant.dishes = dishes;
         const newRestConst = { ...restaurant, dishes };
         console.log("NEWRESCONST: ", newRestConst);

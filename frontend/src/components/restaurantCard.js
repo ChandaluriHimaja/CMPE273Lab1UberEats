@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class RestaurantCard extends React.Component {
   render() {
@@ -28,7 +29,12 @@ class RestaurantCard extends React.Component {
         ></img>
         <div className="card-body">
           <h5 className="card-title" style={{ letterSpacing: "1px" }}>
-            {name.toUpperCase()}
+            <Link
+              style={{ textDecoration: "none", color: "black" }}
+              to={`/restaurant/${_id}`}
+            >
+              {name.toUpperCase()}
+            </Link>
           </h5>
           <h6 className="card-subtitle mb-2 text-muted">
             <small className="text-muted">

@@ -7,3 +7,7 @@ export const categories = [
 ];
 
 export const types = ["Veg", "Non-Veg", "Vegan"];
+
+export const customerTypes = ["All", "Veg", "Non-Veg", "Vegan"];
+
+export const deliveryModes = ["Delivery", "PickUp"];
