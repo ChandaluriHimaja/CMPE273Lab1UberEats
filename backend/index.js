@@ -3,6 +3,7 @@ const auth = require("./routes/auth");
 const customer = require("./routes/customer");
 const restaurant = require("./routes/restaurant");
 const dish = require("./routes/dishes");
+const like = require("./routes/like");
 const mysql = require("mysql");
 var cors = require("cors");
 
@@ -53,6 +54,7 @@ app.use("/api/auth", auth);
 app.use("/api/customer", customer);
 app.use("/api/restaurant", restaurant);
 app.use("/api/dish", dish);
+app.use("/api/like", like);
 
 const port = process.env.PORT || config.get("port");
 app.listen(port, () => console.log(`Listning to port ${port}.... `));

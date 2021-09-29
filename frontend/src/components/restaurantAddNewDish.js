@@ -66,7 +66,7 @@ class RestaurantAddNewDish extends Form {
   doSubmit = async () => {
     const { data } = this.state;
     if (this.state.dishId) {
-      this.props.updateRestaurantDishData({
+      await this.props.updateRestaurantDishData({
         ...data,
         _id: this.state.dishId,
         _restaurantId: this.props.restaurantData._id,
@@ -77,7 +77,7 @@ class RestaurantAddNewDish extends Form {
         this.props.history.push("/restaurantDishes");
       }
     } else {
-      this.props.addRestaurantDishData({
+      await this.props.addRestaurantDishData({
         ...data,
         _restaurantId: this.props.restaurantData._id,
       });

@@ -1,7 +1,19 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import Like from "./common/like";
+import { connect } from "react-redux";
+import { customerLikesRestaurant, getCustomerLikesData } from "../redux";
 
 class RestaurantCard extends React.Component {
+  onLike = async (_restaurantId) => {
+    const data = {
+      _custId: this.props.customerData._id,
+      _restaurantId: _restaurantId,
+    };
+    await this.props.customerLikesRestaurant(data);
+    await this.props.getCustomerLikesData(this.props.customerData._id);
+  };
+
   render() {
     const {
       _id,
@@ -14,6 +26,7 @@ class RestaurantCard extends React.Component {
       openingTime,
       closingTime,
       name,
+      liked,
     } = this.props;
 
     return (
@@ -57,13 +70,31 @@ class RestaurantCard extends React.Component {
             </small>
           </p>
           <p></p>
-          <p className="card-text">
-            <small className="text-muted">+1 {phoneNumber}</small>
-          </p>
+          <div className="row">
+            <div className="col-sm-10">
+              <small className="text-muted">+1 {phoneNumber}</small>
+            </div>
+            <div className="col-sm-2">
+              <Like liked={liked} onClick={() => this.onLike(_id)}></Like>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 }
 
-export default RestaurantCard;
+const mapStoreToProps = (state) => {
+  return {
+    customerData: state.customer.customerData,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    customerLikesRestaurant: (data) => dispatch(customerLikesRestaurant(data)),
+    getCustomerLikesData: (id) => dispatch(getCustomerLikesData(id)),
+  };
+};
+
+export default connect(mapStoreToProps, mapDispatchToProps)(RestaurantCard);

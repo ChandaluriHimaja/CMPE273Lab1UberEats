@@ -65,7 +65,7 @@ class RestaurantDashboard extends Form {
       zipCode: restaurantData.zipCode,
       phoneNumber: restaurantData.phoneNumber,
       description: restaurantData.description,
-      restaurantImg: restaurantData.restaurantImg,
+      restaurantImg: restaurantData.restaurantImage,
       openingTime: restaurantData.openingTime,
       closingTime: restaurantData.closingTime,
       pickupMode: pickupMode,

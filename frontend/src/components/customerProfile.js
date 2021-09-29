@@ -116,7 +116,7 @@ class CustomerProfile extends Form {
         <div className="row justify-content-center">
           <div className="row">
             <div className="col-md-11">
-              <h1 className="mt-4 mb-4">Dashboard</h1>
+              <h1 className="mt-4 mb-4">My Profile</h1>
             </div>
             <div className="col-md-1">
               {this.state.disableEdting && (

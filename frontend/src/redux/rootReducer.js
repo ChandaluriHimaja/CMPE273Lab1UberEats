@@ -4,6 +4,7 @@ import customerReducer from "./customer/customerReducer";
 import restaurantReducer from "./restaurant/restaurantReducer";
 import allRestaurantReducer from "./allRestaurants/allRestaurantsReducer";
 import dishesReducer from "./dishes/dishesReducer";
+import favoritesReducer from "./customerFavorites/customerFavoritesReducer";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   restaurant: restaurantReducer,
   allRestaurant: allRestaurantReducer,
   dishes: dishesReducer,
+  favorites: favoritesReducer,
 });
 
 export default rootReducer;

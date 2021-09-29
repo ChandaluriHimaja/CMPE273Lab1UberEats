@@ -18,7 +18,7 @@ const SideBar = () => {
               {user.isRestaurant ? (
                 <React.Fragment>
                   <ListItemSideBar
-                    iconClass="fa fa-dashboard"
+                    iconClass="fa fa-home"
                     label="Dashboard"
                     path="/restaurantDashboard"
                   ></ListItemSideBar>
@@ -28,7 +28,7 @@ const SideBar = () => {
                     path="/orders"
                   ></ListItemSideBar>
                   <ListItemSideBar
-                    iconClass="fa fa-bookmark"
+                    iconClass="fa fa-cutlery"
                     label="Dishes"
                     path="/restaurantDishes"
                   ></ListItemSideBar>
@@ -36,22 +36,22 @@ const SideBar = () => {
               ) : (
                 <React.Fragment>
                   <ListItemSideBar
-                    iconClass="fa fa-credit-card"
+                    iconClass="fa fa-home"
                     label="Dashboard"
                     path="/myDashboard"
                   ></ListItemSideBar>
                   <ListItemSideBar
-                    iconClass="fa fa-credit-card"
+                    iconClass="fa fa-user"
                     label="Profile"
                     path="/myProfile"
                   ></ListItemSideBar>
                   <ListItemSideBar
-                    iconClass="fa fa-credit-card"
+                    iconClass="fa fa-heart"
                     label="My Favourites"
                     path="/myFavourites"
                   ></ListItemSideBar>
                   <ListItemSideBar
-                    iconClass="fa fa-credit-card"
+                    iconClass="fa fa-bookmark"
                     label="Orders"
                     path="/myOrders"
                   ></ListItemSideBar>

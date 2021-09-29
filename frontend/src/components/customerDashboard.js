@@ -1,7 +1,12 @@
 import React, { Component } from "react";
+import _ from "lodash";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import SearchBox from "./common/searchBox";
-import { getAllRestaurantsData } from "../redux";
+import {
+  getAllRestaurantsData,
+  getCustomerData,
+  getCustomerLikesData,
+} from "../redux";
 import { connect } from "react-redux";
 import RestaurantCard from "./restaurantCard";
 import { ButtonGroup, ToggleButton } from "react-bootstrap";
@@ -17,6 +22,8 @@ class CustomerDashboard extends Component {
 
   componentDidMount = async () => {
     await this.props.getAllRestaurantsData();
+    await this.props.getCustomerData(this.props.auth._id);
+    await this.props.getCustomerLikesData(this.props.customerData._id);
   };
 
   handleSearch = (query) => {
@@ -159,13 +166,26 @@ class CustomerDashboard extends Component {
           <div
             style={{
               display: "flex",
-              justifyContent: "center",
-              padding: "0 100px",
             }}
           >
             <div className="d-flex flex-wrap" style={{ display: "d-flex" }}>
               {filteredRestaurantData.map((restaurant) => {
-                return <RestaurantCard {...restaurant}></RestaurantCard>;
+                const index = _.findIndex(
+                  this.props.customerLikesData,
+                  function (custLikes) {
+                    console.log(
+                      "custLikes._restaurantId: ",
+                      custLikes._restaurantId,
+                      " restaurant._id: ",
+                      restaurant._id
+                    );
+                    return custLikes._restaurantId === restaurant._id;
+                  }
+                );
+                console.log("INDEX: ", index);
+                const liked = index === -1 ? false : true;
+                const restaurantData = { ...restaurant, liked };
+                return <RestaurantCard {...restaurantData}></RestaurantCard>;
               })}
             </div>
           </div>
@@ -177,13 +197,18 @@ class CustomerDashboard extends Component {
 
 const mapStoreToProps = (state) => {
   return {
+    auth: state.auth.auth,
+    customerData: state.customer.customerData,
     allRestaurantData: state.allRestaurant.allRestaurantData,
+    customerLikesData: state.favorites.customerLikesData,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getAllRestaurantsData: () => dispatch(getAllRestaurantsData()),
+    getCustomerData: (id) => dispatch(getCustomerData(id)),
+    getCustomerLikesData: (id) => dispatch(getCustomerLikesData(id)),
   };
 };
 

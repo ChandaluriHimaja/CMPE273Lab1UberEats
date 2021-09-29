@@ -3,3 +3,4 @@ export * from "./customer/customerActions";
 export * from "./restaurant/restaurantActions";
 export * from "./allRestaurants/allRestaurantsActions";
 export * from "./dishes/dishesActions";
+export * from "./customerFavorites/customerFavoritesActions";
