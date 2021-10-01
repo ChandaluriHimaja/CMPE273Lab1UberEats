@@ -5,14 +5,26 @@ import restaurantReducer from "./restaurant/restaurantReducer";
 import allRestaurantReducer from "./allRestaurants/allRestaurantsReducer";
 import dishesReducer from "./dishes/dishesReducer";
 import favoritesReducer from "./customerFavorites/customerFavoritesReducer";
+import deliveryAddressesReducer from "./deliveryAddresses/deliveryAddressesReducer";
+import ordersReducer from "./orders/ordersReducer";
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   auth: authReducer,
   customer: customerReducer,
   restaurant: restaurantReducer,
   allRestaurant: allRestaurantReducer,
   dishes: dishesReducer,
   favorites: favoritesReducer,
+  deliveryAddresses: deliveryAddressesReducer,
+  orders: ordersReducer,
 });
+
+const rootReducer = (state, action) => {
+  if (action.type === "USER_LOGOUT") {
+    state = undefined;
+  }
+
+  return appReducer(state, action);
+};
 
 export default rootReducer;

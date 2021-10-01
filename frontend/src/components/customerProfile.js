@@ -2,10 +2,17 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
 import { connect } from "react-redux";
-import { customerUpdateProfile, getCustomerData } from "../redux";
+import { countries } from "./common/countries-list";
+import { uploadImage } from "../services/imageUploadService";
+import {
+  customerUpdateProfile,
+  getCustomerData,
+  getCustomerDeliveryAddress,
+} from "../redux";
 
 class CustomerProfile extends Form {
   state = {
+    countries: [],
     data: {
       nickname: "",
       name: "",
@@ -14,6 +21,11 @@ class CustomerProfile extends Form {
       profilePic: "",
       phoneNumber: "",
       about: "",
+      street: "",
+      city: "",
+      state: "",
+      country: "",
+      zipCode: "",
     },
     errors: {},
     showWarningBanner: false,
@@ -29,21 +41,54 @@ class CustomerProfile extends Form {
     profilePic: Joi.string().uri().label("Profile Pic"),
     phoneNumber: Joi.string().length(10).required().label("Phone Number"),
     about: Joi.string().required().label("About"),
+    street: Joi.string().label("Street"),
+    city: Joi.string().label("City"),
+    state: Joi.string().label("State"),
+    country: Joi.string().label("Country"),
+    zipCode: Joi.string().length(5).label("Zip Code"),
+  };
+
+  getDateInFormat = (date) => {
+    let year = date.getFullYear().toString();
+    let month = date.getMonth().toString();
+    let day = date.getDate().toString();
+    if (month.length == 1) {
+      month = "0" + month;
+    }
+    if (day.length == 1) {
+      day = "0" + day;
+    }
+    return year + "-" + month + "-" + day;
   };
 
   componentDidMount = async () => {
+    this.setState({ countries });
     await this.props.getCustomerData(this.props.auth._id);
+    await this.props.getCustomerDeliveryAddress(this.props.customerData._id);
     const customerData = this.props.customerData;
+    const customerDefaultAddress = this.props.customerDeliveryAddressData;
     const auth = this.props.auth;
-    const data = {
+    const date = new Date(customerData.dateOfBirth);
+    const dateInFormat = this.getDateInFormat(date);
+    let data = {
       nickname: customerData.nickname,
       email: auth.email,
       name: customerData.name,
-      dateOfBirth: customerData.dateOfBirth,
+      dateOfBirth: dateInFormat,
       profilePic: customerData.profilePic,
       phoneNumber: customerData.phoneNumber,
       about: customerData.about,
     };
+    if (customerDefaultAddress) {
+      data = {
+        ...data,
+        street: customerDefaultAddress.street,
+        city: customerDefaultAddress.city,
+        state: customerDefaultAddress.state,
+        country: customerDefaultAddress.country,
+        zipCode: customerDefaultAddress.zipCode,
+      };
+    }
     this.setState({
       data,
     });
@@ -63,6 +108,16 @@ class CustomerProfile extends Form {
         disableEdting: true,
         showWarningBanner: false,
       });
+    }
+  };
+
+  handleFileUpload = async (e) => {
+    const profilePicURL = await uploadImage(e.target.files[0]);
+    console.log("ROFILEPICURL: ", profilePicURL);
+    if (profilePicURL) {
+      const { data } = this.state;
+      data.profilePic = profilePicURL;
+      this.setState({ data });
     }
   };
 
@@ -149,6 +204,24 @@ class CustomerProfile extends Form {
             disableEdting
           )}
           {this.renderInput("about", "About", "text", disableEdting)}
+          {this.renderInput("street", "Street", "text", disableEdting)}
+          {this.renderInput("city", "City", "text", disableEdting)}
+          {this.renderInput("state", "State", "text", disableEdting)}
+          {this.renderSelect(
+            "country",
+            "Country",
+            this.state.countries,
+            disableEdting
+          )}
+          {this.renderInput("zipCode", "Zip Code", "number", disableEdting)}
+
+          {this.renderImageUploadButton(
+            "profilePic",
+            "Profile Picture",
+            this.handleFileUpload,
+            disableEdting
+          )}
+
           {!this.state.disableEdting && (
             <div style={{ paddingTop: "10px" }}>
               {this.renderButton("Update")}
@@ -165,12 +238,16 @@ const mapStoreToProps = (state) => {
     auth: state.auth.auth,
     customerData: state.customer.customerData,
     customerProfileUpdateError: state.customer.customerProfileUpdateError,
+    customerDeliveryAddressData:
+      state.deliveryAddresses.customerDeliveryAddressData[0],
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     customerUpdateProfile: (data) => dispatch(customerUpdateProfile(data)),
+    getCustomerDeliveryAddress: (id) =>
+      dispatch(getCustomerDeliveryAddress(id)),
     getCustomerData: (id) => dispatch(getCustomerData(id)),
   };
 };

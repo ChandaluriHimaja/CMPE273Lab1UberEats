@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import DishesCard from "./dishesCard";
+import CustomerDishesCard from "./customerDishesCard";
 
 class CustomerRestaurantPage extends React.Component {
   state = {
@@ -19,6 +19,7 @@ class CustomerRestaurantPage extends React.Component {
 
   render() {
     const {
+      _id,
       city,
       state,
       country,
@@ -89,7 +90,12 @@ class CustomerRestaurantPage extends React.Component {
           <div className="d-flex flex-wrap">
             {dishes &&
               dishes.map((restaurantDish) => {
-                return <DishesCard {...restaurantDish}></DishesCard>;
+                return (
+                  <CustomerDishesCard
+                    {...restaurantDish}
+                    restaurantId={_id}
+                  ></CustomerDishesCard>
+                );
               })}
           </div>
         </div>

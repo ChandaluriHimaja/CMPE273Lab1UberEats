@@ -173,12 +173,6 @@ class CustomerDashboard extends Component {
                 const index = _.findIndex(
                   this.props.customerLikesData,
                   function (custLikes) {
-                    console.log(
-                      "custLikes._restaurantId: ",
-                      custLikes._restaurantId,
-                      " restaurant._id: ",
-                      restaurant._id
-                    );
                     return custLikes._restaurantId === restaurant._id;
                   }
                 );

@@ -97,6 +97,11 @@ class Customer {
       dateOfBirth: Joi.string(),
       profilePic: Joi.string(),
       about: Joi.string(),
+      street: Joi.string(),
+      city: Joi.string(),
+      state: Joi.string(),
+      country: Joi.string(),
+      zipCode: Joi.string(),
     });
 
     return schema.validate(customer);

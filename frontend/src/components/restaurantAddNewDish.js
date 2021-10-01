@@ -9,6 +9,7 @@ import {
 import { connect } from "react-redux";
 import Joi from "joi-browser";
 import Form from "./common/form";
+import { uploadImage } from "../services/imageUploadService";
 
 class RestaurantAddNewDish extends Form {
   state = {
@@ -89,6 +90,16 @@ class RestaurantAddNewDish extends Form {
     }
   };
 
+  handleFileUpload = async (e) => {
+    const image = await uploadImage(e.target.files[0]);
+    console.log("ROFILEPICURL: ", image);
+    if (image) {
+      const { data } = this.state;
+      data.image = image;
+      this.setState({ data });
+    }
+  };
+
   handleDeleteButtonClick = async () => {
     await this.props.deleteRestaurantDishData(this.state.dishId);
     if (this.props.restaurantDeleteDishError) {
@@ -146,6 +157,11 @@ class RestaurantAddNewDish extends Form {
           {this.renderInput("description", "Description", "text")}
           {this.renderSelect("category", "Category", this.state.categories)}
           {this.renderSelect("type", "Type", this.state.types)}
+          {this.renderImageUploadButton(
+            "profilePic",
+            "Profile Picture",
+            this.handleFileUpload
+          )}
           <div style={{ paddingTop: "10px" }}>
             {this.renderButton("Save Item")}
           </div>

@@ -3,6 +3,7 @@ import Joi from "joi-browser";
 import Form from "./common/form";
 import { countries } from "./common/countries-list";
 import { connect } from "react-redux";
+import { uploadImage } from "../services/imageUploadService";
 import { restaurantUpdateProfile, getRestaurantData } from "../redux";
 
 class RestaurantDashboard extends Form {
@@ -40,7 +41,7 @@ class RestaurantDashboard extends Form {
     zipCode: Joi.string().length(5).required().label("Zip Code"),
     phoneNumber: Joi.string().length(10).required().label("Phone Number"),
     description: Joi.string().label("Description"),
-    restaurantImg: Joi.string().uri().label("Restaurant Image"),
+    restaurantImg: Joi.string().label("Restaurant Image"),
     openingTime: Joi.string().label("Opening Time"),
     closingTime: Joi.string().label("Closing Time"),
     pickupMode: Joi.boolean().label("Pickup Mode"),
@@ -92,6 +93,16 @@ class RestaurantDashboard extends Form {
         disableEdting: true,
         showWarningBanner: false,
       });
+    }
+  };
+
+  handleFileUpload = async (e) => {
+    const restaurantImg = await uploadImage(e.target.files[0]);
+    console.log("ROFILEPICURL: ", restaurantImg);
+    if (restaurantImg) {
+      const { data } = this.state;
+      data.restaurantImg = restaurantImg;
+      this.setState({ data });
     }
   };
 
@@ -218,6 +229,12 @@ class RestaurantDashboard extends Form {
               disableEdting
             )}
           </div>
+          {this.renderImageUploadButton(
+            "profilePic",
+            "Profile Picture",
+            this.handleFileUpload,
+            disableEdting
+          )}
           {!this.state.disableEdting && (
             <div style={{ paddingTop: "10px" }}>
               {this.renderButton("Update")}

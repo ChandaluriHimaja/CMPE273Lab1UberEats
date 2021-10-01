@@ -4,6 +4,7 @@ const customer = require("./routes/customer");
 const restaurant = require("./routes/restaurant");
 const dish = require("./routes/dishes");
 const like = require("./routes/like");
+const deliveryAddresses = require("./routes/deliveryAddresses");
 const mysql = require("mysql");
 var cors = require("cors");
 
@@ -55,6 +56,7 @@ app.use("/api/customer", customer);
 app.use("/api/restaurant", restaurant);
 app.use("/api/dish", dish);
 app.use("/api/like", like);
+app.use("/api/deliveryAddresses", deliveryAddresses);
 
 const port = process.env.PORT || config.get("port");
 app.listen(port, () => console.log(`Listning to port ${port}.... `));

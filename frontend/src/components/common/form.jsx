@@ -99,7 +99,7 @@ class Form extends Component {
       <Input
         name={name}
         label={label}
-        value={this.state.data[name]}
+        value={new Date(this.state.data[name])}
         onChange={this.handleChange}
         error={this.state.errors[name]}
         type={type}
@@ -178,6 +178,22 @@ class Form extends Component {
         <label className="form-check-label" htmfor="checkingAccount">
           {label}
         </label>
+      </div>
+    );
+  };
+
+  renderImageUploadButton = (name, label, onChange, isDisabled) => {
+    return (
+      <div className="form-group" style={{ paddingTop: "10px" }}>
+        <label htmlFor={name}> {label}</label>
+        <input
+          disabled={isDisabled ? "disabled" : ""}
+          onChange={onChange}
+          name={name}
+          id={name}
+          type="file"
+          className="form-control form-element"
+        />
       </div>
     );
   };

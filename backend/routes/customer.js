@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { Customer } = require("../models/customer");
 const { Auth } = require("../models/auth");
+const { DeliveryAddresses } = require("../models/deliveryAddress");
 
 router.post("/", async (req, res) => {
   try {
@@ -60,6 +61,25 @@ router.post("/update", async (req, res) => {
     const data = req.body;
 
     await Customer.updateCustomerDetails(data);
+
+    if (data.street) {
+      const [deliveryAddress] =
+        await DeliveryAddresses.checkIfCustomerAddressExists({
+          _custId: data._id,
+        });
+
+      if (deliveryAddress) {
+        await DeliveryAddresses.updateCustomerDeliveryAddress({
+          ...data,
+          _deliverAddressesId: deliveryAddress._id,
+        });
+        console.log("UPDATING DELIVER ADDRESS");
+      } else {
+        await DeliveryAddresses.addCustomerDeliveryAddress(data);
+        console.log("ADDING DELIVER ADDRESS");
+      }
+    }
+
     res.send("Successfully updated customer data");
   } catch (err) {
     console.log("Error: Customer Update: ", err);

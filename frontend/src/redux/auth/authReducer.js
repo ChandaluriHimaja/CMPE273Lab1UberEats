@@ -15,11 +15,6 @@ const reducer = (state = initialState, action) => {
         loading: true,
       };
     case actions.USER_LOGIN_SUCCESS:
-      //   console.log(
-      //     "REDUCER In login success",
-      //     action.payload.auth,
-      //     action.payload.jwt
-      //   );
       return {
         loading: false,
         auth: action.payload.auth,
@@ -32,12 +27,6 @@ const reducer = (state = initialState, action) => {
         jwt: "",
         auth: {},
         error: action.payload.error,
-      };
-    case actions.USER_LOGOUT:
-      return {
-        ...state,
-        jwt: "",
-        auth: {},
       };
     default:
       return state;
