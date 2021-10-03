@@ -11,11 +11,12 @@ export const addRemoveDishesFromCart = (orderDetails) => {
   };
 };
 
-export const updateListOfRestaurantsOrderingFrom = (restaurants) => {
+export const updateRestaurantOrderingFrom = (restaurant, restaurantName) => {
   return {
-    type: actions.UPDATE_LIST_OF_RESTAURANTS_ORDERING_FROM,
+    type: actions.UPDATE_RESTAURANT_ORDERING_FROM,
     payload: {
-      restaurants,
+      restaurant,
+      restaurantName,
     },
   };
 };
@@ -29,55 +30,104 @@ export const updateNumberOfItemsInCart = (cartItemsCount) => {
   };
 };
 
+export const orderRestaurantChangeAlert = (
+  newRestaurantDish,
+  newRestaurant,
+  newRestaurantName
+) => {
+  return {
+    type: actions.RESTAURANT_CHANGE_ALERT,
+    payload: {
+      newRestaurantDish,
+      newRestaurant,
+      newRestaurantName,
+    },
+  };
+};
+
+export const resetNewRestaurantDetails = () => {
+  return {
+    type: actions.RESET_ORDER_RESTAURANT,
+  };
+};
+
+export const setOrderMode = (orderMode) => {
+  return {
+    type: actions.SET_ORDER_MODE,
+    payload: {
+      orderMode,
+    },
+  };
+};
+
 export const updateOrderAndCart = (dishDetails) => {
   return (dispatch) => {
+    console.log("DISH DETAILS: ", dishDetails);
     const orderDetails = store.getState().orders.orderDetails;
-    const restaurants = store.getState().orders.restaurants;
+    const restaurant = store.getState().orders.restaurant;
     const cartItemsCount = store.getState().orders.cartItemsCount;
 
     if (dishDetails.quantity == 0) {
-      const dishIndex = orderDetails.indexOf(dishDetails.restaurantId);
-      delete orderDetails[dishIndex];
-      console.log("ORDER DETAILS REMOVED DISH: ", orderDetails);
+      console.log("dishDetails.quantity == 0");
+      const dish = _.remove(orderDetails, { _id: dishDetails._id });
+      console.log("DELETED orderDetails: ", orderDetails);
       dispatch(addRemoveDishesFromCart(orderDetails));
-
-      const restaurantCount = orderDetails.reduce((count, orderDish) =>
-        orderDish.restaurantId == dishDetails.restaurantId ? count + 1 : count
-      );
-      if (restaurantCount == 0) {
-        const restaurantIndex = restaurants.indexOf(dishDetails.restaurantId);
-        delete restaurants[restaurantIndex];
-        dispatch(updateListOfRestaurantsOrderingFrom(restaurants));
+      const count = orderDetails.reduce((c, dish) => c + dish.quantity, 0);
+      console.log(count);
+      dispatch(updateNumberOfItemsInCart(count));
+      if (orderDetails.length == 0) {
+        dispatch(updateRestaurantOrderingFrom("", ""));
       }
-
-      dispatch(updateNumberOfItemsInCart(orderDetails.length));
-    } else if (!restaurants.contains(dishDetails.restaurantId)) {
+    } else if (!restaurant) {
+      console.log("!restaurant");
       dispatch(
-        updateListOfRestaurantsOrderingFrom([
-          ...restaurants,
+        updateRestaurantOrderingFrom(
           dishDetails.restaurantId,
-        ])
+          dishDetails.restaurantName
+        )
       );
-      dispatch(addRemoveDishesFromCart([...orderDetails, dishDetails]));
-    } else if (
-      restaurants.contains(dishDetails.restaurantId) &&
-      !_.find(orderDetails, { _id: dishDetails._id })
-    ) {
-      dispatch(addRemoveDishesFromCart([...orderDetails, dishDetails]));
-    } else {
-      const dishIndex = _.find(orderDetails, { _id: dishDetails._id });
-      orderDetails[dishIndex].quantity = dishDetails.quantity;
-      dispatch(addRemoveDishesFromCart(orderDetails));
+      dispatch(addRemoveDishesFromCart([dishDetails]));
+      dispatch(updateNumberOfItemsInCart(dishDetails.quantity));
+    } else if (restaurant && dishDetails.restaurantId != restaurant) {
+      console.log("restaurant && dishDetails.restaurantId != restaurant");
+      dispatch(
+        orderRestaurantChangeAlert(
+          dishDetails,
+          dishDetails.restaurantId,
+          dishDetails.restaurantName
+        )
+      );
+    } else if (restaurant && dishDetails.restaurantId == restaurant) {
+      console.log("restaurant && dishDetails.restaurantId == restaurant");
+      const dish = _.find(orderDetails, { _id: dishDetails._id });
+      if (dish) {
+        const q = dish.quantity;
+        dish.quantity = dishDetails.quantity;
+        console.log("DISH DETAILS AFTER UPDATE : ", dishDetails);
+        dispatch(addRemoveDishesFromCart(orderDetails));
+        dispatch(
+          updateNumberOfItemsInCart(cartItemsCount - q + dishDetails.quantity)
+        );
+      } else {
+        console.log("else");
+        orderDetails.push(dishDetails);
+        dispatch(addRemoveDishesFromCart(orderDetails));
+        dispatch(
+          updateNumberOfItemsInCart(dishDetails.quantity + cartItemsCount)
+        );
+      }
     }
+  };
+};
 
-    // const dishIndex = orderDetails.indexOf(dishDetails.restaurantId);
-    //   orderDetails[dishIndex].quantity = dishDetails.quantity;
-    //   console.log("RESTAURANTS: ", restaurants);
-    //   dispatch(addRemoveDishesFromCart(restaurants));
-
-    // dispatch(addRemoveDishesFromCart(restaurants));
-    //   dispatch(updateNumberOfItemsInCart(cartItemsCount + 1));
-
-    console.log("IN updateOrderAndCart: ", orderDetails);
+export const changeOrderRestaurant = () => {
+  return (dispatch) => {
+    const newRestaurant = store.getState().orders.newRestaurant;
+    const newRestaurantName = store.getState().orders.newRestaurantName;
+    const newRestaurantDish = store.getState().orders.newRestaurantDish;
+    dispatch(addRemoveDishesFromCart([newRestaurantDish]));
+    dispatch(updateRestaurantOrderingFrom(newRestaurant, newRestaurantName));
+    dispatch(updateNumberOfItemsInCart(newRestaurantDish.quantity));
+    dispatch(resetNewRestaurantDetails());
   };
 };

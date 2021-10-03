@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import CustomerDishesCard from "./customerDishesCard";
+import { Modal, Button } from "react-bootstrap";
+import { resetNewRestaurantDetails, changeOrderRestaurant } from "../redux";
 
 class CustomerRestaurantPage extends React.Component {
   state = {
@@ -15,6 +17,16 @@ class CustomerRestaurantPage extends React.Component {
       }
     );
     this.setState({ restaurantData });
+  };
+
+  onModelYes = () => {
+    console.log("onModelYes");
+    this.props.changeOrderRestaurant();
+  };
+
+  onModelNo = () => {
+    console.log("onModelNo");
+    this.props.resetNewRestaurantDetails();
   };
 
   render() {
@@ -94,11 +106,36 @@ class CustomerRestaurantPage extends React.Component {
                   <CustomerDishesCard
                     {...restaurantDish}
                     restaurantId={_id}
+                    restaurantName={name}
                   ></CustomerDishesCard>
                 );
               })}
           </div>
         </div>
+        <p>{this.props.restaurantChangeMessage}</p>
+        {/* {!this.props.restaurantChangeMessage && ( */}
+        <Modal
+          show={this.props.restaurantChangeMessage}
+          size="lg"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header>
+            <Modal.Title id="contained-modal-title-vcenter">
+              Create new Order?
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>{this.props.restaurantChangeMessage}</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.onModelYes}>Yes</Button>
+            <Button variant="secondary" onClick={this.onModelNo}>
+              No
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        {/* )} */}
       </div>
     );
   }
@@ -107,7 +144,18 @@ class CustomerRestaurantPage extends React.Component {
 const mapStoreToProps = (state) => {
   return {
     allRestaurantData: state.allRestaurant.allRestaurantData,
+    restaurantChangeMessage: state.orders.restaurantChangeMessage,
   };
 };
 
-export default connect(mapStoreToProps, null)(CustomerRestaurantPage);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    resetNewRestaurantDetails: () => dispatch(resetNewRestaurantDetails()),
+    changeOrderRestaurant: () => dispatch(changeOrderRestaurant()),
+  };
+};
+
+export default connect(
+  mapStoreToProps,
+  mapDispatchToProps
+)(CustomerRestaurantPage);

@@ -2,38 +2,53 @@ import React, { Component } from "react";
 import { currencyDenomination } from "../config.json";
 import { InputGroup, Button, FormControl } from "react-bootstrap";
 import { connect } from "react-redux";
-import { updateOrderAndCart } from "../redux/orders/ordersActions";
+import { updateOrderAndCart } from "../redux";
+import _ from "lodash";
 
 class CustomerDishesCard extends React.Component {
   state = {
     quantity: 0,
   };
 
-  onIncrementClick = () => {
-    const { quantity } = this.state;
-    this.setState({ quantity: quantity + 1 });
-    this.updateOrderState();
+  onIncrementClick = async () => {
+    // const { quantity } = this.state;
+    let quantity = 0;
+    const orderDetails = this.props.orderDetails;
+    const dish = _.find(orderDetails, { _id: this.props._id });
+    if (dish) {
+      quantity = dish.quantity;
+    }
+    // await this.setState({ quantity: quantity + 1 });
+    this.updateOrderState(quantity + 1);
   };
 
-  onIDecrementClick = () => {
-    const { quantity } = this.state;
-    if (!quantity == 0) {
-      this.setState({ quantity: quantity - 1 });
-      this.updateOrderState();
+  onIDecrementClick = async () => {
+    // const { quantity } = this.state;
+    let quantity = 0;
+    const orderDetails = this.props.orderDetails;
+    const dish = _.find(orderDetails, { _id: this.props._id });
+    if (dish) {
+      quantity = dish.quantity;
+    }
+    if (quantity !== 0) {
+      // await this.setState({ quantity: quantity - 1 });
+      this.updateOrderState(quantity - 1);
     }
   };
 
-  onQuantityChange = (e) => {
+  onQuantityChange = async (e) => {
     const quantity = e.currentTarget.value;
-    if (quantity > 0 && quantity < 100000) {
-      this.setState({ quantity });
-      this.updateOrderState();
+    if ((quantity > 0 && quantity < 100000) || quantity == "") {
+      // await this.setState({ quantity });
+      this.updateOrderState(quantity);
     }
   };
 
-  updateOrderState = () => {
+  updateOrderState = (quantity) => {
+    // console.log("quantity: ", this.state.quantity);
     const dishDetails = {
       restaurantId: this.props.restaurantId,
+      restaurantName: this.props.restaurantName,
       _id: this.props._id,
       name: this.props.name,
       mainIngrediant: this.props.mainIngrediant,
@@ -42,10 +57,19 @@ class CustomerDishesCard extends React.Component {
       description: this.props.description,
       category: this.props.category,
       type: this.props.type,
-      quantity: this.state.quantity,
+      quantity: quantity,
     };
+    console.log("UPDATEORDERSTATE: quantity - ", dishDetails);
     this.props.updateOrderAndCart(dishDetails);
   };
+
+  // componentDidMount = () => {
+  //   const orderDetails = this.props.orderDetails;
+  //   const dish = _.find(orderDetails, { _id: this.props._id });
+  //   if (dish) {
+  //     this.setState({ quantity: dish.quantity });
+  //   }
+  // };
 
   render() {
     const {
@@ -59,7 +83,13 @@ class CustomerDishesCard extends React.Component {
       type,
     } = this.props;
 
-    const { quantity } = this.state;
+    let quantity = 0;
+    // const quantity = this.state.quantity;
+    const orderDetails = this.props.orderDetails;
+    const dish = _.find(orderDetails, { _id: this.props._id });
+    if (dish) {
+      quantity = dish.quantity;
+    }
 
     return (
       <div
@@ -118,9 +148,9 @@ class CustomerDishesCard extends React.Component {
             <Button
               variant="outline-secondary"
               id="button-addon2"
-              onClick={this.onIncrementClick}
+              onClick={this.onIDecrementClick}
             >
-              +
+              -
             </Button>
             <FormControl
               value={quantity}
@@ -128,13 +158,14 @@ class CustomerDishesCard extends React.Component {
               aria-label="Recipient's username"
               aria-describedby="basic-addon2"
               onChange={this.onQuantityChange}
+              disabled
             ></FormControl>
             <Button
               variant="outline-secondary"
               id="button-addon2"
-              onClick={this.onIDecrementClick}
+              onClick={this.onIncrementClick}
             >
-              -
+              +
             </Button>
           </InputGroup>
         </div>
@@ -146,7 +177,7 @@ class CustomerDishesCard extends React.Component {
 const mapStoreToProps = (state) => {
   return {
     orderDetails: state.orders.orderDetails,
-    restaurants: state.orders.restaurants,
+    restaurant: state.orders.restaurant,
     cartItemsCount: state.orders.cartItemsCount,
   };
 };

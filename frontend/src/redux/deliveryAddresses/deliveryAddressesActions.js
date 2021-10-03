@@ -26,6 +26,23 @@ export const getCustomerDeliveryAddressFailure = (
   };
 };
 
+export const addCustomerDeliveryAddressSuccess = () => {
+  return {
+    type: actions.ADD_CUSTOMER_DELIVERY_ADDRESS_SUCCESS,
+  };
+};
+
+export const addCustomerDeliveryAddressFailure = (
+  customerDeliveryAddressError
+) => {
+  return {
+    type: actions.ADD_CUSTOMER_DELIVERY_ADDRESS_FAILURE,
+    payload: {
+      customerDeliveryAddressError,
+    },
+  };
+};
+
 export const getCustomerDeliveryAddress = (id) => {
   return async (dispatch) => {
     try {
@@ -38,6 +55,22 @@ export const getCustomerDeliveryAddress = (id) => {
       if (ex.response && ex.response.status === 400) {
         console.log("RESPONSE: ", ex.response);
         dispatch(getCustomerDeliveryAddressFailure(ex.response.data));
+      }
+    }
+  };
+};
+
+export const addCustomerDeliveryAddress = (data) => {
+  return async (dispatch) => {
+    try {
+      const response = await http.post(apiEndpoint, data);
+      if (response && response.status === 200) {
+        dispatch(addCustomerDeliveryAddressSuccess());
+      }
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        console.log("RESPONSE: ", ex.response);
+        dispatch(addCustomerDeliveryAddressFailure(ex.response.data));
       }
     }
   };

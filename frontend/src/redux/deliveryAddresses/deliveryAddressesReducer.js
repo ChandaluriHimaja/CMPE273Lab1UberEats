@@ -20,6 +20,17 @@ const reducer = (state = initialState, action) => {
           action.payload.customerDeliveryAddressError,
         customerDeliveryAddressData: [],
       };
+    case actions.ADD_CUSTOMER_DELIVERY_ADDRESS_FAILURE:
+      return {
+        ...state,
+        customerDeliveryAddressError:
+          action.payload.customerDeliveryAddressError,
+      };
+    case actions.ADD_CUSTOMER_DELIVERY_ADDRESS_SUCCESS:
+      return {
+        ...state,
+        customerDeliveryAddressError: "",
+      };
     default:
       return state;
   }

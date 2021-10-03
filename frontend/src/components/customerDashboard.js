@@ -6,6 +6,8 @@ import {
   getAllRestaurantsData,
   getCustomerData,
   getCustomerLikesData,
+  setOrderMode,
+  getCustomerDeliveryAddress,
 } from "../redux";
 import { connect } from "react-redux";
 import RestaurantCard from "./restaurantCard";
@@ -23,7 +25,9 @@ class CustomerDashboard extends Component {
   componentDidMount = async () => {
     await this.props.getAllRestaurantsData();
     await this.props.getCustomerData(this.props.auth._id);
+    await this.props.getCustomerDeliveryAddress(this.props.customerData._id);
     await this.props.getCustomerLikesData(this.props.customerData._id);
+    this.props.setOrderMode(this.state.deliveryMode);
   };
 
   handleSearch = (query) => {
@@ -42,6 +46,7 @@ class CustomerDashboard extends Component {
   handleDeliveryModeValueChange = (e) => {
     const deliveryMode = e.currentTarget.value;
     this.setState({ deliveryMode });
+    this.props.setOrderMode(deliveryMode);
   };
 
   getFilteredRestaurants = (allRestaurantData) => {
@@ -203,6 +208,9 @@ const mapDispatchToProps = (dispatch) => {
     getAllRestaurantsData: () => dispatch(getAllRestaurantsData()),
     getCustomerData: (id) => dispatch(getCustomerData(id)),
     getCustomerLikesData: (id) => dispatch(getCustomerLikesData(id)),
+    setOrderMode: (orderMode) => dispatch(setOrderMode(orderMode)),
+    getCustomerDeliveryAddress: (id) =>
+      dispatch(getCustomerDeliveryAddress(id)),
   };
 };
 

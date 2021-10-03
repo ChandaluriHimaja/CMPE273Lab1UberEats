@@ -14,4 +14,17 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.post("/", async (req, res) => {
+  console.log("req.body: ", req.body);
+  try {
+    const deliveryAddress = await DeliveryAddresses.addCustomerDeliveryAddress(
+      req.body
+    );
+    console.log("deliveryAddress: ", deliveryAddress);
+    res.send(deliveryAddress);
+  } catch (err) {
+    console.log("ADD delivery address: ", err);
+  }
+});
+
 module.exports = router;
