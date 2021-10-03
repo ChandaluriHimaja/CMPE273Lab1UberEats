@@ -20,7 +20,7 @@ router.post("/", async (req, res) => {
     const deliveryAddress = await DeliveryAddresses.addCustomerDeliveryAddress(
       req.body
     );
-    console.log("deliveryAddress: ", deliveryAddress);
+    console.log("deliveryAddress: ", deliveryAddress.data);
     res.send(deliveryAddress);
   } catch (err) {
     console.log("ADD delivery address: ", err);

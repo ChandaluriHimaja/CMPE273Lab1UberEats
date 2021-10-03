@@ -7,6 +7,7 @@ import Joi from "joi-browser";
 import {
   addCustomerDeliveryAddress,
   getCustomerDeliveryAddress,
+  customerPlaceOrder,
 } from "../redux";
 import { countries } from "./common/countries-list";
 import Select from "./common/Select";
@@ -31,7 +32,45 @@ class CustomerCheckout extends Form {
     zipCode: Joi.string().length(5).label("Zip Code"),
   };
 
-  placeOrder = () => {
+  getDateInFormat = (date) => {
+    let year = date.getFullYear().toString();
+    let month = date.getMonth().toString();
+    let day = date.getDate().toString();
+    let hour = date.getHours().toString();
+    let minutes = date.getMinutes().toString();
+    let seconds = date.getSeconds().toString();
+    if (month.length == 1) {
+      month = "0" + month;
+    }
+    if (day.length == 1) {
+      day = "0" + day;
+    }
+    if (hour.length == 1) {
+      hour = "0" + hour;
+    }
+    if (minutes.length == 1) {
+      minutes = "0" + minutes;
+    }
+    if (seconds.length == 1) {
+      seconds = "0" + seconds;
+    }
+
+    return (
+      year +
+      "-" +
+      month +
+      "-" +
+      day +
+      " " +
+      hour +
+      ":" +
+      minutes +
+      ":" +
+      seconds
+    );
+  };
+
+  placeOrder = async () => {
     const orderItems = [];
     let deliveryAddressId = 0;
 
@@ -47,11 +86,13 @@ class CustomerCheckout extends Form {
       orderItems.push(item);
     });
 
+    const dateTime = this.getDateInFormat(new Date());
+
     const orderDetails = {
       _custId: this.props.customerData._id,
       _restaurantId: this.props.restaurant,
       _deliveryAddressId: deliveryAddressId,
-      dateTime: new Date(),
+      dateTime: dateTime,
       totalPrice: this.state.totalPrice,
       orderMode: this.props.orderMode,
       orderStatus: "Received",
@@ -60,6 +101,12 @@ class CustomerCheckout extends Form {
     };
 
     console.log("ORDER DETAILS: ", orderDetails);
+    await this.props.customerPlaceOrder(orderDetails);
+    if (this.props.customerPlaceOrderError) {
+      this.setState({ showWarningBanner: true });
+    } else {
+      this.props.history.push("/myOrders");
+    }
   };
 
   handleDeliveryAddressChange = (e) => {
@@ -255,6 +302,7 @@ const mapStoreToProps = (state) => {
     orderMode: state.orders.orderMode,
     customerDeliveryAddressData:
       state.deliveryAddresses.customerDeliveryAddressData,
+    customerPlaceOrderError: state.orders.customerPlaceOrderError,
   };
 };
 
@@ -264,6 +312,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(addCustomerDeliveryAddress(data)),
     getCustomerDeliveryAddress: (id) =>
       dispatch(getCustomerDeliveryAddress(id)),
+    customerPlaceOrder: (orderDetails) =>
+      dispatch(customerPlaceOrder(orderDetails)),
   };
 };
 

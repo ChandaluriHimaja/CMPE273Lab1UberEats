@@ -1,6 +1,10 @@
 import * as actions from "./ordersActionTypes";
+import http from "../../services/httpService";
 import _ from "lodash";
 import store from "../store";
+import { apiUrl } from "../../config.json";
+
+const apiEndpoint = apiUrl + "/orders";
 
 export const addRemoveDishesFromCart = (orderDetails) => {
   return {
@@ -57,6 +61,116 @@ export const setOrderMode = (orderMode) => {
     payload: {
       orderMode,
     },
+  };
+};
+
+export const customerPlaceOrderSuccess = () => {
+  return {
+    type: actions.CUSTOMER_PLACE_ORDER_SUCCESS,
+  };
+};
+
+export const customerPlaceOrderFailure = (customerPlaceOrderError) => {
+  return {
+    type: actions.CUSTOMER_PLACE_ORDER_FAILURE,
+    payload: {
+      customerPlaceOrderError,
+    },
+  };
+};
+
+export const resetOrderDetailsAfterPlacing = () => {
+  return {
+    type: actions.RESET_ORDER_DETAILS_AFTER_PLACING,
+  };
+};
+
+export const getCustomerOrdersSuccess = (customerOrders) => {
+  return {
+    type: actions.GET_CUSTOMER_ORDERS_SUCCESS,
+    payload: {
+      customerOrders,
+    },
+  };
+};
+
+export const getCustomerOrdersFailure = (getCustomerOrdersError) => {
+  return {
+    type: actions.GET_CUSTOMER_ORDERS_FAILURE,
+    payload: {
+      getCustomerOrdersError,
+    },
+  };
+};
+
+export const getRestaurantOrdersSuccess = (restaurantOrders) => {
+  return {
+    type: actions.GET_RESTAURANT_ORDERS_SUCCESS,
+    payload: {
+      restaurantOrders,
+    },
+  };
+};
+
+export const getRestaurantOrdersFailure = (getRestaurantOrdersError) => {
+  return {
+    type: actions.GET_RESTAURANT_ORDERS_FAILURE,
+    payload: {
+      getRestaurantOrdersError,
+    },
+  };
+};
+
+export const getCustomerOrders = (id) => {
+  console.log("getCustomerOrders: ", id);
+  return async (dispatch) => {
+    try {
+      const response = await http.get(apiEndpoint + "/customer/" + id);
+      if (response && response.status === 200) {
+        console.log("RESPONSE CUST ORDERS: ", response.data);
+        dispatch(getCustomerOrdersSuccess(response.data));
+      }
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        console.log("RESPONSE: ", ex.response);
+        dispatch(getCustomerOrdersFailure(ex.response.data));
+      }
+    }
+  };
+};
+
+export const getRestaurantOrders = (id) => {
+  console.log("getCustomerOrders: ", id);
+  return async (dispatch) => {
+    try {
+      const response = await http.get(apiEndpoint + "/customer/" + id);
+      if (response && response.status === 200) {
+        console.log("RESPONSE CUST ORDERS: ", response.data);
+        dispatch(getRestaurantOrdersSuccess(response.data));
+      }
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        console.log("RESPONSE: ", ex.response);
+        dispatch(getRestaurantOrdersFailure(ex.response.data));
+      }
+    }
+  };
+};
+
+export const customerPlaceOrder = (orderDetails) => {
+  return async (dispatch) => {
+    try {
+      const response = await http.post(apiEndpoint, orderDetails);
+      if (response && response.status === 200) {
+        dispatch(customerPlaceOrderSuccess());
+        dispatch(resetOrderDetailsAfterPlacing());
+      }
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        console.log("RESPONSE: ", ex.response);
+        dispatch(customerPlaceOrderFailure(ex.response.data));
+      }
+    }
   };
 };
 

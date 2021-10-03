@@ -1,3 +1,4 @@
+import { startsWith } from "lodash";
 import * as actions from "./ordersActionTypes";
 
 const initialState = {
@@ -10,6 +11,11 @@ const initialState = {
   newRestaurant: "",
   newRestaurantName: "",
   orderMode: "",
+  customerPlaceOrderError: "",
+  customerOrders: [],
+  getCustomerOrdersError: "",
+  restaurantOrders: [],
+  getRestaurantOrdersError: "",
 };
 
 const reducer = (state = initialState, action) => {
@@ -50,6 +56,48 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         orderMode: action.payload.orderMode,
+      };
+    case actions.CUSTOMER_PLACE_ORDER_SUCCESS:
+      return {
+        ...state,
+        customerPlaceOrderError: "",
+      };
+    case actions.CUSTOMER_PLACE_ORDER_FAILURE:
+      return {
+        ...state,
+        customerPlaceOrderError: action.payload.customerPlaceOrderError,
+      };
+    case actions.RESET_ORDER_DETAILS_AFTER_PLACING:
+      return {
+        ...state,
+        orderDetails: [],
+        restaurant: "",
+        restaurantName: "",
+        cartItemsCount: 0,
+      };
+    case actions.GET_CUSTOMER_ORDERS_SUCCESS:
+      return {
+        ...state,
+        customerOrders: action.payload.customerOrders,
+        getCustomerOrdersError: "",
+      };
+    case actions.GET_CUSTOMER_ORDERS_FAILURE:
+      return {
+        ...state,
+        customerOrders: [],
+        getCustomerOrdersError: action.payload.getCustomerOrdersError,
+      };
+    case actions.GET_RESTAURANT_ORDERS_SUCCESS:
+      return {
+        ...state,
+        restaurantOrders: action.payload.restaurantOrders,
+        getRestaurantOrdersError: "",
+      };
+    case action.GET_RESTAURANT_ORDERS_FAILURE:
+      return {
+        ...state,
+        restaurantOrders: [],
+        getRestaurantOrdersError: action.payload.getRestaurantOrdersError,
       };
     default:
       return state;

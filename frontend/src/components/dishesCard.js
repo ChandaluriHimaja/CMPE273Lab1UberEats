@@ -27,7 +27,10 @@ class DishesCard extends React.Component {
           style={{ height: "150px", width: "100%" }}
         ></img>
         <div className="card-body">
-          <h5 className="card-title" style={{ letterSpacing: "1px" }}>
+          <h5
+            className="card-title overflow-hidden"
+            style={{ letterSpacing: "1px", height: "25px" }}
+          >
             <Link
               style={{ textDecoration: "none", color: "black" }}
               to={`/restaurantAddDish/${_id}`}
