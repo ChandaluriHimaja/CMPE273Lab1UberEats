@@ -20,6 +20,7 @@ import CustomerProfile from "./components/customerProfile";
 import CustomerFavourites from "./components/customerFavourites";
 import CustomerCheckout from "./components/customerCheckout";
 import CustomerRestaurantPage from "./components/customerRestaurantPage";
+import RestaurantCustomerPage from "./components/restaurantCustomerPage";
 import SideBar from "./components/sidebar";
 import NavBarMy from "./components/navbar";
 
@@ -65,6 +66,10 @@ class App extends Component {
                   <RestaurantRoute
                     path="/orders"
                     component={RestaurantOrders}
+                  ></RestaurantRoute>
+                  <RestaurantRoute
+                    path="/customer/:id"
+                    component={RestaurantCustomerPage}
                   ></RestaurantRoute>
                   <CustomerRoute
                     path="/myOrders"

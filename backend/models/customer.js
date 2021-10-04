@@ -41,6 +41,21 @@ class Customer {
     });
   };
 
+  static findByCustomerId = (customerId) => {
+    return new Promise((resolve, reject) => {
+      const sql = `select * from ${tableName} where _id = ${customerId}`;
+      console.log("SQL: ", sql);
+      con.query(sql, (error, results) => {
+        if (error) {
+          console.log(error);
+          return reject(error);
+        }
+        console.log("FIND BY ID CUSTOMER RESULTS: ", results);
+        return resolve(results);
+      });
+    });
+  };
+
   static updateCustomerDetails = ({
     _id,
     nickname,

@@ -22,6 +22,24 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.post("/update", async (req, res) => {
+  try {
+    await Orders.updateOrder(req.body);
+    res.send("Successfully Updated");
+  } catch (err) {
+    console.log("UPDATE ORDERS Error: ", err);
+  }
+});
+
+router.get("/:id", async (req, res) => {
+  try {
+    const order = await Orders.getOrderById(req.params.id);
+    res.send(order);
+  } catch (err) {
+    console.log("GET ORDER Error: ", err);
+  }
+});
+
 router.get("/customer/:id", async (req, res) => {
   try {
     const orders = await Orders.getCustomerOrders({ _custId: req.params.id });

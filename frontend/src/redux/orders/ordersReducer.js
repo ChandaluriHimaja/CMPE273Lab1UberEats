@@ -93,11 +93,27 @@ const reducer = (state = initialState, action) => {
         restaurantOrders: action.payload.restaurantOrders,
         getRestaurantOrdersError: "",
       };
-    case action.GET_RESTAURANT_ORDERS_FAILURE:
+    case actions.GET_RESTAURANT_ORDERS_FAILURE:
       return {
         ...state,
         restaurantOrders: [],
         getRestaurantOrdersError: action.payload.getRestaurantOrdersError,
+      };
+    case actions.RESTAURANT_UPDATE_ORDER_SUCCESS:
+      return {
+        ...state,
+        restaurantUpdateOrderError: "",
+      };
+    case actions.RESTAURANT_UPDATE_ORDER_FAILURE:
+      return {
+        ...state,
+        restaurantUpdateOrderError: action.payload.restaurantUpdateOrderError,
+      };
+    case actions.SET_UPDATED_ORDER_DETAILS:
+      return {
+        ...state,
+        restaurantUpdateOrderError: "",
+        restaurantOrders: action.payload.restaurantOrders,
       };
     default:
       return state;

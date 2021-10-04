@@ -51,6 +51,17 @@ router.get("/:id", async (req, res) => {
   res.send(customer);
 });
 
+router.get("/custId/:id", async (req, res) => {
+  const [customer] = await Customer.findByCustomerId(req.params.id);
+  if (!customer) {
+    return res
+      .status(404)
+      .send("Customer data with auth credentials was not found");
+  }
+
+  res.send(customer);
+});
+
 router.post("/update", async (req, res) => {
   try {
     const result = Customer.validateProfileUpdate(req.body);
