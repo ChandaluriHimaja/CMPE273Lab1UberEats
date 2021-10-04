@@ -135,7 +135,6 @@ class CustomerProfile extends Form {
       <div
         className="container"
         style={{
-          paddingLeft: "100px",
           paddingRight: "100px",
           paddingBottom: "20px",
         }}
@@ -171,7 +170,9 @@ class CustomerProfile extends Form {
         <div className="row justify-content-center">
           <div className="row">
             <div className="col-md-11">
-              <h1 className="mt-4 mb-4">My Profile</h1>
+              <h1 className="mt-4 mb-4" style={{ paddingLeft: "50px" }}>
+                My Profile
+              </h1>
             </div>
             <div className="col-md-1">
               {this.state.disableEdting && (
@@ -187,47 +188,63 @@ class CustomerProfile extends Form {
           </div>
         </div>
 
-        <form onSubmit={this.handleSubmit}>
-          {this.renderInput("name", "Name", "text", disableEdting)}
-          {this.renderInput("email", "Email", "text", true)}
-          {this.renderInput("nickname", "Nickname", "text", disableEdting)}
-          {this.renderDateOfBirthInput(
-            "dateOfBirth",
-            "Date Of Birth",
-            "date",
-            disableEdting
-          )}
-          {this.renderInput(
-            "phoneNumber",
-            "Phone Number",
-            "number",
-            disableEdting
-          )}
-          {this.renderInput("about", "About", "text", disableEdting)}
-          {this.renderInput("street", "Street", "text", disableEdting)}
-          {this.renderInput("city", "City", "text", disableEdting)}
-          {this.renderInput("state", "State", "text", disableEdting)}
-          {this.renderSelect(
-            "country",
-            "Country",
-            this.state.countries,
-            disableEdting
-          )}
-          {this.renderInput("zipCode", "Zip Code", "number", disableEdting)}
+        <div className="row">
+          <div
+            className="col-lg-4"
+            style={{ textAlign: "center", marginTop: "40px" }}
+          >
+            <img
+              className="card-img-top"
+              src={this.state.data.profilePic}
+              style={{
+                width: "300px",
+              }}
+            ></img>
+          </div>
+          <div className="col-lg-8" style={{ paddingTop: "10px" }}>
+            <form onSubmit={this.handleSubmit}>
+              {this.renderInput("name", "Name", "text", disableEdting)}
+              {this.renderInput("email", "Email", "text", true)}
+              {this.renderInput("nickname", "Nickname", "text", disableEdting)}
+              {this.renderDateOfBirthInput(
+                "dateOfBirth",
+                "Date Of Birth",
+                "date",
+                disableEdting
+              )}
+              {this.renderInput(
+                "phoneNumber",
+                "Phone Number",
+                "number",
+                disableEdting
+              )}
+              {this.renderInput("about", "About", "text", disableEdting)}
+              {this.renderInput("street", "Street", "text", disableEdting)}
+              {this.renderInput("city", "City", "text", disableEdting)}
+              {this.renderInput("state", "State", "text", disableEdting)}
+              {this.renderSelect(
+                "country",
+                "Country",
+                this.state.countries,
+                disableEdting
+              )}
+              {this.renderInput("zipCode", "Zip Code", "number", disableEdting)}
 
-          {this.renderImageUploadButton(
-            "profilePic",
-            "Profile Picture",
-            this.handleFileUpload,
-            disableEdting
-          )}
+              {this.renderImageUploadButton(
+                "profilePic",
+                "Profile Picture",
+                this.handleFileUpload,
+                disableEdting
+              )}
 
-          {!this.state.disableEdting && (
-            <div style={{ paddingTop: "10px" }}>
-              {this.renderButton("Update")}
-            </div>
-          )}
-        </form>
+              {!this.state.disableEdting && (
+                <div style={{ paddingTop: "10px" }}>
+                  {this.renderButton("Update")}
+                </div>
+              )}
+            </form>
+          </div>
+        </div>
       </div>
     );
   }

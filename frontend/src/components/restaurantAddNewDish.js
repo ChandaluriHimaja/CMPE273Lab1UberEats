@@ -111,7 +111,7 @@ class RestaurantAddNewDish extends Form {
 
   render() {
     return (
-      <div className="container" style={{ paddingRight: "350px" }}>
+      <div className="container" style={{ paddingRight: "100px" }}>
         {this.state.showWarningBanner && (
           <div className="alert alert-warning alert-dismissible">
             <button
@@ -150,22 +150,41 @@ class RestaurantAddNewDish extends Form {
           )}
         </div>
 
-        <form onSubmit={this.handleSubmit}>
-          {this.renderInput("name", "Dish Name", "text")}
-          {this.renderInput("mainIngrediant", "Main Ingrediant", "text")}
-          {this.renderInput("price", "Price", "number")}
-          {this.renderInput("description", "Description", "text")}
-          {this.renderSelect("category", "Category", this.state.categories)}
-          {this.renderSelect("type", "Type", this.state.types)}
-          {this.renderImageUploadButton(
-            "profilePic",
-            "Profile Picture",
-            this.handleFileUpload
-          )}
-          <div style={{ paddingTop: "10px" }}>
-            {this.renderButton("Save Item")}
+        <div className="row">
+          <div
+            className="col-lg-4"
+            style={{ textAlign: "center", marginTop: "40px" }}
+          >
+            <img
+              className="card-img-top"
+              src={this.state.data.image}
+              style={{
+                width: "300px",
+              }}
+            ></img>
           </div>
-        </form>
+          <div
+            className="col-lg-8"
+            style={{ paddingTop: "10px", paddingLeft: "30px" }}
+          >
+            <form onSubmit={this.handleSubmit}>
+              {this.renderInput("name", "Dish Name", "text")}
+              {this.renderInput("mainIngrediant", "Main Ingrediant", "text")}
+              {this.renderInput("price", "Price", "number")}
+              {this.renderInput("description", "Description", "text")}
+              {this.renderSelect("category", "Category", this.state.categories)}
+              {this.renderSelect("type", "Type", this.state.types)}
+              {this.renderImageUploadButton(
+                "profilePic",
+                "Profile Picture",
+                this.handleFileUpload
+              )}
+              <div style={{ paddingTop: "10px" }}>
+                {this.renderButton("Save Item")}
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     );
   }

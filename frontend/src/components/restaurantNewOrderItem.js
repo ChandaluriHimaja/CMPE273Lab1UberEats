@@ -115,7 +115,11 @@ class ResataurantNewOrderItem extends React.Component {
             <Link
               className="card-title"
               style={{ textDecoration: "none", color: "black" }}
-              to={`/customer/${customer._id}`}
+              //   to={`/customer/${customer._id}`}
+              to={{
+                pathname: `/customer/${customer._id}`,
+                state: { ...customer },
+              }}
             >
               <h5 className="card-title">{customer.name}</h5>
             </Link>
