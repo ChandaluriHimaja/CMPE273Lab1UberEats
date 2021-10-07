@@ -49,6 +49,7 @@ export const login = (email, password) => {
         const jwt = response.data;
         const auth = jwtDecode(jwt);
         dispatch(loginSuccess(jwt, auth));
+        http.setJwt(jwt);
       }
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {

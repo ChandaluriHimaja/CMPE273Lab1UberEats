@@ -3,6 +3,7 @@ const router = express.Router();
 const { Customer } = require("../models/customer");
 const { Auth } = require("../models/auth");
 const { DeliveryAddresses } = require("../models/deliveryAddress");
+const auth = require("../middleware/auth");
 
 router.post("/", async (req, res) => {
   try {
@@ -62,7 +63,7 @@ router.get("/custId/:id", async (req, res) => {
   res.send(customer);
 });
 
-router.post("/update", async (req, res) => {
+router.post("/update", auth, async (req, res) => {
   try {
     const result = Customer.validateProfileUpdate(req.body);
     if (result.error) {

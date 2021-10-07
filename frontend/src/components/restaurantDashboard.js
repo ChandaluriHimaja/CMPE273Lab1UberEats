@@ -224,13 +224,13 @@ class RestaurantDashboard extends Form {
               {this.renderInput(
                 "openingTime",
                 "Opening Time",
-                "string",
+                "time",
                 disableEdting
               )}
               {this.renderInput(
                 "closingTime",
                 "Closing Time",
-                "string",
+                "time",
                 disableEdting
               )}
               <div style={{ paddingTop: "10px" }}>

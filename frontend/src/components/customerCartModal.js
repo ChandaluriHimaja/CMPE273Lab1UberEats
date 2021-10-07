@@ -32,7 +32,7 @@ class CustomerCartModal extends React.Component {
             Close
           </Button>
           <Link
-            className="btn btn-primary"
+            className="btn btn-dark"
             onClick={onCheckoutClick}
             to="/checkout"
           >

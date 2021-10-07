@@ -36,7 +36,7 @@ class RestaurantOrders extends React.Component {
 
   render() {
     const { newOrders, pastOrders, canceledOrders } = this.categorizeOrders();
-    console.log("newOrders: ", newOrders);
+
     return (
       <div className="container">
         {newOrders && (

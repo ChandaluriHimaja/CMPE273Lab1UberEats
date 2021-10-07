@@ -99,7 +99,7 @@ class ResataurantNewOrderItem extends React.Component {
     const dateTime = this.getDateInFormat(new Date(order.dateTime));
 
     const orderStatusOptions =
-      order.orderStatus == "Delivery"
+      order.orderMode === "Delivery"
         ? this.state.orderStatusForDelivery
         : this.state.orderStatusForPickUp;
 

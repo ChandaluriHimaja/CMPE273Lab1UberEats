@@ -24,7 +24,7 @@ class DishesCard extends React.Component {
         <img
           className="card-img-top"
           src={image}
-          style={{ height: "150px", width: "100%" }}
+          style={{ height: "150px" }}
         ></img>
         <div className="card-body">
           <h5

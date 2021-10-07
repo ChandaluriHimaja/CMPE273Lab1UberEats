@@ -19,7 +19,25 @@ class CustomerOrders extends React.Component {
           </h1>
         </div>
         {this.props.customerOrders.map((order) => {
-          return <CustomerOrdersItem {...order}></CustomerOrdersItem>;
+          if (
+            order.orderStatus != "Picked Up" &&
+            order.orderStatus != "Delivered"
+          ) {
+            return <CustomerOrdersItem {...order}></CustomerOrdersItem>;
+          }
+        })}
+        <div className="row justify-content-center">
+          <h1 className="mt-4 mb-4" style={{ paddingBottom: "30px" }}>
+            Past Orders
+          </h1>
+        </div>
+        {this.props.customerOrders.map((order) => {
+          if (
+            order.orderStatus == "Picked Up" ||
+            order.orderStatus == "Delivered"
+          ) {
+            return <CustomerOrdersItem {...order}></CustomerOrdersItem>;
+          }
         })}
       </div>
     );

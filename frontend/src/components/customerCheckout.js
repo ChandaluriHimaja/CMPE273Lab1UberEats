@@ -22,6 +22,7 @@ class CustomerCheckout extends Form {
     customerDeliveryAddress: "",
     showDeliveryAddressModal: false,
     countries: [],
+    showSuccessModal: false,
   };
 
   schema = {
@@ -105,7 +106,7 @@ class CustomerCheckout extends Form {
     if (this.props.customerPlaceOrderError) {
       this.setState({ showWarningBanner: true });
     } else {
-      this.props.history.push("/myOrders");
+      this.setState({ showSuccessModal: true });
     }
   };
 
@@ -130,6 +131,11 @@ class CustomerCheckout extends Form {
       this.setState({ showDeliveryAddressModal: false });
       await this.props.getCustomerDeliveryAddress(this.props.customerData._id);
     }
+  };
+
+  onViewMyOrdersClick = async () => {
+    this.setState({ showSuccessModal: false });
+    this.props.history.push("/myOrders");
   };
 
   componentDidMount = () => {
@@ -289,6 +295,19 @@ class CustomerCheckout extends Form {
             </Modal.Body>
           </Modal>
         )}
+        <Modal show={this.state.showSuccessModal}>
+          <Modal.Header>
+            <Modal.Title>Order placed successfully</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Your order at {this.props.restaurant} was placed successfully !!
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="dark" onClick={this.onViewMyOrdersClick}>
+              View My Orders
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
   }
