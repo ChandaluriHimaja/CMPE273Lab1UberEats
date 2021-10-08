@@ -94,7 +94,7 @@ class CustomerCheckout extends Form {
       _restaurantId: this.props.restaurant,
       _deliveryAddressId: deliveryAddressId,
       dateTime: dateTime,
-      totalPrice: this.state.totalPrice,
+      totalPrice: this.state.totalPrice.toFixed(2),
       orderMode: this.props.orderMode,
       orderStatus: "Received",
       orderFilter: "New Order",
@@ -141,7 +141,7 @@ class CustomerCheckout extends Form {
   componentDidMount = () => {
     this.setState({ countries });
     const totalPrice = this.props.orderDetails.reduce(
-      (count, dish) => count + dish.quantity * dish.price,
+      (count, dish) => count + (dish.quantity * dish.price).toFixed(2),
       0
     );
     this.setState({
@@ -152,7 +152,7 @@ class CustomerCheckout extends Form {
 
   render() {
     const totalPrice = this.props.orderDetails.reduce(
-      (count, dish) => count + dish.quantity * dish.price,
+      (count, dish) => count + (dish.quantity * dish.price).toFixed(2),
       0
     );
     if (this.state.totalPrice != totalPrice) {
@@ -249,7 +249,7 @@ class CustomerCheckout extends Form {
               <CustomerCheckoutItem
                 key={dish._id}
                 {...dish}
-                price={dish.quantity * dish.price}
+                price={(dish.quantity * dish.price).toFixed(2)}
               ></CustomerCheckoutItem>
             );
           })}

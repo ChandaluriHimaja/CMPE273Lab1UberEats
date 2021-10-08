@@ -188,21 +188,26 @@ class CustomerProfile extends Form {
           </div>
         </div>
 
-        <div className="row">
-          <div
-            className="col-lg-4"
-            style={{ textAlign: "center", marginTop: "40px" }}
-          >
-            <img
-              className="card-img-top"
-              src={this.state.data.profilePic}
-              style={{
-                width: "300px",
-              }}
-            ></img>
-          </div>
-          <div className="col-lg-8" style={{ paddingTop: "10px" }}>
-            <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit}>
+          <div className="row">
+            <div className="col-lg-4">
+              <div style={{ textAlign: "center", marginTop: "40px" }}>
+                <img
+                  className="card-img-top"
+                  src={this.state.data.profilePic}
+                  style={{
+                    width: "300px",
+                  }}
+                ></img>
+              </div>
+              {this.renderImageUploadButton(
+                "profilePic",
+                "Profile Picture",
+                this.handleFileUpload,
+                disableEdting
+              )}
+            </div>
+            <div className="col-lg-8" style={{ paddingTop: "10px" }}>
               {this.renderInput("name", "Name", "text", disableEdting)}
               {this.renderInput("email", "Email", "text", true)}
               {this.renderInput("nickname", "Nickname", "text", disableEdting)}
@@ -230,21 +235,14 @@ class CustomerProfile extends Form {
               )}
               {this.renderInput("zipCode", "Zip Code", "number", disableEdting)}
 
-              {this.renderImageUploadButton(
-                "profilePic",
-                "Profile Picture",
-                this.handleFileUpload,
-                disableEdting
-              )}
-
               {!this.state.disableEdting && (
                 <div style={{ paddingTop: "10px" }}>
                   {this.renderButton("Update")}
                 </div>
               )}
-            </form>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     );
   }

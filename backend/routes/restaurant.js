@@ -3,6 +3,7 @@ const router = express.Router();
 const { Restaurant } = require("../models/restaurant");
 const { Auth } = require("../models/auth");
 const { Dishes } = require("../models/dishes");
+const _ = require("lodash");
 // const Promise = require("bluebird");
 
 router.get("/dishes/:id", async (req, res) => {
@@ -33,7 +34,7 @@ router.get("/", async (req, res) => {
   try {
     const restaurants = await Restaurant.getAllRestaurants();
 
-    const restaurantsAndDishesList = [];
+    let restaurantsAndDishesList = [];
 
     await Promise.all(
       restaurants.map(async (restaurant) => {
@@ -46,6 +47,12 @@ router.get("/", async (req, res) => {
       })
     );
     console.log("RESTAURANT ALL : ", restaurantsAndDishesList);
+
+    restaurantsAndDishesList = _.sortBy(restaurantsAndDishesList, [
+      function (r) {
+        return r._id;
+      },
+    ]);
     res.send(restaurantsAndDishesList);
   } catch (err) {
     console.log("GET ALL RESTAURANTS: ", err);

@@ -71,8 +71,10 @@ class CustomerOrdersItem extends React.Component {
           style={{ height: "25px", marginBottom: "0px" }}
         >
           <span style={{ fontWeight: "bold" }}>{itemCount}</span> items for{" "}
-          <span style={{ fontWeight: "bold" }}>${order.totalPrice}</span> on{" "}
-          <span style={{ fontWeight: "bold" }}>{dateTime}</span> ||{" "}
+          <span style={{ fontWeight: "bold" }}>
+            ${order.totalPrice.toFixed(2)}
+          </span>{" "}
+          on <span style={{ fontWeight: "bold" }}>{dateTime}</span> ||{" "}
           <span style={{ fontWeight: "bold" }}>Status: </span>
           {order.orderStatus} ||{" "}
           <span style={{ fontWeight: "bold" }}>Mode: </span>

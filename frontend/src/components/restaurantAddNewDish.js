@@ -55,7 +55,7 @@ class RestaurantAddNewDish extends Form {
         name: dish.name,
         mainIngrediant: dish.mainIngrediant,
         image: dish.image,
-        price: dish.price,
+        price: dish.price.toFixed(2),
         description: dish.description,
         category: dish.category,
         type: dish.type,
@@ -150,41 +150,41 @@ class RestaurantAddNewDish extends Form {
           )}
         </div>
 
-        <div className="row">
-          <div
-            className="col-lg-4"
-            style={{ textAlign: "center", marginTop: "40px" }}
-          >
-            <img
-              className="card-img-top"
-              src={this.state.data.image}
-              style={{
-                width: "300px",
-              }}
-            ></img>
-          </div>
-          <div
-            className="col-lg-8"
-            style={{ paddingTop: "10px", paddingLeft: "30px" }}
-          >
-            <form onSubmit={this.handleSubmit}>
-              {this.renderInput("name", "Dish Name", "text")}
-              {this.renderInput("mainIngrediant", "Main Ingrediant", "text")}
-              {this.renderInput("price", "Price", "number")}
-              {this.renderInput("description", "Description", "text")}
-              {this.renderSelect("category", "Category", this.state.categories)}
-              {this.renderSelect("type", "Type", this.state.types)}
+        <form onSubmit={this.handleSubmit}>
+          <div className="row">
+            <div className="col-lg-4">
+              <div style={{ textAlign: "center", marginTop: "40px" }}>
+                <img
+                  className="card-img-top"
+                  src={this.state.data.image}
+                  style={{
+                    width: "300px",
+                  }}
+                ></img>
+              </div>
               {this.renderImageUploadButton(
                 "profilePic",
                 "Profile Picture",
                 this.handleFileUpload
               )}
+            </div>
+            <div
+              className="col-lg-8"
+              style={{ paddingTop: "10px", paddingLeft: "30px" }}
+            >
+              {this.renderInput("name", "Dish Name", "text")}
+              {this.renderInput("mainIngrediant", "Main Ingrediant", "text")}
+              {this.renderInput("price", "Price ($)", "number")}
+              {this.renderInput("description", "Description", "text")}
+              {this.renderSelect("category", "Category", this.state.categories)}
+              {this.renderSelect("type", "Type", this.state.types)}
+
               <div style={{ paddingTop: "10px" }}>
                 {this.renderButton("Save Item")}
               </div>
-            </form>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     );
   }

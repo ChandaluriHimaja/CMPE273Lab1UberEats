@@ -11,20 +11,35 @@ class Home extends React.Component {
 
     if (!jwt) {
       return (
-        <React.Fragment>
-          <div style={{ marginTop: "500px" }}>
-            <Link className="btn btn-dark" to={"/customerSignup"}>
+        <div
+          style={{
+            marginLeft: "-300px",
+            backgroundImage: `url("https://eng.uber.com/wp-content/uploads/2017/03/UberEatsheader_.jpg")`,
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            backgroundColor: "#765E51",
+            backgroundSize: "contain",
+          }}
+        >
+          <div
+            style={{
+              paddingLeft: "150px",
+              paddingTop: "600px",
+              paddingBottom: "200px",
+            }}
+          >
+            <Link className="btn btn-light" to={"/customerSignup"}>
               Customer SignUp
             </Link>
             <Link
-              className="btn btn-dark"
+              className="btn btn-light"
               style={{ marginLeft: "50px" }}
               to={"/restaurantSignup"}
             >
               Restaurant SignUp
             </Link>
           </div>
-        </React.Fragment>
+        </div>
       );
     } else {
       if (user.isRestaurant) {
