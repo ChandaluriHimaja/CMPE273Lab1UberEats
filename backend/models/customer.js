@@ -97,6 +97,11 @@ class Customer {
       password: Joi.string().required(),
       phoneNumber: Joi.number().required(),
       isRestaurant: Joi.number(),
+      street: Joi.string(),
+      city: Joi.string(),
+      state: Joi.string(),
+      country: Joi.string(),
+      zipCode: Joi.string(),
     });
 
     return schema.validate(user);

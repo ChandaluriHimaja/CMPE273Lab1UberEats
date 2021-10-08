@@ -31,10 +31,19 @@ class NavBar extends React.Component {
       <Navbar bg="light" expand="lg" fixed="top">
         <Row style={{ width: "100%" }}>
           <Col>
-            <span class="navbar-brand mb-0 h1" style={{ paddingRight: "10px" }}>
-              <span style={{ color: "#162328" }}>Uber</span>
-              <span style={{ color: "#3FC060" }}>Eats</span>
-            </span>
+            <Link
+              className="card-title"
+              style={{ textDecoration: "none", color: "black" }}
+              to="/home"
+            >
+              <span
+                class="navbar-brand mb-0 h1"
+                style={{ paddingRight: "10px" }}
+              >
+                <span style={{ color: "#162328" }}>Uber</span>
+                <span style={{ color: "#3FC060" }}>Eats</span>
+              </span>
+            </Link>
           </Col>
           <Col style={{ textAlign: "right" }}>
             {!jwt && (

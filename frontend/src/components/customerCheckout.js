@@ -94,7 +94,7 @@ class CustomerCheckout extends Form {
       _restaurantId: this.props.restaurant,
       _deliveryAddressId: deliveryAddressId,
       dateTime: dateTime,
-      totalPrice: this.state.totalPrice.toFixed(2),
+      totalPrice: this.state.totalPrice,
       orderMode: this.props.orderMode,
       orderStatus: "Received",
       orderFilter: "New Order",
@@ -140,10 +140,12 @@ class CustomerCheckout extends Form {
 
   componentDidMount = () => {
     this.setState({ countries });
-    const totalPrice = this.props.orderDetails.reduce(
-      (count, dish) => count + (dish.quantity * dish.price).toFixed(2),
+    let totalPrice = this.props.orderDetails.reduce(
+      (count, dish) => count + dish.quantity * dish.price,
       0
     );
+    console.log("tptalpriceytrdfg:", totalPrice.toFixed(2));
+    totalPrice = totalPrice.toFixed(2);
     this.setState({
       totalPrice,
       customerDeliveryAddress: this.props.customerDeliveryAddressData[0]._id,
@@ -151,10 +153,11 @@ class CustomerCheckout extends Form {
   };
 
   render() {
-    const totalPrice = this.props.orderDetails.reduce(
-      (count, dish) => count + (dish.quantity * dish.price).toFixed(2),
+    let totalPrice = this.props.orderDetails.reduce(
+      (count, dish) => count + dish.quantity * dish.price,
       0
     );
+    totalPrice = totalPrice.toFixed(2);
     if (this.state.totalPrice != totalPrice) {
       this.setState({ totalPrice });
     }

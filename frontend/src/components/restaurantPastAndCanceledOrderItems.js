@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import _ from "lodash";
 import { connect } from "react-redux";
 import { getCustomerDetailsByID } from "../services/getCustomerForRestaurantService";
+import { Link } from "react-router-dom";
 
 class RestaurantPastAndCanceledOrderItems extends React.Component {
   state = {
@@ -66,7 +67,17 @@ class RestaurantPastAndCanceledOrderItems extends React.Component {
       >
         <div className="row">
           <div className="col-md-8">
-            <h5 className="card-title">{customer.name}</h5>
+            <Link
+              className="card-title"
+              style={{ textDecoration: "none", color: "black" }}
+              //   to={`/customer/${customer._id}`}
+              to={{
+                pathname: `/customer/${customer._id}`,
+                state: { ...customer },
+              }}
+            >
+              <h5 className="card-title">{customer.name}</h5>
+            </Link>
           </div>
           <div className="col-md-4">{dateTime}</div>
         </div>

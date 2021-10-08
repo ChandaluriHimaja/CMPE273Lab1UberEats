@@ -26,7 +26,7 @@ router.post("/", async (req, res) => {
     let [auth] = await Auth.checkIfUserExists({ email });
     console.log("AUTH: ", auth);
 
-    await Customer.addNewCustomer({
+    const cust = await Customer.addNewCustomer({
       authID: auth._id,
       name,
       phoneNumber,
@@ -35,6 +35,14 @@ router.post("/", async (req, res) => {
       profilePic:
         "https://st3.depositphotos.com/6672868/13701/v/600/depositphotos_137014128-stock-illustration-user-profile-icon.jpg",
     });
+
+    console.log("CustID: ", cust.insertId);
+    await DeliveryAddresses.addCustomerDeliveryAddress({
+      ...req.body,
+      _id: cust.insertId,
+    });
+    console.log("ADDING DELIVER ADDRESS");
+
     res.status(200).send("Account created successfully");
   } catch (err) {
     console.log("Error: user add new ", err);

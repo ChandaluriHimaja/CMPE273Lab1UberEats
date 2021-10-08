@@ -37,8 +37,7 @@ class RestaurantCustomerPage extends React.Component {
                 className="card-img-top"
                 src={customer.profilePic}
                 style={{
-                  height: "100%",
-                  width: "200px",
+                  width: "300px",
                 }}
               ></img>
             </div>

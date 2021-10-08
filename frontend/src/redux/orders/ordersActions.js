@@ -145,6 +145,15 @@ export const setUpdatedOrderDetails = (restaurantOrders) => {
   };
 };
 
+export const setOrderLocation = (orderLocation) => {
+  return {
+    type: actions.SET_ORDER_LOCATION,
+    payload: {
+      orderLocation,
+    },
+  };
+};
+
 export const getCustomerOrders = (id) => {
   console.log("getCustomerOrders: ", id);
   return async (dispatch) => {

@@ -41,7 +41,7 @@ class CustomerCartModalItem extends React.Component {
       name: this.props.name,
       mainIngrediant: this.props.mainIngrediant,
       image: this.props.image,
-      price: this.props.price.toFixed(2),
+      price: this.props.price,
       description: this.props.description,
       category: this.props.category,
       type: this.props.type,
@@ -115,7 +115,7 @@ class CustomerCartModalItem extends React.Component {
               height: "25px",
               marginTop: "auto",
               marginBottom: "auto",
-              marginLeft: "20px",
+              marginLeft: "15px",
               marginRight: "20px",
             }}
           >

@@ -8,6 +8,7 @@ import {
   getCustomerLikesData,
   setOrderMode,
   getCustomerDeliveryAddress,
+  setOrderLocation,
 } from "../redux";
 import { connect } from "react-redux";
 import RestaurantCard from "./restaurantCard";
@@ -18,7 +19,7 @@ class CustomerDashboard extends Component {
   state = {
     deliveryMode: "Delivery",
     searchQuery: "",
-    location: "",
+    // location: "",
     typeFilter: "All",
   };
 
@@ -26,6 +27,9 @@ class CustomerDashboard extends Component {
     await this.props.getAllRestaurantsData();
     await this.props.getCustomerData(this.props.auth._id);
     await this.props.getCustomerDeliveryAddress(this.props.customerData._id);
+    await this.props.setOrderLocation(
+      this.props.customerDeliveryAddressData.city
+    );
     await this.props.getCustomerLikesData(this.props.customerData._id);
     this.props.setOrderMode(this.state.deliveryMode);
   };
@@ -34,8 +38,9 @@ class CustomerDashboard extends Component {
     this.setState({ searchQuery: query });
   };
 
-  handleLocationChange = (location) => {
-    this.setState({ location });
+  handleLocationChange = async (location) => {
+    // this.setState({ location });
+    await this.props.setOrderLocation(location);
   };
 
   handleTypeRadioValueChange = (e) => {
@@ -50,22 +55,11 @@ class CustomerDashboard extends Component {
   };
 
   getFilteredRestaurants = (allRestaurantData) => {
-    const { searchQuery, location, typeFilter, deliveryMode } = this.state;
+    const { searchQuery, typeFilter, deliveryMode } = this.state;
 
-    let locationFilteredData = allRestaurantData;
+    let deliveryFilteredData = allRestaurantData;
 
-    locationFilteredData = allRestaurantData.filter((restaurant) => {
-      return (
-        restaurant.street.toLowerCase().startsWith(location.toLowerCase()) ||
-        restaurant.city.toLowerCase().startsWith(location.toLowerCase()) ||
-        restaurant.state.toLowerCase().startsWith(location.toLowerCase()) ||
-        restaurant.country.toLowerCase().startsWith(location.toLowerCase())
-      );
-    });
-
-    let deliveryFilteredData = locationFilteredData;
-
-    deliveryFilteredData = locationFilteredData.filter((restaurant) => {
+    deliveryFilteredData = allRestaurantData.filter((restaurant) => {
       return (
         (deliveryMode === "Delivery" && restaurant.deliveryMode === 1) ||
         (deliveryMode === "PickUp" && restaurant.pickupMode === 1)
@@ -96,12 +90,37 @@ class CustomerDashboard extends Component {
       return searchFilteredDish.length === 0 ? false : true;
     });
 
+    const locationFilteredData = [];
+    const notLocationFilteredData = [];
+
+    searchFilteredData.forEach((restaurant) => {
+      if (
+        restaurant.street
+          .toLowerCase()
+          .startsWith(this.props.orderLocation.toLowerCase()) ||
+        restaurant.city
+          .toLowerCase()
+          .startsWith(this.props.orderLocation.toLowerCase()) ||
+        restaurant.state
+          .toLowerCase()
+          .startsWith(this.props.orderLocation.toLowerCase()) ||
+        restaurant.country
+          .toLowerCase()
+          .startsWith(this.props.orderLocation.toLowerCase())
+      ) {
+        locationFilteredData.push(restaurant);
+      } else {
+        notLocationFilteredData.push(restaurant);
+      }
+    });
+
     console.log("LOCATION FILTER: ", locationFilteredData);
-    return searchFilteredData;
+    return [...locationFilteredData, ...notLocationFilteredData];
   };
 
   render() {
-    const { searchQuery, location, typeFilter, deliveryMode } = this.state;
+    const { searchQuery, typeFilter, deliveryMode } = this.state;
+    // const location = this.props.orderLocation;
 
     const filteredRestaurantData = this.getFilteredRestaurants(
       this.props.allRestaurantData
@@ -135,7 +154,7 @@ class CustomerDashboard extends Component {
             </ButtonGroup>
           </div>
           <SearchBox
-            value={location}
+            value={this.props.orderLocation}
             onChange={this.handleLocationChange}
             placeholder="Search by Location"
             style={{ marginLeft: "20px", marginRight: "20px" }}
@@ -200,6 +219,9 @@ const mapStoreToProps = (state) => {
     customerData: state.customer.customerData,
     allRestaurantData: state.allRestaurant.allRestaurantData,
     customerLikesData: state.favorites.customerLikesData,
+    customerDeliveryAddressData:
+      state.deliveryAddresses.customerDeliveryAddressData[0],
+    orderLocation: state.orders.orderLocation,
   };
 };
 
@@ -211,6 +233,7 @@ const mapDispatchToProps = (dispatch) => {
     setOrderMode: (orderMode) => dispatch(setOrderMode(orderMode)),
     getCustomerDeliveryAddress: (id) =>
       dispatch(getCustomerDeliveryAddress(id)),
+    setOrderLocation: (location) => dispatch(setOrderLocation(location)),
   };
 };
 

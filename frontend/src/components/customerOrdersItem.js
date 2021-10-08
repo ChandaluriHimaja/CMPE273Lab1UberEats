@@ -62,7 +62,7 @@ class CustomerOrdersItem extends React.Component {
     return (
       <div
         className="card"
-        style={{ margin: "10px", width: "800px", padding: "20px" }}
+        style={{ margin: "10px", width: "900px", padding: "20px" }}
         key={order.id}
       >
         <h5 className="card-title overflow-hidden">{restaurant.name}</h5>
@@ -150,6 +150,7 @@ class CustomerOrdersItem extends React.Component {
                   >
                     {name.toUpperCase()}
                   </p>
+
                   <p
                     className="card-title overflow-hidden"
                     style={{
@@ -157,7 +158,7 @@ class CustomerOrdersItem extends React.Component {
                       height: "25px",
                       marginTop: "auto",
                       marginBottom: "auto",
-                      marginLeft: "20px",
+                      marginLeft: "5px",
                     }}
                   >
                     Price: {price}

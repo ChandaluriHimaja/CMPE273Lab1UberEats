@@ -11,6 +11,7 @@ const initialState = {
   newRestaurant: "",
   newRestaurantName: "",
   orderMode: "",
+  orderLocation: "",
   customerPlaceOrderError: "",
   customerOrders: [],
   getCustomerOrdersError: "",
@@ -114,6 +115,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         restaurantUpdateOrderError: "",
         restaurantOrders: action.payload.restaurantOrders,
+      };
+    case actions.SET_ORDER_LOCATION:
+      return {
+        ...state,
+        orderLocation: action.payload.orderLocation,
       };
     default:
       return state;
