@@ -198,7 +198,7 @@ export const restaurantUpdateOrder = (details) => {
       const response = await http.post(apiEndpoint + "/update", details);
       if (response && response.status === 200) {
         // dispatch(restaurantUpdateOrderSuccess());
-        const restaurantOrders = store.getState().orders.restaurantOrders;
+        const restaurantOrders = [...store.getState().orders.restaurantOrders];
         const order = _.find(restaurantOrders, { _id: details._id });
         order.orderStatus = details.orderStatus;
         console.log("UPDATED ORDER DETAILS: ", restaurantOrders);

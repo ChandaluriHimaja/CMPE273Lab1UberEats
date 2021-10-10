@@ -6,11 +6,11 @@ const config = require("config");
 const { Auth } = require("../models/auth");
 const Joi = require("Joi");
 
-router.get("/", async (req, res) => {
-  const data = await Auth.getAuthUserDetails();
-  console.log("DATA: ", data);
-  res.send(JSON.stringify(data));
-});
+// router.get("/", async (req, res) => {
+//   const data = await Auth.getAuthUserDetails();
+//   console.log("DATA: ", data);
+//   res.send(JSON.stringify(data));
+// });
 
 router.post("/", async (req, res) => {
   try {

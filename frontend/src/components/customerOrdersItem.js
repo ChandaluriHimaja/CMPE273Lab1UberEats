@@ -112,7 +112,7 @@ class CustomerOrdersItem extends React.Component {
               </h4>
             </div>
             {order.orderItems.map((orderItem) => {
-              const { name, price } = _.find(restaurant.dishes, {
+              const { name } = _.find(restaurant.dishes, {
                 _id: orderItem._dishId,
               });
               return (
@@ -161,7 +161,7 @@ class CustomerOrdersItem extends React.Component {
                       marginLeft: "5px",
                     }}
                   >
-                    Price: {price}
+                    Price: {orderItem.price}
                   </p>
                 </div>
               );

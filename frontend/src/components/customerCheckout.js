@@ -83,6 +83,7 @@ class CustomerCheckout extends Form {
       const item = {
         _dishId: dish._id,
         quantity: dish.quantity,
+        price: dish.price,
       };
       orderItems.push(item);
     });

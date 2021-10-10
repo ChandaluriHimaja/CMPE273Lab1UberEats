@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { Orders } = require("../models/orders");
 const { OrderItems } = require("../models/orderItems");
+const _ = require("lodash");
 
 router.post("/", async (req, res) => {
   try {
@@ -67,7 +68,7 @@ router.get("/restaurant/:id", async (req, res) => {
       _restaurantId: req.params.id,
     });
 
-    const ordersAndItems = [];
+    let ordersAndItems = [];
     await Promise.all(
       orders.map(async (order) => {
         const orderItem = await OrderItems.getOrderItemsInAnOrder({
@@ -77,6 +78,8 @@ router.get("/restaurant/:id", async (req, res) => {
         ordersAndItems.push(newOrdersAndItemsConst);
       })
     );
+
+    ordersAndItems = _.orderBy(ordersAndItems, ["dateTime"], ["desc"]);
     console.log("OREDRS RETURN: ", ordersAndItems);
     res.send(ordersAndItems);
   } catch (err) {

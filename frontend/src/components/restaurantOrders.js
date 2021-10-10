@@ -17,6 +17,7 @@ class RestaurantOrders extends React.Component {
       pastOrders = [],
       canceledOrders = [];
     console.log("orders: ", orders);
+    console.log("orders: ", this.props.restaurantOrders);
     this.props.restaurantOrders.forEach((order) => {
       if (order.orderStatus == "Canceled") {
         canceledOrders.push(order);
@@ -49,7 +50,10 @@ class RestaurantOrders extends React.Component {
             {newOrders.length > 0 &&
               newOrders.map((order) => {
                 return (
-                  <ResataurantNewOrderItem {...order}></ResataurantNewOrderItem>
+                  <ResataurantNewOrderItem
+                    key={order._id}
+                    {...order}
+                  ></ResataurantNewOrderItem>
                 );
               })}
             <hr></hr>
@@ -66,6 +70,7 @@ class RestaurantOrders extends React.Component {
               pastOrders.map((order) => {
                 return (
                   <RestaurantPastAndCanceledOrderItems
+                    key={order._id}
                     {...order}
                   ></RestaurantPastAndCanceledOrderItems>
                 );
@@ -84,6 +89,7 @@ class RestaurantOrders extends React.Component {
               canceledOrders.map((order) => {
                 return (
                   <RestaurantPastAndCanceledOrderItems
+                    key={order._id}
                     {...order}
                   ></RestaurantPastAndCanceledOrderItems>
                 );

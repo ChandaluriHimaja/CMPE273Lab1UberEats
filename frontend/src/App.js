@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
@@ -28,8 +27,6 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 
 class App extends Component {
-  state = {};
-
   render() {
     return (
       <Provider store={store}>

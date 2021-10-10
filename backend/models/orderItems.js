@@ -3,9 +3,9 @@ const con = require("../db");
 const tableName = "orderItems";
 
 class OrderItems {
-  static addNewOrderItem = async ({ _orderId, _dishId, quantity }) => {
+  static addNewOrderItem = async ({ _orderId, _dishId, quantity, price }) => {
     return new Promise((resolve, reject) => {
-      const sql = `INSERT INTO ${tableName} (_orderId, _dishId, quantity) VALUES ("${_orderId}","${_dishId}", "${quantity}")`;
+      const sql = `INSERT INTO ${tableName} (_orderId, _dishId, quantity, price) VALUES ("${_orderId}","${_dishId}", "${quantity}", "${price}")`;
       console.log("SQL: ", sql);
       con.query(sql, (error, results) => {
         if (error) {
