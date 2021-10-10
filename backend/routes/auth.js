@@ -4,7 +4,7 @@ const router = express.Router();
 // const { con } = require("../index");
 const config = require("config");
 const { Auth } = require("../models/auth");
-const Joi = require("../node_modules/joi");
+const Joi = require("joi");
 
 // router.get("/", async (req, res) => {
 //   const data = await Auth.getAuthUserDetails();

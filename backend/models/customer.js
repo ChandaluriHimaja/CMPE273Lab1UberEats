@@ -1,4 +1,4 @@
-const Joi = require("../node_modules/joi");
+const Joi = require("joi");
 const con = require("../db");
 
 const tableName = "customer";
