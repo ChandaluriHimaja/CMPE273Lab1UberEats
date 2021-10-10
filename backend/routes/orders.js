@@ -45,7 +45,7 @@ router.get("/customer/:id", async (req, res) => {
   try {
     const orders = await Orders.getCustomerOrders({ _custId: req.params.id });
 
-    const ordersAndItems = [];
+    let ordersAndItems = [];
     await Promise.all(
       orders.map(async (order) => {
         const orderItem = await OrderItems.getOrderItemsInAnOrder({
@@ -55,6 +55,7 @@ router.get("/customer/:id", async (req, res) => {
         ordersAndItems.push(newOrdersAndItemsConst);
       })
     );
+    ordersAndItems = _.orderBy(ordersAndItems, ["dateTime"], ["desc"]);
     console.log("OREDRS RETURN: ", ordersAndItems);
     res.send(ordersAndItems);
   } catch (err) {
