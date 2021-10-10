@@ -1,5 +1,5 @@
 const con = require("../db");
-const Joi = require(".joi");
+const Joi = require("joi");
 
 const tableName = "dishes";
 
