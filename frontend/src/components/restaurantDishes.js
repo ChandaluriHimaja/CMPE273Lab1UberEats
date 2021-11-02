@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import { getRestaurantDishesData } from "../redux";
+import { getRestaurantData } from "../redux";
 import { connect } from "react-redux";
 import DishesCard from "./dishesCard";
 import { Redirect } from "react-router-dom";
 
 class RestaurantDishes extends React.Component {
   componentDidMount = async () => {
-    console.log("Component did mount restaurant dishes");
-    await this.props.getRestaurantDishesData(this.props.restaurantData._id);
+    await this.props.getRestaurantData();
+    // await this.props.getRestaurantDishesData(this.props.restaurantData._id);
   };
 
   render() {
@@ -39,9 +39,10 @@ class RestaurantDishes extends React.Component {
           </div>
         </div>
         <div className="d-flex flex-wrap">
-          {this.props.restaurantDishesData.map((restaurantDish) => {
-            return <DishesCard {...restaurantDish}></DishesCard>;
-          })}
+          {this.props.restaurantData.dishes &&
+            this.props.restaurantData.dishes.map((restaurantDish) => {
+              return <DishesCard {...restaurantDish}></DishesCard>;
+            })}
         </div>
       </div>
     );
@@ -51,13 +52,14 @@ class RestaurantDishes extends React.Component {
 const mapStoreToProps = (state) => {
   return {
     restaurantData: state.restaurant.restaurantData,
-    restaurantDishesData: state.restaurant.restaurantDishesData,
+    // restaurantDishesData: state.restaurant.restaurantDishesData,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getRestaurantDishesData: (id) => dispatch(getRestaurantDishesData(id)),
+    getRestaurantData: () => dispatch(getRestaurantData()),
+    // getRestaurantDishesData: (id) => dispatch(getRestaurantDishesData(id)),
   };
 };
 

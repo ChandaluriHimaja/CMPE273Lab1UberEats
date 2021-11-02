@@ -11,11 +11,13 @@ class CustomerRestaurantPage extends React.Component {
 
   componentDidMount = () => {
     const restaurantId = this.props.match.params.id;
+    console.log("restaurantId: ", restaurantId);
     const [restaurantData] = this.props.allRestaurantData.filter(
       (restaurant) => {
-        return restaurant._id == restaurantId;
+        return restaurant._id.toString() === restaurantId.toString();
       }
     );
+    console.log("RestaurantData: ", restaurantData);
     this.setState({ restaurantData });
   };
 
@@ -32,19 +34,17 @@ class CustomerRestaurantPage extends React.Component {
   render() {
     const {
       _id,
-      city,
-      state,
-      country,
-      zipCode,
+      addresses,
       phoneNumber,
-      description,
-      restaurantImage,
+      about,
+      picture,
       openingTime,
       closingTime,
       name,
-      street,
       dishes,
     } = this.state.restaurantData;
+
+    // console.log("Addresses: ", addresses.length);
 
     return (
       <div>
@@ -52,7 +52,7 @@ class CustomerRestaurantPage extends React.Component {
           style={{
             height: "100%",
             backgroundColor: "#F3F3F3",
-            backgroundImage: `url("${restaurantImage}")`,
+            backgroundImage: `url("${picture}")`,
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",
             paddingTop: "500px",
@@ -80,12 +80,16 @@ class CustomerRestaurantPage extends React.Component {
         >
           <h6>
             ADDRESS:{" "}
-            <span className="text-muted">
-              {street}, {city}, {state}, {country}, {zipCode}{" "}
-            </span>
+            {addresses && (
+              <span className="text-muted">
+                {addresses[0].street}, {addresses[0].city}, {addresses[0].state}
+                , {addresses[0].country}, {addresses[0].zipCode}{" "}
+              </span>
+            )}
           </h6>
+
           <h6>
-            DESCRIPTION: <span className="text-muted">{description}</span>
+            DESCRIPTION: <span className="text-muted">{about}</span>
           </h6>
           <h6>
             TIMINGS:{" "}

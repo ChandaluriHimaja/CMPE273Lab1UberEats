@@ -1,25 +1,27 @@
 import React, { Component } from "react";
-import { getRestaurantOrders, getRestaurantDishesData } from "../redux";
+import {
+  getRestaurantOrders,
+  getRestaurantDishesData,
+  getRestaurantData,
+} from "../redux";
 import { connect } from "react-redux";
 import ResataurantNewOrderItem from "./restaurantNewOrderItem";
 import RestaurantPastAndCanceledOrderItems from "./restaurantPastAndCanceledOrderItems";
 
 class RestaurantOrders extends React.Component {
   componentDidMount = async () => {
-    await this.props.getRestaurantOrders(this.props.restaurantData._id);
-    await this.props.getRestaurantDishesData(this.props.restaurantData._id);
+    await this.props.getRestaurantOrders();
+    // await this.props.getRestaurantDishesData(this.props.restaurantData._id);
+    await this.props.getRestaurantData();
   };
 
   categorizeOrders = () => {
-    const orders = this.props.restaurantOrders;
-
     const newOrders = [],
       pastOrders = [],
       canceledOrders = [];
-    console.log("orders: ", orders);
     console.log("orders: ", this.props.restaurantOrders);
     this.props.restaurantOrders.forEach((order) => {
-      if (order.orderStatus == "Canceled") {
+      if (order.orderStatus == "Cancel") {
         canceledOrders.push(order);
       } else if (
         order.orderStatus == "Delivered" ||
@@ -40,12 +42,11 @@ class RestaurantOrders extends React.Component {
 
     return (
       <div className="container">
-        {newOrders && (
+        <h1 className="mt-4">Orders</h1>
+        {newOrders.length > 0 && (
           <div>
             <div className="row justify-content-center">
-              <h1 className="mt-4 mb-4" style={{ paddingBottom: "25px" }}>
-                Current Orders
-              </h1>
+              <h4 className="mt-4 ">Current Orders</h4>
             </div>
             {newOrders.length > 0 &&
               newOrders.map((order) => {
@@ -62,9 +63,7 @@ class RestaurantOrders extends React.Component {
         {pastOrders.length > 0 && (
           <div>
             <div className="row justify-content-center">
-              <h1 className="mt-4 mb-4" style={{ paddingBottom: "25px" }}>
-                Past Orders
-              </h1>
+              <h4 style={{ paddingTop: "10px" }}>Past Orders</h4>
             </div>
             {pastOrders &&
               pastOrders.map((order) => {
@@ -81,9 +80,7 @@ class RestaurantOrders extends React.Component {
         {canceledOrders.length > 0 && (
           <div>
             <div className="row justify-content-center">
-              <h1 className="mt-4 mb-4" style={{ paddingBottom: "25px" }}>
-                Canceled Orders
-              </h1>
+              <h4 style={{ paddingTop: "10px" }}>Canceled Orders</h4>
             </div>
             {canceledOrders &&
               canceledOrders.map((order) => {
@@ -104,15 +101,16 @@ class RestaurantOrders extends React.Component {
 
 const mapStoreToProps = (state) => {
   return {
-    restaurantData: state.restaurant.restaurantData,
+    // restaurantData: state.restaurant.restaurantData,
     restaurantOrders: state.orders.restaurantOrders,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getRestaurantOrders: (id) => dispatch(getRestaurantOrders(id)),
-    getRestaurantDishesData: (id) => dispatch(getRestaurantDishesData(id)),
+    getRestaurantOrders: () => dispatch(getRestaurantOrders()),
+    // getRestaurantDishesData: (id) => dispatch(getRestaurantDishesData(id)),
+    getRestaurantData: () => dispatch(getRestaurantData()),
   };
 };
 

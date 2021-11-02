@@ -8,6 +8,7 @@ import {
   addCustomerDeliveryAddress,
   getCustomerDeliveryAddress,
   customerPlaceOrder,
+  getCustomerData,
 } from "../redux";
 import { countries } from "./common/countries-list";
 import Select from "./common/Select";
@@ -23,6 +24,8 @@ class CustomerCheckout extends Form {
     showDeliveryAddressModal: false,
     countries: [],
     showSuccessModal: false,
+    restaurantName: "",
+    orderNote: "",
   };
 
   schema = {
@@ -91,19 +94,21 @@ class CustomerCheckout extends Form {
     const dateTime = this.getDateInFormat(new Date());
 
     const orderDetails = {
-      _custId: this.props.customerData._id,
       _restaurantId: this.props.restaurant,
       _deliveryAddressId: deliveryAddressId,
       dateTime: dateTime,
       totalPrice: this.state.totalPrice,
       orderMode: this.props.orderMode,
       orderStatus: "Received",
-      orderFilter: "New Order",
-      items: orderItems,
+      orderItems: orderItems,
+      orderNote: this.state.orderNote,
     };
 
     console.log("ORDER DETAILS: ", orderDetails);
     await this.props.customerPlaceOrder(orderDetails);
+    console.log("before setState");
+    await this.setState({ restaurantName: this.props.restaurantName });
+    console.log("after setState");
     if (this.props.customerPlaceOrderError) {
       this.setState({ showWarningBanner: true });
     } else {
@@ -122,15 +127,13 @@ class CustomerCheckout extends Form {
   doSubmit = async () => {
     console.log("doSubmit add address");
     const { data } = this.state;
-    await this.props.addCustomerDeliveryAddress({
-      ...data,
-      _id: this.props.customerData._id,
-    });
+    await this.props.addCustomerDeliveryAddress(data);
     if (this.props.addCustomerDeliveryAddressError) {
       this.setState({ showWarningBanner: true });
     } else {
       this.setState({ showDeliveryAddressModal: false });
-      await this.props.getCustomerDeliveryAddress(this.props.customerData._id);
+      // await this.props.getCustomerDeliveryAddress(this.props.customerData._id);
+      await this.props.getCustomerData(this.props.auth._id);
     }
   };
 
@@ -149,7 +152,7 @@ class CustomerCheckout extends Form {
     totalPrice = totalPrice.toFixed(2);
     this.setState({
       totalPrice,
-      customerDeliveryAddress: this.props.customerDeliveryAddressData[0]._id,
+      customerDeliveryAddress: this.props.customerData.addresses[0]._id,
     });
   };
 
@@ -212,7 +215,7 @@ class CustomerCheckout extends Form {
                 value={this.state.customerDeliveryAddress}
                 style={{ marginTop: "5px", width: "450px" }}
               >
-                {this.props.customerDeliveryAddressData.map((option) => (
+                {this.props.customerData.addresses.map((option) => (
                   <option key={option._id} value={option._id}>
                     {option.street +
                       ", " +
@@ -264,6 +267,18 @@ class CustomerCheckout extends Form {
             style={{ fontWeight: "bold" }}
           ></CustomerCheckoutItem>
         </div>
+        <div style={{ marginTop: "30px", width: "700px" }}>
+          <label htmlFor={"note"}>Note</label>
+          <input
+            name="note"
+            className="form-element form-control"
+            value={this.state.orderNote}
+            onChange={(e) => {
+              this.setState({ orderNote: e.currentTarget.value });
+            }}
+            placeholder="A note"
+          ></input>
+        </div>
         <div style={{ marginTop: "30px" }}>
           <Button
             variant="dark"
@@ -304,7 +319,7 @@ class CustomerCheckout extends Form {
             <Modal.Title>Order placed successfully</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            Your order at {this.props.restaurant} was placed successfully !!
+            Your order at {this.state.restaurantName} was placed successfully !!
           </Modal.Body>
           <Modal.Footer>
             <Button variant="dark" onClick={this.onViewMyOrdersClick}>
@@ -319,9 +334,11 @@ class CustomerCheckout extends Form {
 
 const mapStoreToProps = (state) => {
   return {
+    auth: state.auth.auth,
     orderDetails: state.orders.orderDetails,
     customerData: state.customer.customerData,
     restaurant: state.orders.restaurant,
+    restaurantName: state.orders.restaurantName,
     orderMode: state.orders.orderMode,
     customerDeliveryAddressData:
       state.deliveryAddresses.customerDeliveryAddressData,
@@ -331,6 +348,7 @@ const mapStoreToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    getCustomerData: (id) => dispatch(getCustomerData(id)),
     addCustomerDeliveryAddress: (data) =>
       dispatch(addCustomerDeliveryAddress(data)),
     getCustomerDeliveryAddress: (id) =>

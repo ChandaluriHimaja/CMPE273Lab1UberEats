@@ -35,30 +35,38 @@ class RestaurantCustomerPage extends React.Component {
             <div className="col-lg-4" style={{ textAlign: "center" }}>
               <img
                 className="card-img-top"
-                src={customer.profilePic}
+                src={customer.picture}
                 style={{
                   width: "300px",
                 }}
               ></img>
             </div>
             <div className="col-lg-8" style={{ paddingTop: "10px" }}>
-              <p style={{ fontSize: "20px", letterSpacing: "1px" }}>
-                <span style={{ fontWeight: "bold" }}>Nickname: </span>
-                {customer.nickname.charAt(0).toUpperCase() +
-                  customer.nickname.slice(1).toLowerCase()}
-              </p>
-              <p style={{ fontSize: "20px", letterSpacing: "1px" }}>
-                <span style={{ fontWeight: "bold" }}>Date of Birth: </span>
-                {dateOfBirth}
-              </p>
-              <p style={{ fontSize: "20px", letterSpacing: "1px" }}>
-                <span style={{ fontWeight: "bold" }}>Phone Number: </span>
-                {customer.phoneNumber}
-              </p>
-              <p style={{ fontSize: "20px", letterSpacing: "1px" }}>
-                <span style={{ fontWeight: "bold" }}>About: </span>
-                {customer.about}
-              </p>
+              {customer.nickname && (
+                <p style={{ fontSize: "20px", letterSpacing: "1px" }}>
+                  <span style={{ fontWeight: "bold" }}>Nickname: </span>
+                  {customer.nickname.charAt(0).toUpperCase() +
+                    customer.nickname.slice(1).toLowerCase()}
+                </p>
+              )}
+              {customer.dateOfBirth && (
+                <p style={{ fontSize: "20px", letterSpacing: "1px" }}>
+                  <span style={{ fontWeight: "bold" }}>Date of Birth: </span>
+                  {dateOfBirth}
+                </p>
+              )}
+              {customer.phoneNumber && (
+                <p style={{ fontSize: "20px", letterSpacing: "1px" }}>
+                  <span style={{ fontWeight: "bold" }}>Phone Number: </span>
+                  {customer.phoneNumber}
+                </p>
+              )}
+              {customer.about && (
+                <p style={{ fontSize: "20px", letterSpacing: "1px" }}>
+                  <span style={{ fontWeight: "bold" }}>About: </span>
+                  {customer.about}
+                </p>
+              )}
             </div>
           </div>
         </div>

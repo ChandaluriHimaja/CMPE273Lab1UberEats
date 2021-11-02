@@ -70,7 +70,7 @@ export const getRestaurantDishData = (dishId) => {
 export const updateRestaurantDishData = (data) => {
   return async (dispatch) => {
     try {
-      const response = await http.post(apiEndpoint, data);
+      const response = await http.put(apiEndpoint, data);
       if (response && response.status === 200) {
         dispatch(dishUpdateSuccess());
       }

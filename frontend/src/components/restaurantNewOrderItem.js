@@ -14,12 +14,14 @@ class ResataurantNewOrderItem extends React.Component {
       "Preparing",
       "On the way",
       "Delivered",
+      "Cancel",
     ],
     orderStatusForPickUp: [
       "Received",
       "Preparing",
       "PickUp Ready",
       "Picked Up",
+      "Cancel",
     ],
     orderStatus: "",
     orderStatusUpdateDisabled: true,
@@ -139,7 +141,7 @@ class ResataurantNewOrderItem extends React.Component {
         ></hr>
 
         {order.orderItems.map((item) => {
-          const dish = _.find(this.props.restaurantDishesData, {
+          const dish = _.find(this.props.restaurantData.dishes, {
             _id: item._dishId,
           });
           return (
@@ -240,6 +242,20 @@ class ResataurantNewOrderItem extends React.Component {
             </Button>
           )}
         </div>
+        {order.orderNote && (
+          <div>
+            <p
+              className="card-title overflow-hidden"
+              style={{
+                letterSpacing: "1px",
+                marginTop: "5px",
+              }}
+            >
+              <span className="text-muted">Note: </span>
+              {order.orderNote}
+            </p>
+          </div>
+        )}
       </div>
     );
   }
@@ -248,6 +264,7 @@ class ResataurantNewOrderItem extends React.Component {
 const mapStoreToProps = (state) => {
   return {
     restaurantDishesData: state.restaurant.restaurantDishesData,
+    restaurantData: state.restaurant.restaurantData,
   };
 };
 

@@ -17,6 +17,8 @@ const initialState = {
   getCustomerOrdersError: "",
   restaurantOrders: [],
   getRestaurantOrdersError: "",
+  restaurantUpdateOrderError: "",
+  customerUpdateOrderError: "",
 };
 
 const reducer = (state = initialState, action) => {
@@ -110,6 +112,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         restaurantUpdateOrderError: action.payload.restaurantUpdateOrderError,
       };
+    case actions.CUSTOMER_UPDATE_ORDER_SUCCESS:
+      return {
+        ...state,
+        customerUpdateOrderError: "",
+      };
+    case actions.CUSTOMER_UPDATE_ORDER_FAILURE:
+      return {
+        ...state,
+        customerUpdateOrderError: action.payload.customerUpdateOrderError,
+      };
     case actions.SET_UPDATED_ORDER_DETAILS:
       return {
         ...state,
@@ -120,6 +132,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         orderLocation: action.payload.orderLocation,
+      };
+    case actions.SET_UPDATED_CUSTOMER_ORDER_DETAILS:
+      return {
+        ...state,
+        customerUpdateOrderError: "",
+        customerOrders: action.payload.customerOrders,
       };
     default:
       return state;

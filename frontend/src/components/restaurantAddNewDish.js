@@ -70,7 +70,6 @@ class RestaurantAddNewDish extends Form {
       await this.props.updateRestaurantDishData({
         ...data,
         _id: this.state.dishId,
-        _restaurantId: this.props.restaurantData._id,
       });
       if (this.props.restaurantUpdateDishError) {
         this.setState({ showWarningBanner: true });
@@ -80,7 +79,6 @@ class RestaurantAddNewDish extends Form {
     } else {
       await this.props.addRestaurantDishData({
         ...data,
-        _restaurantId: this.props.restaurantData._id,
       });
       if (this.props.restaurantAddDishError) {
         this.setState({ showWarningBanner: true });

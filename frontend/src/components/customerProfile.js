@@ -18,7 +18,7 @@ class CustomerProfile extends Form {
       name: "",
       email: "",
       dateOfBirth: "",
-      profilePic: "",
+      picture: "",
       phoneNumber: "",
       about: "",
       street: "",
@@ -34,13 +34,13 @@ class CustomerProfile extends Form {
   };
 
   schema = {
-    nickname: Joi.string().required().label("Nickname"),
+    nickname: Joi.string().label("Nickname"),
     email: Joi.string().required().email().label("Email"),
     name: Joi.string().required().label("Name"),
-    dateOfBirth: Joi.date().required().label("Date of Birth"),
-    profilePic: Joi.string().uri().label("Profile Pic"),
+    dateOfBirth: Joi.date().label("Date of Birth").allow(""),
+    picture: Joi.string().uri().label("Profile Pic"),
     phoneNumber: Joi.string().length(10).required().label("Phone Number"),
-    about: Joi.string().required().label("About"),
+    about: Joi.string().label("About"),
     street: Joi.string().label("Street"),
     city: Joi.string().label("City"),
     state: Joi.string().label("State"),
@@ -49,6 +49,7 @@ class CustomerProfile extends Form {
   };
 
   getDateInFormat = (date) => {
+    console.log("Date: ", date);
     let year = date.getFullYear().toString();
     let month = date.getMonth().toString();
     let day = date.getDate().toString();
@@ -64,31 +65,28 @@ class CustomerProfile extends Form {
   componentDidMount = async () => {
     this.setState({ countries });
     await this.props.getCustomerData(this.props.auth._id);
-    await this.props.getCustomerDeliveryAddress(this.props.customerData._id);
     const customerData = this.props.customerData;
-    const customerDefaultAddress = this.props.customerDeliveryAddressData;
-    const auth = this.props.auth;
-    const date = new Date(customerData.dateOfBirth);
-    const dateInFormat = this.getDateInFormat(date);
+    let dateInFormat = "";
+    if (customerData.dateOfBirth) {
+      const date = new Date(customerData.dateOfBirth);
+      dateInFormat = this.getDateInFormat(date);
+    } else {
+      dateInFormat = "";
+    }
     let data = {
       nickname: customerData.nickname,
-      email: auth.email,
+      email: customerData.email,
       name: customerData.name,
       dateOfBirth: dateInFormat,
-      profilePic: customerData.profilePic,
-      phoneNumber: customerData.phoneNumber,
+      picture: customerData.picture,
+      phoneNumber: customerData.phoneNumber.toString(),
       about: customerData.about,
+      street: customerData.addresses[0].street,
+      city: customerData.addresses[0].city,
+      state: customerData.addresses[0].state,
+      country: customerData.addresses[0].country,
+      zipCode: customerData.addresses[0].zipCode.toString(),
     };
-    if (customerDefaultAddress) {
-      data = {
-        ...data,
-        street: customerDefaultAddress.street,
-        city: customerDefaultAddress.city,
-        state: customerDefaultAddress.state,
-        country: customerDefaultAddress.country,
-        zipCode: customerDefaultAddress.zipCode,
-      };
-    }
     this.setState({
       data,
     });
@@ -99,6 +97,7 @@ class CustomerProfile extends Form {
     await this.props.customerUpdateProfile({
       ...data,
       _id: this.props.customerData._id,
+      deliveryAddressId: this.props.customerData.addresses[0]._id,
     });
     if (this.props.customerProfileUpdateError) {
       this.setState({ showWarningBanner: true });
@@ -112,11 +111,11 @@ class CustomerProfile extends Form {
   };
 
   handleFileUpload = async (e) => {
-    const profilePicURL = await uploadImage(e.target.files[0]);
-    console.log("ROFILEPICURL: ", profilePicURL);
-    if (profilePicURL) {
+    const picture = await uploadImage(e.target.files[0]);
+    console.log("ROFILEPICURL: ", picture);
+    if (picture) {
       const { data } = this.state;
-      data.profilePic = profilePicURL;
+      data.picture = picture;
       this.setState({ data });
     }
   };
@@ -194,14 +193,14 @@ class CustomerProfile extends Form {
               <div style={{ textAlign: "center", marginTop: "40px" }}>
                 <img
                   className="card-img-top"
-                  src={this.state.data.profilePic}
+                  src={this.state.data.picture}
                   style={{
                     width: "300px",
                   }}
                 ></img>
               </div>
               {this.renderImageUploadButton(
-                "profilePic",
+                "picture",
                 "Profile Picture",
                 this.handleFileUpload,
                 disableEdting

@@ -26,11 +26,14 @@ class CustomerDashboard extends Component {
   componentDidMount = async () => {
     await this.props.getAllRestaurantsData();
     await this.props.getCustomerData(this.props.auth._id);
-    await this.props.getCustomerDeliveryAddress(this.props.customerData._id);
+    // await this.props.getCustomerDeliveryAddress(this.props.customerData._id);
+    // await this.props.setOrderLocation(
+    //   this.props.customerDeliveryAddressData.city
+    // );
     await this.props.setOrderLocation(
-      this.props.customerDeliveryAddressData.city
+      this.props.customerData.addresses[0].city
     );
-    await this.props.getCustomerLikesData(this.props.customerData._id);
+    // await this.props.getCustomerLikesData(this.props.customerData._id);
     this.props.setOrderMode(this.state.deliveryMode);
   };
 
@@ -55,16 +58,20 @@ class CustomerDashboard extends Component {
   };
 
   getFilteredRestaurants = (allRestaurantData) => {
+    console.log("allRestaurantData: ", allRestaurantData);
+    console.log("Hey in getFilteredRestaurants");
     const { searchQuery, typeFilter, deliveryMode } = this.state;
 
     let deliveryFilteredData = allRestaurantData;
 
     deliveryFilteredData = allRestaurantData.filter((restaurant) => {
       return (
-        (deliveryMode === "Delivery" && restaurant.deliveryMode === 1) ||
-        (deliveryMode === "PickUp" && restaurant.pickupMode === 1)
+        (deliveryMode === "Delivery" && restaurant.deliveryMode === true) ||
+        (deliveryMode === "PickUp" && restaurant.pickupMode === true)
       );
     });
+
+    console.log("deliveryFilteredData: ", deliveryFilteredData);
 
     let typeFilteredData = deliveryFilteredData;
 
@@ -76,6 +83,8 @@ class CustomerDashboard extends Component {
         return typeDishes.length === 0 ? false : true;
       });
     }
+
+    console.log("typeFilteredData: ", typeFilteredData);
 
     let searchFilteredData = typeFilteredData;
 
@@ -95,18 +104,21 @@ class CustomerDashboard extends Component {
 
     searchFilteredData.forEach((restaurant) => {
       if (
-        restaurant.street
+        restaurant.addresses[0].street
           .toLowerCase()
           .startsWith(this.props.orderLocation.toLowerCase()) ||
-        restaurant.city
+        restaurant.addresses[0].city
           .toLowerCase()
           .startsWith(this.props.orderLocation.toLowerCase()) ||
-        restaurant.state
+        restaurant.addresses[0].state
           .toLowerCase()
           .startsWith(this.props.orderLocation.toLowerCase()) ||
-        restaurant.country
+        restaurant.addresses[0].country
           .toLowerCase()
-          .startsWith(this.props.orderLocation.toLowerCase())
+          .startsWith(this.props.orderLocation.toLowerCase()) ||
+        restaurant.addresses[0].zipCode
+          .toString()
+          .startsWith(this.props.orderLocation)
       ) {
         locationFilteredData.push(restaurant);
       } else {
@@ -195,9 +207,15 @@ class CustomerDashboard extends Component {
             <div className="d-flex flex-wrap" style={{ display: "d-flex" }}>
               {filteredRestaurantData.map((restaurant) => {
                 const index = _.findIndex(
-                  this.props.customerLikesData,
+                  this.props.customerData.favourites,
                   function (custLikes) {
-                    return custLikes._restaurantId === restaurant._id;
+                    console.log(
+                      "cust likes: ",
+                      custLikes.toString(),
+                      "rest id",
+                      restaurant._id.toString()
+                    );
+                    return custLikes.toString() === restaurant._id.toString();
                   }
                 );
                 console.log("INDEX: ", index);

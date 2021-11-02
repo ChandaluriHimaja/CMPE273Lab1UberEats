@@ -23,11 +23,11 @@ export const getAllRestaurantsFailure = (allRestaurantDataError) => {
 };
 
 export const getAllRestaurantsData = () => {
-  console.log("getAllRestaurant call: ", apiEndpoint);
+  console.log("getAllRestaurant call: ", apiEndpoint + "/allRestaurants");
   return async (dispatch) => {
     try {
-      console.log("ENDPOINT: ", apiEndpoint);
-      const response = await http.get(apiEndpoint);
+      console.log("ENDPOINT: ", apiEndpoint + "/allRestaurants");
+      const response = await http.get(apiEndpoint + "/allRestaurants");
       if (response && response.status === 200) {
         dispatch(getAllRestaurantsSuccess(response.data));
       }

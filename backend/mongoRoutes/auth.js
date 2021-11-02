@@ -1,16 +1,9 @@
 const bcrypt = require("bcrypt");
 const express = require("express");
 const router = express.Router();
-// const { con } = require("../index");
 const config = require("config");
-const { Auth } = require("../models/auth");
+const { User } = require("../mongoModels/user");
 const Joi = require("joi");
-
-// router.get("/", async (req, res) => {
-//   const data = await Auth.getAuthUserDetails();
-//   console.log("DATA: ", data);
-//   res.send(JSON.stringify(data));
-// });
 
 router.post("/", async (req, res) => {
   try {
@@ -21,7 +14,7 @@ router.post("/", async (req, res) => {
 
     const { email, password } = req.body;
 
-    let [user] = await Auth.checkIfUserExists({ email });
+    let user = await User.findOne({ email });
     console.log("USER.email", user);
     if (!user) return res.status(400).send("Invalid username");
 
@@ -31,12 +24,8 @@ router.post("/", async (req, res) => {
       return res.status(400).send("Invalid password");
     }
 
-    const token = Auth.generateAuthToken({
-      _id: user._id,
-      email: user.email,
-      isRestaurant: user.isRestaurant,
-    });
-
+    const token = user.generateAuthToken();
+    console.log("TOKENNNN: ", token);
     res.send(token);
   } catch (err) {
     console.log("ERROR: post:auth/ ", err);

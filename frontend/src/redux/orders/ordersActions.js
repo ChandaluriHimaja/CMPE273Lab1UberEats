@@ -145,6 +145,15 @@ export const setUpdatedOrderDetails = (restaurantOrders) => {
   };
 };
 
+export const setUpdatedCustomerOrderDetails = (customerOrders) => {
+  return {
+    type: actions.SET_UPDATED_CUSTOMER_ORDER_DETAILS,
+    payload: {
+      customerOrders,
+    },
+  };
+};
+
 export const setOrderLocation = (orderLocation) => {
   return {
     type: actions.SET_ORDER_LOCATION,
@@ -154,11 +163,25 @@ export const setOrderLocation = (orderLocation) => {
   };
 };
 
-export const getCustomerOrders = (id) => {
-  console.log("getCustomerOrders: ", id);
+export const customerUpdateOrderSuccess = () => {
+  return {
+    type: actions.CUSTOMER_UPDATE_ORDER_SUCCESS,
+  };
+};
+
+export const customerUpdateOrderFailure = (customerUpdateOrderError) => {
+  return {
+    type: actions.CUSTOMER_UPDATE_ORDER_FAILURE,
+    payload: {
+      customerUpdateOrderError,
+    },
+  };
+};
+
+export const getCustomerOrders = () => {
   return async (dispatch) => {
     try {
-      const response = await http.get(apiEndpoint + "/customer/" + id);
+      const response = await http.get(apiEndpoint + "/customer");
       if (response && response.status === 200) {
         console.log("RESPONSE CUST ORDERS: ", response.data);
         dispatch(getCustomerOrdersSuccess(response.data));
@@ -172,11 +195,10 @@ export const getCustomerOrders = (id) => {
   };
 };
 
-export const getRestaurantOrders = (id) => {
-  console.log("getCustomerOrders: ", id);
+export const getRestaurantOrders = () => {
   return async (dispatch) => {
     try {
-      const response = await http.get(apiEndpoint + "/restaurant/" + id);
+      const response = await http.get(apiEndpoint + "/restaurant");
       if (response && response.status === 200) {
         console.log("RESPONSE CUST ORDERS: ", response.data);
         dispatch(getRestaurantOrdersSuccess(response.data));
@@ -184,7 +206,7 @@ export const getRestaurantOrders = (id) => {
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         console.log("RESPONSE: ", ex.response);
-        dispatch(restaurantUpdateOrderFailure(ex.response.data));
+        dispatch(getRestaurantOrdersFailure(ex.response.data));
       }
     }
   };
@@ -195,7 +217,7 @@ export const restaurantUpdateOrder = (details) => {
   return async (dispatch) => {
     console.log("IN DISPATCH RESTAURANT UPDATE ORDER");
     try {
-      const response = await http.post(apiEndpoint + "/update", details);
+      const response = await http.put(apiEndpoint, details);
       if (response && response.status === 200) {
         // dispatch(restaurantUpdateOrderSuccess());
         const restaurantOrders = [...store.getState().orders.restaurantOrders];
@@ -208,7 +230,31 @@ export const restaurantUpdateOrder = (details) => {
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         console.log("RESPONSE: ", ex.response);
-        dispatch(customerPlaceOrderFailure(ex.response.data));
+        dispatch(restaurantUpdateOrderFailure(ex.response.data));
+      }
+    }
+  };
+};
+
+export const customerUpdateOrder = (details) => {
+  console.log("IN RESTAURANT UPDATE ORDER");
+  return async (dispatch) => {
+    console.log("IN DISPATCH RESTAURANT UPDATE ORDER");
+    try {
+      const response = await http.put(apiEndpoint, details);
+      if (response && response.status === 200) {
+        // dispatch(restaurantUpdateOrderSuccess());
+        const customerOrders = [...store.getState().orders.customerOrders];
+        const order = _.find(customerOrders, { _id: details._id });
+        order.orderStatus = details.orderStatus;
+        console.log("UPDATED ORDER DETAILS: ", order);
+        dispatch(setUpdatedCustomerOrderDetails(customerOrders));
+        // dispatch(getUpdatedOrderDetails(details._id));
+      }
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        console.log("RESPONSE: ", ex.response);
+        dispatch(customerUpdateOrderFailure(ex.response.data));
       }
     }
   };

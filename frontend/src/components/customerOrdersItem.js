@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button, Modal } from "react-bootstrap";
+import { customerUpdateOrder } from "../redux";
 import _ from "lodash";
 
 class CustomerOrdersItem extends React.Component {
@@ -46,6 +47,14 @@ class CustomerOrdersItem extends React.Component {
     );
   };
 
+  onStatusChangeSubmit = async () => {
+    await this.props.customerUpdateOrder({
+      _id: this.props._id,
+      orderStatus: "Cancel",
+    });
+    this.setState({ orderStatusUpdateDisabled: true });
+  };
+
   render() {
     const order = this.props;
     console.log("ORDER ITEM COMP: ", order);
@@ -62,13 +71,15 @@ class CustomerOrdersItem extends React.Component {
     return (
       <div
         className="card"
-        style={{ margin: "10px", width: "900px", padding: "20px" }}
+        style={{ margin: "10px", width: "1000px", padding: "20px" }}
         key={order.id}
       >
-        <h5 className="card-title overflow-hidden">{restaurant.name}</h5>
+        <h5 className="card-title overflow-hidden">
+          {restaurant.name.toUpperCase()}
+        </h5>
         <p
-          className="card-text overflow-auto rounded text-muted"
-          style={{ height: "25px", marginBottom: "0px" }}
+          className="card-text  rounded text-muted"
+          style={{ height: "35px", marginBottom: "0px" }}
         >
           <span style={{ fontWeight: "bold" }}>{itemCount}</span> items for{" "}
           <span style={{ fontWeight: "bold" }}>
@@ -76,7 +87,9 @@ class CustomerOrdersItem extends React.Component {
           </span>{" "}
           on <span style={{ fontWeight: "bold" }}>{dateTime}</span> ||{" "}
           <span style={{ fontWeight: "bold" }}>Status: </span>
-          {order.orderStatus} ||{" "}
+          {order.orderStatus === "Cancel"
+            ? "Cancelled"
+            : order.orderStatus} ||{" "}
           <span style={{ fontWeight: "bold" }}>Mode: </span>
           {order.orderMode}
           <Button
@@ -89,6 +102,21 @@ class CustomerOrdersItem extends React.Component {
             View Receipt
           </Button>
         </p>
+        {order.orderStatus === "Received" && (
+          <Button
+            variant="dark"
+            style={{
+              marginTop: "-40px",
+              marginLeft: "auto",
+              marginRight: "10px",
+              height: "40px",
+              width: "150px",
+            }}
+            onClick={this.onStatusChangeSubmit}
+          >
+            Cancel Order
+          </Button>
+        )}
         <Modal
           size="md"
           aria-labelledby="contained-modal-title-vcenter"
@@ -192,7 +220,10 @@ const mapStoreToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    customerUpdateOrder: (orderDetails) =>
+      dispatch(customerUpdateOrder(orderDetails)),
+  };
 };
 
 export default connect(mapStoreToProps, mapDispatchToProps)(CustomerOrdersItem);

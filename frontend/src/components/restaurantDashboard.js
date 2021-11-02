@@ -10,7 +10,7 @@ class RestaurantDashboard extends Form {
   state = {
     countries: [],
     data: {
-      restaurantName: "",
+      name: "",
       email: "",
       street: "",
       city: "",
@@ -18,8 +18,8 @@ class RestaurantDashboard extends Form {
       country: "",
       zipCode: "",
       phoneNumber: "",
-      description: "",
-      restaurantImg: "",
+      about: "",
+      picture: "",
       openingTime: "",
       closingTime: "",
       pickupMode: "",
@@ -32,7 +32,7 @@ class RestaurantDashboard extends Form {
   };
 
   schema = {
-    restaurantName: Joi.string().required().label("Restaurant Name"),
+    name: Joi.string().required().label("Restaurant Name"),
     email: Joi.string().required().email().label("Email"),
     street: Joi.string().required().label("Street"),
     city: Joi.string().required().label("City"),
@@ -40,8 +40,8 @@ class RestaurantDashboard extends Form {
     country: Joi.string().required().label("Country"),
     zipCode: Joi.string().length(5).required().label("Zip Code"),
     phoneNumber: Joi.string().length(10).required().label("Phone Number"),
-    description: Joi.string().label("Description"),
-    restaurantImg: Joi.string().label("Restaurant Image"),
+    about: Joi.string().label("Description"),
+    picture: Joi.string().label("Restaurant Image"),
     openingTime: Joi.string().label("Opening Time"),
     closingTime: Joi.string().label("Closing Time"),
     pickupMode: Joi.boolean().label("Pickup Mode"),
@@ -50,27 +50,24 @@ class RestaurantDashboard extends Form {
 
   componentDidMount = async () => {
     this.setState({ countries });
-    await this.props.getRestaurantData(this.props.auth._id);
+    await this.props.getRestaurantData();
     const restaurantData = this.props.restaurantData;
     console.log("RESTAURANTDATA:::: ", restaurantData);
-    const auth = this.props.auth;
-    const pickupMode = restaurantData.pickupMode ? true : false;
-    const deliveryMode = restaurantData.deliveryMode ? true : false;
     const data = {
-      restaurantName: restaurantData.name,
-      email: auth.email,
-      street: restaurantData.street,
-      city: restaurantData.city,
-      state: restaurantData.state,
-      country: restaurantData.country,
-      zipCode: restaurantData.zipCode,
-      phoneNumber: restaurantData.phoneNumber,
-      description: restaurantData.description,
-      restaurantImg: restaurantData.restaurantImage,
+      name: restaurantData.name,
+      email: restaurantData.email,
+      street: restaurantData.addresses[0].street,
+      city: restaurantData.addresses[0].city,
+      state: restaurantData.addresses[0].state,
+      country: restaurantData.addresses[0].country,
+      zipCode: restaurantData.addresses[0].zipCode.toString(),
+      phoneNumber: restaurantData.phoneNumber.toString(),
+      about: restaurantData.about,
+      picture: restaurantData.picture,
       openingTime: restaurantData.openingTime,
       closingTime: restaurantData.closingTime,
-      pickupMode: pickupMode,
-      deliveryMode: deliveryMode,
+      pickupMode: restaurantData.pickupMode,
+      deliveryMode: restaurantData.deliveryMode,
     };
     this.setState({
       data,
@@ -97,11 +94,11 @@ class RestaurantDashboard extends Form {
   };
 
   handleFileUpload = async (e) => {
-    const restaurantImg = await uploadImage(e.target.files[0]);
-    console.log("ROFILEPICURL: ", restaurantImg);
-    if (restaurantImg) {
+    const picture = await uploadImage(e.target.files[0]);
+    console.log("ROFILEPICURL: ", picture);
+    if (picture) {
       const { data } = this.state;
-      data.restaurantImg = restaurantImg;
+      data.picture = picture;
       this.setState({ data });
     }
   };
@@ -183,7 +180,7 @@ class RestaurantDashboard extends Form {
               <div style={{ textAlign: "center", marginTop: "40px" }}>
                 <img
                   className="card-img-top"
-                  src={this.state.data.restaurantImg}
+                  src={this.state.data.picture}
                   style={{
                     width: "300px",
                   }}
@@ -198,7 +195,7 @@ class RestaurantDashboard extends Form {
             </div>
             <div className="col-lg-8" style={{ paddingTop: "10px" }}>
               {this.renderInput(
-                "restaurantName",
+                "name",
                 "Restaurant Name",
                 "text",
                 disableEdting
@@ -221,7 +218,7 @@ class RestaurantDashboard extends Form {
                 disableEdting
               )}
               {this.renderInput(
-                "description",
+                "about",
                 "Description",
                 "string",
                 disableEdting
@@ -279,7 +276,7 @@ const mapStoreToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     restaurantUpdateProfile: (data) => dispatch(restaurantUpdateProfile(data)),
-    getRestaurantData: (id) => dispatch(getRestaurantData(id)),
+    getRestaurantData: () => dispatch(getRestaurantData()),
   };
 };
 

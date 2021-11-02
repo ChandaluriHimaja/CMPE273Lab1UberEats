@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import { getCustomerLikesData } from "../redux";
+import { getCustomerLikesData, getCustomerData } from "../redux";
 import { connect } from "react-redux";
 import RestaurantCard from "./restaurantCard";
 import _ from "lodash";
 
 class CustomerFavourites extends React.Component {
   componentDidMount = async () => {
-    await this.props.getCustomerLikesData(this.props.customerData._id);
+    // await this.props.getCustomerLikesData(this.props.customerData._id);
+    await this.props.getCustomerData(this.props.auth._id);
   };
 
   getFavoriteRestaurants = () => {
@@ -15,9 +16,9 @@ class CustomerFavourites extends React.Component {
     favoriteRestaurantsData = this.props.allRestaurantData.filter(
       (restaurant) => {
         const index = _.findIndex(
-          this.props.customerLikesData,
+          this.props.customerData.favourites,
           function (custLikes) {
-            return custLikes._restaurantId === restaurant._id;
+            return custLikes.toString() === restaurant._id.toString();
           }
         );
         return index === -1 ? false : true;
@@ -59,6 +60,7 @@ class CustomerFavourites extends React.Component {
 
 const mapStoreToProps = (state) => {
   return {
+    auth: state.auth.auth,
     customerData: state.customer.customerData,
     customerLikesData: state.favorites.customerLikesData,
     allRestaurantData: state.allRestaurant.allRestaurantData,
@@ -67,7 +69,8 @@ const mapStoreToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getCustomerLikesData: (id) => dispatch(getCustomerLikesData(id)),
+    // getCustomerLikesData: (id) => dispatch(getCustomerLikesData(id)),
+    getCustomerData: (id) => dispatch(getCustomerData(id)),
   };
 };
 

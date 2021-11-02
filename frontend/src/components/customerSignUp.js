@@ -42,7 +42,7 @@ class CustomerSignUp extends Form {
 
   doSubmit = async () => {
     const { data } = this.state;
-    await this.props.customerSignUp({ ...data, isRestaurant: 0 });
+    await this.props.customerSignUp({ ...data });
     if (this.props.signUpError) {
       console.log("This.signUpError present");
       this.setState({ showWarningBanner: true });

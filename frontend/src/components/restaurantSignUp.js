@@ -10,7 +10,7 @@ class RestaurantSignUp extends Form {
   state = {
     countries: [],
     data: {
-      restaurantName: "",
+      name: "",
       email: "",
       password: "",
       street: "",
@@ -25,7 +25,7 @@ class RestaurantSignUp extends Form {
   };
 
   schema = {
-    restaurantName: Joi.string().required().label("Restaurant Name"),
+    name: Joi.string().required().label("Restaurant Name"),
     email: Joi.string().required().email().label("Email"),
     password: Joi.string().min(6).required().label("Password"),
     street: Joi.string().required().label("Street"),
@@ -42,7 +42,7 @@ class RestaurantSignUp extends Form {
 
   doSubmit = async () => {
     const { data } = this.state;
-    await this.props.restaurantSignUp({ ...data, isRestaurant: 1 });
+    await this.props.restaurantSignUp({ ...data });
     if (this.props.signUpError) {
       console.log("This.signUpError present");
       this.setState({ showWarningBanner: true });
@@ -74,7 +74,7 @@ class RestaurantSignUp extends Form {
         </div>
 
         <form onSubmit={this.handleSubmit}>
-          {this.renderInput("restaurantName", "Restaurant Name", "text")}
+          {this.renderInput("name", "Restaurant Name", "text")}
           {this.renderInput("email", "Email", "text")}
           {this.renderInput("password", "Password", "password")}
           {this.renderInput("street", "Street", "text")}

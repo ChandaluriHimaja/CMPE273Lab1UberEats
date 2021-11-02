@@ -106,7 +106,7 @@ export const restaurantSignUp = (data) => {
 export const restaurantUpdateProfile = (data) => {
   return async (dispatch) => {
     try {
-      const response = await http.post(apiEndpoint + "/update", data);
+      const response = await http.put(apiEndpoint, data);
       if (response && response.status === 200) {
         dispatch(restaurantUpdateProfileSuccess());
       }
@@ -119,11 +119,10 @@ export const restaurantUpdateProfile = (data) => {
   };
 };
 
-export const getRestaurantData = (id) => {
-  console.log("IDDDD: ", id);
+export const getRestaurantData = () => {
   return async (dispatch) => {
     try {
-      const response = await http.get(apiEndpoint + "/" + id);
+      const response = await http.get(apiEndpoint + "/");
       if (response && response.status === 200) {
         dispatch(restaurantGetProfileSuccess(response.data));
       }

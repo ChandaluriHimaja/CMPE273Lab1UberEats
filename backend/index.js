@@ -1,11 +1,21 @@
 const config = require("config");
-const auth = require("./routes/auth");
-const customer = require("./routes/customer");
-const restaurant = require("./routes/restaurant");
-const dish = require("./routes/dishes");
-const like = require("./routes/like");
-const deliveryAddresses = require("./routes/deliveryAddresses");
-const orders = require("./routes/orders");
+// const auth = require("./routes/auth");
+// const customer = require("./routes/customer");
+// const restaurant = require("./routes/restaurant");
+// const dish = require("./routes/dishes");
+// const like = require("./routes/like");
+// const deliveryAddresses = require("./routes/deliveryAddresses");
+// const orders = require("./routes/orders");
+
+const auth = require("./mongoRoutes/auth");
+const customer = require("./mongoRoutes/customer");
+const restaurant = require("./mongoRoutes/restaurant");
+const dish = require("./mongoRoutes/dishes");
+const like = require("./mongoRoutes/like");
+const deliveryAddresses = require("./mongoRoutes/deliveryAddresses");
+const orders = require("./mongoRoutes/orders");
+
+const mongoose = require("mongoose");
 const mysql = require("mysql");
 var cors = require("cors");
 
@@ -17,36 +27,28 @@ if (!config.get("jwtPrivateKey")) {
   process.exit(1);
 }
 
-var con = mysql.createPool({
-  host: config.get("DB.host"),
-  user: config.get("DB.username"),
-  password: config.get("DB.password"),
-  port: config.get("DB.port"),
-  database: config.get("DB.database"),
-  connectionLimit: 500,
-});
+mongoose
+  .connect(
+    "mongodb+srv://ubereats:ubereats@cluster0.yihoh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+  )
+  .then(() => console.log("Connected to Database"))
+  .catch((err) => console.log("Unable to connect to database: ", err));
 
-con.getConnection((err) => {
-  if (err) {
-    console.log("Unable to connect to database" + err);
-    process.exit(1);
-  }
-  console.log("Connected to Database");
-});
+// var con = mysql.createPool({
+//   host: config.get("DB.host"),
+//   user: config.get("DB.username"),
+//   password: config.get("DB.password"),
+//   port: config.get("DB.port"),
+//   database: config.get("DB.database"),
+//   connectionLimit: 500,
+// });
 
-// userData = {
-//   username: "Himaja.chandaluri@gmail.com",
-//   password: "himaja2199",
-//   isRestaurant: false,
-// };
-
-// const sql = `INSERT INTO user_details (user_email, user_password, isRestaurant) VALUES ("${userData.username}", "${userData.password}", "${userData.isRestaurant}")`;
-// console.log("SQL: ", sql);
-// con.query(sql, (error, results) => {
-//   if (error) {
-//     console.log(error);
+// con.getConnection((err) => {
+//   if (err) {
+//     console.log("Unable to connect to database" + err);
+//     process.exit(1);
 //   }
-//   console.log("ADD RESULTS: ", results);
+//   console.log("Connected to Database");
 // });
 
 app.use(cors());
@@ -62,5 +64,3 @@ app.use("/api/orders", orders);
 
 const port = process.env.PORT || config.get("port");
 app.listen(port, () => console.log(`Listning to port ${port}.... `));
-
-module.exports.con = con;

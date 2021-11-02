@@ -14,12 +14,13 @@ class CustomerOrders extends React.Component {
       "Delivered",
       "PickUp Ready",
       "Picked Up",
+      "Cancelled",
     ],
     orderStatusSelected: "All",
   };
 
   componentDidMount = async () => {
-    await this.props.getCustomerOrders(this.props.customerData._id);
+    await this.props.getCustomerOrders();
     // console.log("customerOrders: ", this.props.customerOrders);
   };
 
@@ -32,7 +33,12 @@ class CustomerOrders extends React.Component {
 
     if (this.state.orderStatusSelected !== "All") {
       filteredData = this.props.customerOrders.filter((order) => {
-        return order.orderStatus === this.state.orderStatusSelected;
+        return (
+          order.orderStatus ===
+          (this.state.orderStatusSelected === "Cancelled"
+            ? "Cancel"
+            : this.state.orderStatusSelected)
+        );
       });
     }
 
@@ -106,7 +112,7 @@ const mapStoreToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getCustomerOrders: (id) => dispatch(getCustomerOrders(id)),
+    getCustomerOrders: () => dispatch(getCustomerOrders()),
   };
 };
 

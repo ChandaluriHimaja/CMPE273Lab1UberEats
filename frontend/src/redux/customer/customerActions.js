@@ -72,7 +72,7 @@ export const customerUpdateProfile = (data) => {
   return async (dispatch) => {
     console.log("CUSTOMER UPDATE PROFILE ACTIONS");
     try {
-      const response = await http.post(apiEndpoint + "/update", data);
+      const response = await http.put(apiEndpoint, data);
       if (response && response.status === 200) {
         dispatch(customerUpdateProfileSuccess());
       }
@@ -89,7 +89,7 @@ export const getCustomerData = (id) => {
   console.log("IDDDD: ", id);
   return async (dispatch) => {
     try {
-      const response = await http.get(apiEndpoint + "/" + id);
+      const response = await http.get(apiEndpoint + "/");
       if (response && response.status === 200) {
         dispatch(customerGetProfileSuccess(response.data));
       }

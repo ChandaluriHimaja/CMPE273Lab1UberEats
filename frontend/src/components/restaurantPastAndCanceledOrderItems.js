@@ -93,7 +93,7 @@ class RestaurantPastAndCanceledOrderItems extends React.Component {
         ></hr>
 
         {order.orderItems.map((item) => {
-          const dish = _.find(this.props.restaurantDishesData, {
+          const dish = _.find(this.props.restaurantData.dishes, {
             _id: item._dishId,
           });
           return (
@@ -140,6 +140,20 @@ class RestaurantPastAndCanceledOrderItems extends React.Component {
             </React.Fragment>
           );
         })}
+        {order.orderNote && (
+          <div>
+            <p
+              className="card-title overflow-hidden"
+              style={{
+                letterSpacing: "1px",
+                marginTop: "5px",
+              }}
+            >
+              <span className="text-muted">Note: </span>
+              {order.orderNote}
+            </p>
+          </div>
+        )}
       </div>
     );
   }
@@ -148,6 +162,7 @@ class RestaurantPastAndCanceledOrderItems extends React.Component {
 const mapStoreToProps = (state) => {
   return {
     restaurantDishesData: state.restaurant.restaurantDishesData,
+    restaurantData: state.restaurant.restaurantData,
   };
 };
 

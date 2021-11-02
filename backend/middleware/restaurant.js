@@ -1,5 +1,6 @@
 module.exports = function (req, res, next) {
-  if (req.user.isRestaurant != 1) return res.status(403).send("Forbidden");
+  console.log("Is Restaurant: ", req.user.isRestaurant);
+  if (!req.user.isRestaurant) return res.status(403).send("Forbidden");
 
   next();
 };
