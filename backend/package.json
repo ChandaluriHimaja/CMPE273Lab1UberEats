@@ -24,6 +24,8 @@
     "express": "^4.17.1",
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
+    "kafka-node": "^5.0.0",
+    "kafkajs": "^1.15.0",
     "lodash": "^4.17.21",
     "mocha": "^9.1.2",
     "mongoose": "^6.0.12",

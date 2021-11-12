@@ -1,0 +1,11 @@
+{
+  "DB": {
+    "host": "ubereatsdatabase273.cxzxu4uepukg.us-east-2.rds.amazonaws.com",
+    "username": "admin",
+    "password": "admin123",
+    "port": 3306,
+    "database": "uberEatsSchema"
+  },
+  "jwtPrivateKey": "1234",
+  "port": "3900"
+}

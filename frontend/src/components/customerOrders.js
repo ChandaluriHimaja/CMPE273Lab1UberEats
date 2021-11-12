@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { getCustomerOrders } from "../redux";
 import { connect } from "react-redux";
 import CustomerOrdersItem from "./customerOrdersItem";
+import Pagination from "./common/pagination";
+import { paginate } from "../utils/paginate";
 import _ from "lodash";
 
 class CustomerOrders extends React.Component {
@@ -16,7 +18,10 @@ class CustomerOrders extends React.Component {
       "Picked Up",
       "Cancelled",
     ],
+    itemsPerPage: [2, 5, 10],
     orderStatusSelected: "All",
+    pageSize: 5,
+    currentPage: 1,
   };
 
   componentDidMount = async () => {
@@ -26,6 +31,15 @@ class CustomerOrders extends React.Component {
 
   handleStatusFilterChange = (e) => {
     this.setState({ orderStatusSelected: e.currentTarget.value });
+  };
+
+  handleItemsPerPageChange = (e) => {
+    this.setState({ pageSize: e.currentTarget.value, currentPage: 1 });
+  };
+
+  handlePageChange = (page) => {
+    // console.log(page);
+    this.setState({ currentPage: page });
   };
 
   filterData = () => {
@@ -42,11 +56,17 @@ class CustomerOrders extends React.Component {
       });
     }
 
-    return filteredData;
+    const orders = paginate(
+      filteredData,
+      this.state.currentPage,
+      this.state.pageSize
+    );
+
+    return { totalCount: filteredData.length, data: orders };
   };
 
   render() {
-    const filteredData = this.filterData();
+    const { totalCount, data: filteredData } = this.filterData();
     return (
       <div className="container">
         <div className="row justify-content-center">
@@ -56,47 +76,63 @@ class CustomerOrders extends React.Component {
         </div>
 
         <div
-          className="form-group"
-          style={{ paddingLeft: "10px", marginBottom: "50px" }}
+          style={{
+            display: "flex",
+            width: "1000px",
+            justifyContent: "space-between",
+          }}
         >
-          <label htmlFor="orderStatusFilter">Order Status Filter</label>
-          <select
-            className="form-control form-element"
-            name="orderStatusFilter"
-            id="orderStatusFilter"
-            onChange={this.handleStatusFilterChange}
-            value={this.state.orderStatusSelected}
-            style={{ marginTop: "5px", width: "450px" }}
+          <div
+            className="form-group"
+            style={{ paddingLeft: "10px", marginBottom: "50px" }}
           >
-            {this.state.orderStatus.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
+            <label htmlFor="orderStatusFilter">Order Status Filter</label>
+            <select
+              className="form-control form-element"
+              name="orderStatusFilter"
+              id="orderStatusFilter"
+              onChange={this.handleStatusFilterChange}
+              value={this.state.orderStatusSelected}
+              style={{ marginTop: "5px", width: "450px" }}
+            >
+              {this.state.orderStatus.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div
+            className="form-group"
+            style={{ paddingLeft: "10px", marginBottom: "50px" }}
+          >
+            <label htmlFor="numberOfPages">Items per page: </label>
+            <select
+              className="form-control form-element"
+              name="numberOfPages"
+              id="numberOfPages"
+              onChange={this.handleItemsPerPageChange}
+              value={this.state.pageSize}
+              style={{ marginTop: "5px", width: "200px" }}
+            >
+              {this.state.itemsPerPage.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {filteredData.map((order) => {
-          // if (
-          //   order.orderStatus != "Picked Up" &&
-          //   order.orderStatus != "Delivered"
-          // ) {
           return <CustomerOrdersItem {...order}></CustomerOrdersItem>;
-          // }
         })}
-        {/* <div className="row justify-content-center">
-          <h1 className="mt-4 mb-4" style={{ paddingBottom: "30px" }}>
-            Past Orders
-          </h1>
-        </div> */}
-        {/* {filteredData.map((order) => {
-          if (
-            order.orderStatus == "Picked Up" ||
-            order.orderStatus == "Delivered"
-          ) {
-            return <CustomerOrdersItem {...order}></CustomerOrdersItem>;
-          }
-        })} */}
+        <Pagination
+          itemsCount={totalCount}
+          pageSize={this.state.pageSize}
+          currentPage={this.state.currentPage}
+          onPageChange={this.handlePageChange}
+        ></Pagination>
       </div>
     );
   }

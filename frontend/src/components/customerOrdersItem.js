@@ -194,6 +194,18 @@ class CustomerOrdersItem extends React.Component {
                 </div>
               );
             })}
+            {order.orderNote && (
+              <p
+                className="card-title overflow-hidden"
+                style={{
+                  letterSpacing: "1px",
+                  marginTop: "15px",
+                  marginLeft: "5px",
+                }}
+              >
+                Note: {order.orderNote}
+              </p>
+            )}
           </Modal.Body>
           <Modal.Footer>
             <Button

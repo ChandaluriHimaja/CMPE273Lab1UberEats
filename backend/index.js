@@ -7,16 +7,24 @@ const config = require("config");
 // const deliveryAddresses = require("./routes/deliveryAddresses");
 // const orders = require("./routes/orders");
 
-const auth = require("./mongoRoutes/auth");
-const customer = require("./mongoRoutes/customer");
-const restaurant = require("./mongoRoutes/restaurant");
-const dish = require("./mongoRoutes/dishes");
-const like = require("./mongoRoutes/like");
-const deliveryAddresses = require("./mongoRoutes/deliveryAddresses");
-const orders = require("./mongoRoutes/orders");
+// const auth = require("./mongoRoutes/auth");
+// const customer = require("./mongoRoutes/customer");
+// const restaurant = require("./mongoRoutes/restaurant");
+// const dish = require("./mongoRoutes/dishes");
+// const like = require("./mongoRoutes/like");
+// const deliveryAddresses = require("./mongoRoutes/deliveryAddresses");
+// const orders = require("./mongoRoutes/orders");
+
+const auth = require("./kafkaRoutes/auth");
+const customer = require("./kafkaRoutes/customer");
+const restaurant = require("./kafkaRoutes/restaurant");
+const dish = require("./kafkaRoutes/dishes");
+const like = require("./kafkaRoutes/like");
+const deliveryAddresses = require("./kafkaRoutes/deliveryAddresses");
+const orders = require("./kafkaRoutes/orders");
 
 const mongoose = require("mongoose");
-const mysql = require("mysql");
+// const mysql = require("mysql");
 var cors = require("cors");
 
 const express = require("express");
@@ -29,7 +37,7 @@ if (!config.get("jwtPrivateKey")) {
 
 mongoose
   .connect(
-    "mongodb+srv://ubereats:ubereats@cluster0.yihoh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+    "mongodb+srv://uberEatsN:uberEatsN@cluster0.yihoh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
   )
   .then(() => console.log("Connected to Database"))
   .catch((err) => console.log("Unable to connect to database: ", err));
