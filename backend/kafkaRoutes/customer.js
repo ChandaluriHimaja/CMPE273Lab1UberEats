@@ -5,11 +5,13 @@ const { User, validateUserInput } = require("../mongoModels/user");
 const bcrypt = require("bcrypt");
 const kafka = require("../kafka/client");
 
+const topicName = "customer1";
+
 router.post("/", async (req, res) => {
   msg = {};
   msg.path = "registerCustomer";
   msg.body = req.body;
-  kafka.make_request("customer", msg, (err, results) => {
+  kafka.make_request(topicName, msg, (err, results) => {
     res.status(results.status).send(results.data);
   });
   // try {
@@ -56,7 +58,7 @@ router.get("/custId/:id", async (req, res) => {
   msg = {};
   msg.id = req.params.id;
   msg.path = "getCustomerById";
-  kafka.make_request("customer", msg, (err, results) => {
+  kafka.make_request(topicName, msg, (err, results) => {
     res.status(results.status).send(results.data);
   });
   // const customer = await User.findById(req.params.id);
@@ -73,7 +75,7 @@ router.get("/", auth, async (req, res) => {
   msg = {};
   msg.user = req.user;
   msg.path = "getCustomer";
-  kafka.make_request("customer", msg, (err, results) => {
+  kafka.make_request(topicName, msg, (err, results) => {
     res.status(results.status).send(results.data);
   });
   // const user = await User.findById(req.user._id);
@@ -90,7 +92,7 @@ router.put("/", auth, async (req, res) => {
   msg = {};
   msg.body = req.body;
   msg.path = "updateCustomerData";
-  kafka.make_request("customer", msg, (err, results) => {
+  kafka.make_request(topicName, msg, (err, results) => {
     res.status(results.status).send(results.data);
   });
   // try {

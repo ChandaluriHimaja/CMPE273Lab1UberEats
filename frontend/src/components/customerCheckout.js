@@ -76,7 +76,8 @@ class CustomerCheckout extends Form {
 
   placeOrder = async () => {
     const orderItems = [];
-    let deliveryAddressId = 0;
+    let deliveryAddressId = null;
+    console.log("Deliver Address: ", deliveryAddressId);
 
     if (this.props.orderMode === "Delivery") {
       deliveryAddressId = this.state.customerDeliveryAddress;

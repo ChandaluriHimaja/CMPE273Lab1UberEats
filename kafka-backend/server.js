@@ -52,10 +52,10 @@ function handleTopicRequest(topic_name, fname) {
 
 // handleTopicRequest("getTopic", authService);
 // handleTopicRequest("postTopic", postService);
-handleTopicRequest("auth", authService);
-handleTopicRequest("customer", customerService);
-handleTopicRequest("deliveryAddress", deliveryDeliveryAddessService);
-handleTopicRequest("dishes", dishesService);
-handleTopicRequest("likes", likesService);
-handleTopicRequest("orders", ordersService);
-handleTopicRequest("restaurant", restaurantService);
+handleTopicRequest("auth1", authService);
+handleTopicRequest("customer1", customerService);
+handleTopicRequest("deliveryAddress1", deliveryDeliveryAddessService);
+handleTopicRequest("dishes1", dishesService);
+handleTopicRequest("likes1", likesService);
+handleTopicRequest("orders1", ordersService);
+handleTopicRequest("restaurant1", restaurantService);

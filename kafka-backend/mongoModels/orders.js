@@ -55,7 +55,7 @@ function validateOrderInput(order) {
   // console.log("Order: ", order);
   const schema = Joi.object({
     _restaurantId: Joi.string().required(),
-    _deliveryAddressId: Joi.string().required(),
+    _deliveryAddressId: Joi.string().allow(null),
     dateTime: Joi.string(),
     totalPrice: Joi.number().required(),
     orderMode: Joi.string().required(),

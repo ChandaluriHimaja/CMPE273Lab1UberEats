@@ -8,12 +8,14 @@ const { Order, validateUpdate, validate } = require("../mongoModels/orders");
 const _ = require("lodash");
 const kafka = require("../kafka/client");
 
+const topicName = "orders1";
+
 router.post("/", auth, async (req, res) => {
   msg = {};
   msg.path = "createNewOrder";
   msg.body = req.body;
   msg.user = req.user;
-  kafka.make_request("orders", msg, (err, results) => {
+  kafka.make_request(topicName, msg, (err, results) => {
     res.status(results.status).send(results.data);
   });
   // try {
@@ -62,7 +64,7 @@ router.put("/", auth, async (req, res) => {
   msg.path = "updateOrder";
   msg.body = req.body;
   // msg.user = req.user;
-  kafka.make_request("orders", msg, (err, results) => {
+  kafka.make_request(topicName, msg, (err, results) => {
     res.status(results.status).send(results.data);
   });
   // try {
@@ -92,7 +94,7 @@ router.get("/customer", auth, async (req, res) => {
   msg.path = "getCustomerOrders";
   // msg.body = req.body;
   msg.user = req.user;
-  kafka.make_request("orders", msg, (err, results) => {
+  kafka.make_request(topicName, msg, (err, results) => {
     res.status(results.status).send(results.data);
   });
   // try {
@@ -111,7 +113,7 @@ router.get("/restaurant", auth, restaurant, async (req, res) => {
   msg.path = "getRestaurantOrders";
   // msg.body = req.body;
   msg.user = req.user;
-  kafka.make_request("orders", msg, (err, results) => {
+  kafka.make_request(topicName, msg, (err, results) => {
     res.status(results.status).send(results.data);
   });
   // try {
@@ -130,7 +132,7 @@ router.get("/:id", async (req, res) => {
   msg = {};
   msg.path = "getOrderById";
   msg.params = req.params;
-  kafka.make_request("orders", msg, (err, results) => {
+  kafka.make_request(topicName, msg, (err, results) => {
     res.status(results.status).send(results.data);
   });
   // try {

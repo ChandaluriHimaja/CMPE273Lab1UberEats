@@ -9,6 +9,7 @@ createNewOrder = async (req, callback) => {
       //   return res.status(400).send(result.error.details[0].message);
       res.status = 400;
       res.data = result.error.details[0].message;
+      console.log("CREATE_NEW_ORDER: ", res.data);
       callback(null, res);
     }
 

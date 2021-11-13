@@ -11,10 +11,12 @@ const restaurant = require("../middleware/restaurant");
 const bcrypt = require("bcrypt");
 const kafka = require("../kafka/client");
 
+const topicName = "restaurant1";
+
 router.get("/allRestaurants", auth, async (req, res) => {
   msg = {};
   msg.path = "getAllRestaurants";
-  kafka.make_request("restaurant", msg, (err, results) => {
+  kafka.make_request(topicName, msg, (err, results) => {
     res.status(results.status).send(results.data);
   });
   // try {
@@ -29,7 +31,7 @@ router.get("/", auth, restaurant, async (req, res) => {
   msg = {};
   msg.path = "getRestaurantData";
   msg.user = req.user;
-  kafka.make_request("restaurant", msg, (err, results) => {
+  kafka.make_request(topicName, msg, (err, results) => {
     res.status(results.status).send(results.data);
   });
   // try {
@@ -53,7 +55,7 @@ router.post("/", async (req, res) => {
   msg = {};
   msg.path = "addNewRestaurant";
   msg.body = req.body;
-  kafka.make_request("restaurant", msg, (err, results) => {
+  kafka.make_request(topicName, msg, (err, results) => {
     res.status(results.status).send(results.data);
   });
   // try {
@@ -108,7 +110,7 @@ router.put("/", auth, restaurant, async (req, res) => {
   msg.path = "updateRestaurantData";
   msg.body = req.body;
   msg.user = req.user;
-  kafka.make_request("restaurant", msg, (err, results) => {
+  kafka.make_request(topicName, msg, (err, results) => {
     res.status(results.status).send(results.data);
   });
   // try {
@@ -148,7 +150,7 @@ router.post("/dish", auth, restaurant, async (req, res) => {
   msg.path = "addDishToRestaurant";
   msg.body = req.body;
   msg.user = req.user;
-  kafka.make_request("restaurant", msg, (err, results) => {
+  kafka.make_request(topicName, msg, (err, results) => {
     res.status(results.status).send(results.data);
   });
   // try {

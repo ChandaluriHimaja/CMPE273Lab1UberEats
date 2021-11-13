@@ -5,6 +5,7 @@ const { User } = require("../mongoModels/user");
 const auth = require("../middleware/auth");
 const kafka = require("../kafka/client");
 
+const topicName = "likes1";
 // router.get("/:id", async (req, res) => {
 //   try {
 //     const _custId = req.params.id;
@@ -21,7 +22,7 @@ router.post("/", auth, async (req, res) => {
   msg.path = "toggleLike";
   msg.body = req.body;
   msg.user = req.user;
-  kafka.make_request("likes", msg, (err, results) => {
+  kafka.make_request(topicName, msg, (err, results) => {
     res.status(results.status).send(results.data);
   });
   // try {

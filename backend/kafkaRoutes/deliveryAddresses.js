@@ -4,13 +4,15 @@ const { User } = require("../mongoModels/user");
 const auth = require("../middleware/auth");
 const kafka = require("../kafka/client");
 
+const topicName = "deliveryAddress1";
+
 router.post("/", auth, async (req, res) => {
   console.log("req.body: ", req.body);
   msg = {};
   msg.path = "addDeliveryAddress";
   msg.user = req.user;
   msg.body = req.body;
-  kafka.make_request("deliveryAddress", msg, (err, results) => {
+  kafka.make_request(topicName, msg, (err, results) => {
     res.status(results.status).send(results.data);
   });
   // try {

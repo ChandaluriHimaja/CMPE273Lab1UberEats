@@ -6,11 +6,13 @@ const restaurant = require("../middleware/restaurant");
 const _ = require("lodash");
 const kafka = require("../kafka/client");
 
+const topicName = "dishes1";
+
 router.get("/:id", auth, async (req, res) => {
   msg = {};
   msg.path = "getDishById";
   msg.params = req.params;
-  kafka.make_request("dishes", msg, (err, results) => {
+  kafka.make_request(topicName, msg, (err, results) => {
     res.status(results.status).send(results.data);
   });
   // try {
@@ -34,7 +36,7 @@ router.put("/", auth, restaurant, async (req, res) => {
   msg.path = "updateDishById";
   msg.body = req.body;
   msg.user = req.user;
-  kafka.make_request("dishes", msg, (err, results) => {
+  kafka.make_request(topicName, msg, (err, results) => {
     res.status(results.status).send(results.data);
   });
   // try {
@@ -77,7 +79,7 @@ router.delete("/:id", async (req, res) => {
   msg = {};
   msg.path = "deleteDishById";
   msg.params = req.params;
-  kafka.make_request("dishes", msg, (err, results) => {
+  kafka.make_request(topicName, msg, (err, results) => {
     res.status(results.status).send(results.data);
   });
   // try {

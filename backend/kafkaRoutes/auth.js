@@ -6,11 +6,13 @@ const { User } = require("../mongoModels/user");
 const Joi = require("joi");
 const kafka = require("../kafka/client");
 
+const topicName = "auth1";
+
 router.post("/", async (req, res) => {
   msg = {};
   msg.path = "login";
   msg.body = req.body;
-  kafka.make_request("auth", msg, (err, results) => {
+  kafka.make_request(topicName, msg, (err, results) => {
     res.status(results.status).send(results.data);
   });
   // try {
