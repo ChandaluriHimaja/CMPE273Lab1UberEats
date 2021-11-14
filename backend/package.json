@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon node app.js",
     "client": "cd ../ && npm start --prefix frontend",
-    "dev": "concurrently \"npm run start\" \"npm run client\"",
+    "kafka": "cd ../ && nodemon server.js --prefix kafka-backend",
+    "dev": "concurrently \"npm run start\" \"npm run client\" \"npm run kafka\"",
     "build": "npm build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
