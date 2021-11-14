@@ -141,7 +141,8 @@ userSchema.methods.generateAuthToken = function () {
       email: this.email,
       isRestaurant: this.isRestaurant,
     },
-    config.get("jwtPrivateKey")
+    "1234"
+    // config.get("jwtPrivateKey")
   );
   return token;
 };
