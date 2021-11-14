@@ -1,5 +1,5 @@
 {
-  "apiUrl": "http://localhost:3900/api",
+  "apiUrl": "http://18.118.216.199:3900/api",
   "backgroundColor": "#162328",
   "currencyDenomination": "$"
 }
