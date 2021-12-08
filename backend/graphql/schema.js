@@ -263,7 +263,7 @@ const UpdateRestaurantProfileInput = new GraphQLInputObjectType({
   }),
 });
 
-const DeliveryAddressInputType = new GraphQLObjectType({
+const DeliveryAddressInputType = new GraphQLInputObjectType({
   name: "deliveryAddressInputType",
   fields: () => ({
     _id: { type: GraphQLID },
@@ -275,12 +275,12 @@ const DeliveryAddressInputType = new GraphQLObjectType({
   }),
 });
 
-const DishInputType = new GraphQLObjectType({
+const DishInputType = new GraphQLInputObjectType({
   name: "dishIputType",
   fields: () => ({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
-    mainIngrediant: { tye: GraphQLString },
+    mainIngrediant: { type: GraphQLString },
     image: { type: GraphQLString },
     price: { type: GraphQLFloat },
     description: { type: GraphQLString },
