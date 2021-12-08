@@ -19,7 +19,7 @@ class Form extends Component {
       abortEarly: false,
     });
 
-    console.log("errors: ", result);
+    // console.log("errors: ", result);
 
     if (!result.error && !this.state.errors) return null;
     else {
@@ -46,7 +46,7 @@ class Form extends Component {
     const errors = this.validate();
 
     this.setState({ errors: errors || {} });
-    console.log("Errors: ", errors);
+    // console.log("Errors: ", errors);
     if (!isEmpty(errors)) return;
 
     this.doSubmit();

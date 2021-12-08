@@ -3,8 +3,12 @@ import { Redirect } from "react-router-dom";
 // import { login } from "../services/authService";
 import Joi from "joi-browser";
 import Form from "./common/form";
-import { login } from "../redux";
+import { loginSuccess } from "../redux";
+import { withApollo } from "react-apollo";
 import { connect } from "react-redux";
+import { login } from "../graphql/mutation";
+import jwtDecode from "jwt-decode";
+import http from "../services/httpService";
 
 class Login extends Form {
   state = {
@@ -20,18 +24,35 @@ class Login extends Form {
 
   doSubmit = async () => {
     const { email, password } = this.state.data;
-    await this.props.login(email, password);
-    if (this.props.jwt) {
-      return (
-        <Redirect
-          to={{
-            pathname: "/",
-          }}
-        ></Redirect>
-      );
-    } else {
-      this.setState({ showWarningBanner: true });
+
+    const { data } = await this.props.client.mutate({
+      mutation: login,
+      variables: { email: email, password: password },
+    });
+    console.log("RESPONSE OBJECT FROM GRAPHQL LOGIN:", data);
+    if (data.login.token) {
+      const jwt = data.login.token;
+      const auth = jwtDecode(jwt);
+      http.setJwt(jwt);
+      await this.props.loginSuccess(jwt, auth);
     }
+    // this.setState({
+    //   loginClicked: true,
+    //   loginResp: data.login,
+    // });
+
+    // await this.props.login(email, password);
+    // if (this.props.jwt) {
+    //   return (
+    //     <Redirect
+    //       to={{
+    //         pathname: "/",
+    //       }}
+    //     ></Redirect>
+    //   );
+    // } else {
+    //   this.setState({ showWarningBanner: true });
+    // }
   };
 
   render() {
@@ -76,7 +97,8 @@ const mapStoreToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     login: (email, password) => dispatch(login(email, password)),
+    loginSuccess: (jwt, auth) => dispatch(loginSuccess(jwt, auth)),
   };
 };
 
-export default connect(mapStoreToProps, mapDispatchToProps)(Login);
+export default connect(mapStoreToProps, mapDispatchToProps)(withApollo(Login));

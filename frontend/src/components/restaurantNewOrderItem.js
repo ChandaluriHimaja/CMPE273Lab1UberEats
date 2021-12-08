@@ -3,8 +3,10 @@ import { getCustomerDetailsByID } from "../services/getCustomerForRestaurantServ
 import _ from "lodash";
 import { connect } from "react-redux";
 import { Button } from "react-bootstrap";
-import { restaurantUpdateOrder } from "../redux";
+import { restaurantUpdateOrder, setUpdatedOrderDetails } from "../redux";
 import { Link } from "react-router-dom";
+import { restaurantUpdateOrderStatus } from "../graphql/mutation";
+import { withApollo } from "react-apollo";
 
 class ResataurantNewOrderItem extends React.Component {
   state = {
@@ -77,10 +79,22 @@ class ResataurantNewOrderItem extends React.Component {
       " ",
       this.props._id
     );
-    await this.props.restaurantUpdateOrder({
-      _id: this.props._id,
-      orderStatus: this.state.orderStatus,
+    // await this.props.restaurantUpdateOrder({
+    //   _id: this.props._id,
+    //   orderStatus: this.state.orderStatus,
+    // });
+    const { data } = await this.props.client.mutate({
+      mutation: restaurantUpdateOrderStatus,
+      variables: { id: this.props._id, orderStatus: this.state.orderStatus },
     });
+    console.log("RESPONSE OBJECT FROM GRAPHQL UPDATE ORDER:", data);
+    if (data.restaurantUpdateOrderStatus.message === "Successfully Updated") {
+      const restaurantOrders = [...this.props.restaurantOrders];
+      const order = _.find(restaurantOrders, { _id: this.props._id });
+      order.orderStatus = this.state.orderStatus;
+      console.log("UPDATED ORDER DETAILS: ", restaurantOrders);
+      this.props.setUpdatedOrderDetails(restaurantOrders);
+    }
     this.setState({ orderStatusUpdateDisabled: true });
   };
 
@@ -265,6 +279,7 @@ const mapStoreToProps = (state) => {
   return {
     restaurantDishesData: state.restaurant.restaurantDishesData,
     restaurantData: state.restaurant.restaurantData,
+    restaurantOrders: state.orders.restaurantOrders,
   };
 };
 
@@ -272,10 +287,12 @@ const mapDispatchToProps = (dispatch) => {
   return {
     restaurantUpdateOrder: (orderDetails) =>
       dispatch(restaurantUpdateOrder(orderDetails)),
+    setUpdatedOrderDetails: (restaurantOrders) =>
+      dispatch(setUpdatedOrderDetails(restaurantOrders)),
   };
 };
 
 export default connect(
   mapStoreToProps,
   mapDispatchToProps
-)(ResataurantNewOrderItem);
+)(withApollo(ResataurantNewOrderItem));

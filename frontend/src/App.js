@@ -26,86 +26,98 @@ import NavBarMy from "./components/navbar";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "react-apollo";
+
+import { graphqlApiUrl } from "./config.json";
+console.log("graphqlApiUrl: ", graphqlApiUrl);
+
+const client = new ApolloClient({
+  uri: graphqlApiUrl,
+});
+
 class App extends Component {
   render() {
     return (
-      <Provider store={store}>
-        <div className="container-fluid">
-          <div className="row">
-            <NavBarMy></NavBarMy>
-          </div>
-          <div className="row">
-            <div className="col-md-2">
-              <SideBar></SideBar>
+      <ApolloProvider client={client}>
+        <Provider store={store}>
+          <div className="container-fluid">
+            <div className="row">
+              <NavBarMy></NavBarMy>
             </div>
-            <div
-              className="col-md-10"
-              style={{ paddingLeft: "30px", paddingRight: "30px" }}
-            >
-              <main role="main">
-                <Switch>
-                  <CustomerRoute
-                    path="/myDashboard"
-                    component={CustomerDashboard}
-                  ></CustomerRoute>
-                  <RestaurantRoute
-                    path="/restaurantDashboard"
-                    component={RestaurantDashboard}
-                  ></RestaurantRoute>
-                  <RestaurantRoute
-                    path="/restaurantDishes"
-                    component={RestaurantDishes}
-                  ></RestaurantRoute>
-                  <RestaurantRoute
-                    path="/restaurantAddDish/:id"
-                    component={RestaurantAddNewDish}
-                  ></RestaurantRoute>
-                  <RestaurantRoute
-                    path="/orders"
-                    component={RestaurantOrders}
-                  ></RestaurantRoute>
-                  <RestaurantRoute
-                    path="/customer/:id"
-                    component={RestaurantCustomerPage}
-                  ></RestaurantRoute>
-                  <CustomerRoute
-                    path="/myOrders"
-                    component={CustomerOrders}
-                  ></CustomerRoute>
-                  <CustomerRoute
-                    path="/myProfile"
-                    component={CustomerProfile}
-                  ></CustomerRoute>
-                  <CustomerRoute
-                    path="/myFavourites"
-                    component={CustomerFavourites}
-                  ></CustomerRoute>
-                  <CustomerRoute
-                    path="/checkout"
-                    component={CustomerCheckout}
-                  ></CustomerRoute>
-                  <CustomerRoute
-                    path="/restaurant/:id"
-                    component={CustomerRestaurantPage}
-                  ></CustomerRoute>
-                  <BaseRoute
-                    path="/customerSignUp"
-                    component={CustomerSignUp}
-                  ></BaseRoute>
-                  <BaseRoute
-                    path="/restaurantSignUp"
-                    component={RestaurantSignUp}
-                  ></BaseRoute>
-                  <BaseRoute path="/home" component={Home}></BaseRoute>
-                  <BaseRoute path="/login" component={Login}></BaseRoute>
-                  <Route path="/logout" component={Logout}></Route>
-                  <Redirect from="/" exact to="/home"></Redirect>
-                </Switch>
-              </main>
+            <div className="row">
+              <div className="col-md-2">
+                <SideBar></SideBar>
+              </div>
+              <div
+                className="col-md-10"
+                style={{ paddingLeft: "30px", paddingRight: "30px" }}
+              >
+                <main role="main">
+                  <Switch>
+                    <CustomerRoute
+                      path="/myDashboard"
+                      component={CustomerDashboard}
+                    ></CustomerRoute>
+                    <RestaurantRoute
+                      path="/restaurantDashboard"
+                      component={RestaurantDashboard}
+                    ></RestaurantRoute>
+                    <RestaurantRoute
+                      path="/restaurantDishes"
+                      component={RestaurantDishes}
+                    ></RestaurantRoute>
+                    <RestaurantRoute
+                      path="/restaurantAddDish/:id"
+                      component={RestaurantAddNewDish}
+                    ></RestaurantRoute>
+                    <RestaurantRoute
+                      path="/orders"
+                      component={RestaurantOrders}
+                    ></RestaurantRoute>
+                    <RestaurantRoute
+                      path="/customer/:id"
+                      component={RestaurantCustomerPage}
+                    ></RestaurantRoute>
+                    <CustomerRoute
+                      path="/myOrders"
+                      component={CustomerOrders}
+                    ></CustomerRoute>
+                    <CustomerRoute
+                      path="/myProfile"
+                      component={CustomerProfile}
+                    ></CustomerRoute>
+                    <CustomerRoute
+                      path="/myFavourites"
+                      component={CustomerFavourites}
+                    ></CustomerRoute>
+                    <CustomerRoute
+                      path="/checkout"
+                      component={CustomerCheckout}
+                    ></CustomerRoute>
+                    <CustomerRoute
+                      path="/restaurant/:id"
+                      component={CustomerRestaurantPage}
+                    ></CustomerRoute>
+                    <BaseRoute
+                      path="/customerSignUp"
+                      component={CustomerSignUp}
+                    ></BaseRoute>
+                    <BaseRoute
+                      path="/restaurantSignUp"
+                      component={RestaurantSignUp}
+                    ></BaseRoute>
+                    <BaseRoute path="/home" component={Home}></BaseRoute>
+                    <BaseRoute path="/login" component={Login}></BaseRoute>
+                    <Route path="/logout" component={Logout}></Route>
+                    <Redirect from="/" exact to="/home"></Redirect>
+                  </Switch>
+                </main>
+              </div>
             </div>
           </div>
-        </div>
-      </Provider>
+        </Provider>
+      </ApolloProvider>
     );
   }
 }

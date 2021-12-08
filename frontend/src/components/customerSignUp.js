@@ -3,8 +3,10 @@ import { Redirect } from "react-router-dom";
 import { countries } from "./common/countries-list";
 import Joi from "joi-browser";
 import Form from "./common/form";
-import { customerSignUp } from "../redux";
+import { customerSignUpSuccess, customerSignUpFailure } from "../redux";
 import { connect } from "react-redux";
+import { withApollo } from "react-apollo";
+import { signUpCustomer } from "../graphql/mutation";
 
 class CustomerSignUp extends Form {
   state = {
@@ -41,15 +43,30 @@ class CustomerSignUp extends Form {
   };
 
   doSubmit = async () => {
-    const { data } = this.state;
-    await this.props.customerSignUp({ ...data });
-    if (this.props.signUpError) {
-      console.log("This.signUpError present");
-      this.setState({ showWarningBanner: true });
-    } else {
-      console.log("This.signUpError absent");
+    let { data } = this.state;
+    const result = await this.props.client.mutate({
+      mutation: signUpCustomer,
+      variables: { customerData: data },
+    });
+    console.log("RESPONSE OBJECT FROM GRAPHQL Customer Signup:", result.data);
+    if (result.data.signUpCustomer.message === "Account created successfully") {
+      await this.props.customerSignUpSuccess();
       this.props.history.push("/login");
+    } else {
+      await await this.props.customerSignUpFailure(
+        result.data.signUpCustomer.message
+      );
+      this.setState({ showWarningBanner: true });
     }
+
+    // await this.props.customerSignUp({ ...data });
+    // if (this.props.signUpError) {
+    //   console.log("This.signUpError present");
+    //   this.setState({ showWarningBanner: true });
+    // } else {
+    //   console.log("This.signUpError absent");
+    //   this.props.history.push("/login");
+    // }
   };
 
   render() {
@@ -101,8 +118,12 @@ const mapStoreToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    customerSignUp: (data) => dispatch(customerSignUp(data)),
+    customerSignUpSuccess: () => dispatch(customerSignUpSuccess()),
+    customerSignUpFailure: (error) => dispatch(customerSignUpFailure(error)),
   };
 };
 
-export default connect(mapStoreToProps, mapDispatchToProps)(CustomerSignUp);
+export default connect(
+  mapStoreToProps,
+  mapDispatchToProps
+)(withApollo(CustomerSignUp));

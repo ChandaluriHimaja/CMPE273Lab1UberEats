@@ -1,5 +1,6 @@
 {
-  "apiUrl": "http://18.118.216.199:3900/api",
+  "apiUrl": "http://localhost:3900/api",
+  "graphqlApiUrl": "http://localhost:3900/graphql",
   "backgroundColor": "#162328",
   "currencyDenomination": "$"
 }
